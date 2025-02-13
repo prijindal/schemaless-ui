@@ -676,7 +676,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3c737b697036fcf9dbcc0d049c4e858bf126bb25"
+      resolved-ref: acc8ebca5603b5021db10012b9a7e9cb78d73e6a
       url: "https://github.com/prijindal/schemaless_openapi.git"
     source: git
     version: "1.0.0"

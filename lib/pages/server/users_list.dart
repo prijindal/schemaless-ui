@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
@@ -17,7 +18,7 @@ class UsersList extends StatelessWidget {
       future: api.adminApi.listUsers(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return ErrorScreen(error: snapshot.error as Error, scaffold: false);
+          return ErrorScreen(error: snapshot.error!, scaffold: false);
         }
         if (snapshot.hasData == false || snapshot.requireData.data == null) {
           return LoadingScreen(scaffold: false);
@@ -25,14 +26,40 @@ class UsersList extends StatelessWidget {
         return ListView.builder(
           itemCount: snapshot.requireData.data!.length,
           itemBuilder: (context, index) {
-            final project = snapshot.requireData.data![index];
+            final user = snapshot.requireData.data![index];
             return ListTile(
-              title: Text(project.username),
-              onTap: () {
-                Navigator.of(
-                  context,
-                ).pushNamed('/server/$server.id/user/${project.id}');
-              },
+              title: Text(user.username),
+              subtitle: Text(
+                "isAdmin: ${user.isAdmin}, status: ${user.status}, createdAt: ${user.createdAt}",
+              ),
+              trailing: PopupMenuButton(
+                itemBuilder:
+                    (context) => [
+                      PopupMenuItem<void>(
+                        child: Text(
+                          user.status == UserStatus.ACTIVATED
+                              ? "Deactivate"
+                              : "Activated",
+                        ),
+                        onTap: () async {
+                          final body = UserApprovalRequestBodyBuilder();
+                          body.approval = user.status != UserStatus.ACTIVATED;
+                          await api.adminApi.userApproval(
+                            userid: user.id,
+                            userApprovalRequestBody: body.build(),
+                          );
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "User ${user.status == UserStatus.ACTIVATED ? "Deactivate" : "Activated"}",
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+              ),
             );
           },
         );
