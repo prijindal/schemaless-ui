@@ -28,8 +28,12 @@ class ServersScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final info = list.elementAt(index);
               return ListTile(
-                title: Text("Server ${info.url}"),
+                title: Text(info.url),
                 subtitle: Text("Username: ${info.username}"),
+                onTap:
+                    () => GetIt.I<AppRouter>().navigateNamed(
+                      "/server/${info.id}",
+                    ),
               );
             },
           );

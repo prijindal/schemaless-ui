@@ -45,9 +45,9 @@ dependencies:
   path_provider: ^2.1.5
   pub_semver: ^2.1.5
   schemaless_openapi:
-    path: ../schemaless_openapi
-    # git:
-    #   url: https://github.com/prijindal/schemaless_openapi.git
+    # path: ../schemaless_openapi
+    git:
+      url: https://github.com/prijindal/schemaless_openapi.git
   sqlite3_flutter_libs: ^0.5.30
   uuid: ^4.5.1
   watch_it: ^1.6.2

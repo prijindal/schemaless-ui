@@ -34,10 +34,11 @@ class NewServerScreen extends StatelessWidget {
       final jwtToken = responseData.asString;
       // Login and get the jwt token
       // Save the jwt token in the server_info box
-      await GetIt.I<SharedDatabase>().managers.serverInfo.create(
-        (o) => o(url: url, username: username, jwtToken: jwtToken),
-      );
-      GetIt.I<AppRouter>().maybePop();
+      final info = await GetIt.I<SharedDatabase>().managers.serverInfo
+          .createReturning(
+            (o) => o(url: url, username: username, jwtToken: jwtToken),
+          );
+      GetIt.I<AppRouter>().navigateNamed("/server/${info.id}");
     }
   }
 

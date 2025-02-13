@@ -13,5 +13,6 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     AutoRoute(initial: true, path: "/servers", page: ServersRoute.page),
     AutoRoute(path: "/newserver", page: NewServerRoute.page),
+    AutoRoute(path: "/server/:serverId", page: ServerRoute.page),
   ];
 }

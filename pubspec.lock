@@ -674,9 +674,11 @@ packages:
   schemaless_openapi:
     dependency: "direct main"
     description:
-      path: "../schemaless_openapi"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "3c737b697036fcf9dbcc0d049c4e858bf126bb25"
+      url: "https://github.com/prijindal/schemaless_openapi.git"
+    source: git
     version: "1.0.0"
   shelf:
     dependency: transitive
