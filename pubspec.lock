@@ -210,7 +210,7 @@ packages:
     source: hosted
     version: "3.0.1"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       sha256: "253a18bbd4851fecba42f7343a1df3a9a4c1d31a2c1b37e221086b4fa8c8dbc9"
@@ -218,7 +218,7 @@ packages:
     source: hosted
     version: "5.8.0+1"
   dio_web_adapter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio_web_adapter
       sha256: e485c7a39ff2b384fa1d7e09b4e25f755804de8384358049124830b04fc4f93a
@@ -520,7 +520,7 @@ packages:
     source: hosted
     version: "1.0.4"
   one_of:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: one_of
       sha256: "25fe0fcf181e761c6fcd604caf9d5fdf952321be17584ba81c72c06bdaa511f0"
@@ -528,7 +528,7 @@ packages:
     source: hosted
     version: "1.5.0"
   one_of_serializer:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: one_of_serializer
       sha256: "3f3dfb5c1578ba3afef1cb47fcc49e585e797af3f2b6c2cc7ed90aad0c5e7b83"
@@ -656,7 +656,7 @@ packages:
     source: hosted
     version: "1.5.0"
   quiver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: quiver
       sha256: ea0b925899e64ecdfbf9c7becb60d5b50e706ade44a85b2363be2a22d88117d2
