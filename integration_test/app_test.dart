@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:schemaless/db/database.dart';
 import 'package:schemaless/pages/servers/servers_screen.dart';
 import 'package:schemaless/router/app_router.dart';
 
@@ -25,6 +26,7 @@ void main() {
       });
       when(() => mockStackRouter.currentUrl).thenReturn('/todos');
       // Load app widget.
+      GetIt.I.registerSingleton<SharedDatabase>(SharedDatabase.local());
       GetIt.I.registerSingleton<AppRouter>(AppRouter());
       await GetIt.I.allReady();
       await tester.pumpWidget(

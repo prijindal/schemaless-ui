@@ -1,9 +1,9 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../hive/hive_db.dart';
+import '../../db/database.dart';
+import '../../router/app_router.dart';
 
 @RoutePage()
 class ServersScreen extends StatelessWidget {
@@ -11,20 +11,26 @@ class ServersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetIt.I<HiveDB>().serverInfoBox;
+    final manager = GetIt.I<SharedDatabase>().managers.serverInfo;
     return Scaffold(
       appBar: AppBar(title: const Text('Servers')),
-      body: ValueListenableBuilder(
-        valueListenable: box.listenable(),
-        builder: (context, box, widget) {
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => GetIt.I<AppRouter>().navigateNamed("/newserver"),
+        child: Icon(Icons.add),
+      ),
+      body: StreamBuilder<List<ServerInfoData>>(
+        initialData: <ServerInfoData>[],
+        stream: manager.watch(),
+        builder: (context, box) {
+          final list = box.requireData;
           return ListView.builder(
-            itemCount: box.length,
+            itemCount: list.length,
             itemBuilder: (context, index) {
-              final info = box.getAt(index);
-              if (info == null) {
-                return Text("Some error getting $index element");
-              }
-              return ListTile(title: Text("Server ${info.url}"));
+              final info = list.elementAt(index);
+              return ListTile(
+                title: Text("Server ${info.url}"),
+                subtitle: Text("Username: ${info.username}"),
+              );
             },
           );
         },
