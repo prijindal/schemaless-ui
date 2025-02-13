@@ -35,6 +35,8 @@ analyzer:
     strict-casts: true
     strict-inference: true
     strict-raw-types: true
+  errors:
+    todo: ignore
   exclude:
     - lib/models/core.g.dart
     - lib/router/app_router.gr.dart
