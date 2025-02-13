@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import 'hive/hive_db.dart';
 import 'pages/loading.dart';
 import 'router/app_router.dart';
 
 void registerAllServices() {
+  GetIt.I.registerSingletonAsync<HiveDB>(() => HiveDB.init());
   GetIt.I.registerSingleton<AppRouter>(AppRouter());
 }
 

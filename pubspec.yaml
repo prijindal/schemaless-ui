@@ -37,6 +37,10 @@ dependencies:
     sdk: flutter
   get_it: ^8.0.3
   github: ^9.24.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path: ^1.9.1
+  path_provider: ^2.1.5
   pub_semver: ^2.1.5
   watch_it: ^1.6.2
   yaml: ^3.1.3
