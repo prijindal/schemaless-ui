@@ -1,0 +1,450 @@
+on: push
+
+name: Flutter
+
+permissions:
+  id-token: write
+  contents: write
+  attestations: write
+
+jobs:
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: build/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      
+      - run: flutter --version
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test integration_test -d windows -r github --coverage
+      - uses: codecov/codecov-action@v5
+        with:
+          flags: windows
+        env: 
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  test-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            build
+            ~/.gradle
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      - run: flutter --version
+      - run: flutter pub get
+      - name: save release key
+        env:
+          KEY_FILE_BASE64: ${{ secrets.KEY_FILE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$KEY_FILE_BASE64" | base64 -d > "$(pwd)/release.keystore"
+          echo "storeFile=$(pwd)/release.keystore" >> android/key.properties
+          echo "keyAlias=$KEY_ALIAS" >> android/key.properties
+          echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
+          echo "storePassword=$KEY_PASSWORD" >> android/key.properties
+          echo "VERSION_CODE=`expr 185 + $GITHUB_RUN_NUMBER`" > android/version.properties
+      - run: flutter analyze
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: default
+          arch: x86_64
+          script: flutter test integration_test -d android -r github --coverage
+      - uses: codecov/codecov-action@v5
+        with:
+          flags: android
+        env: 
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  test-linux:
+    runs-on: ubuntu-22.04 # libwebkit2gtk-4.1 is not compatible with flutter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      - run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev libwebkit2gtk-4.0-dev keybinder-3.0
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            build
+            ~/.gradle
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      
+      - run: flutter --version
+      - run: flutter pub get
+      - run: flutter analyze
+      # - run: flutter test --coverage
+      - name: Run Integration Tests
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: flutter test integration_test -d linux -r github --coverage
+      - uses: codecov/codecov-action@v5
+        with:
+          flags: linux
+        env: 
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  android-apk:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/
+            android/.gradle/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('**/*.gradle*', 'pubspec.lock') }}
+      - run: flutter pub get
+      - name: save release key
+        env:
+          KEY_FILE_BASE64: ${{ secrets.KEY_FILE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$KEY_FILE_BASE64" | base64 -d > "$(pwd)/release.keystore"
+          echo "storeFile=$(pwd)/release.keystore" >> android/key.properties
+          echo "keyAlias=$KEY_ALIAS" >> android/key.properties
+          echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
+          echo "storePassword=$KEY_PASSWORD" >> android/key.properties
+          echo "VERSION_CODE=`expr 185 + $GITHUB_RUN_NUMBER`" > android/version.properties
+      - run: flutter build apk --release --split-per-abi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-arm64-v8a
+          path: build/app/outputs/apk/release/app-arm64-v8a-release.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-armeabi-v7a
+          path: build/app/outputs/apk/release/app-armeabi-v7a-release.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-x86_64
+          path: build/app/outputs/apk/release/app-x86_64-release.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-output-metadata
+          path: build/app/outputs/apk/release/output-metadata.json
+
+  github-release:
+    needs: [test-linux, test-windows, test-android, android-apk, linux, windows]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      - name: Download apks from android build
+        uses: actions/download-artifact@v4
+        with:
+          pattern: android-*
+          merge-multiple: true
+          path: build/android/
+      - name: Download linux build
+        uses: actions/download-artifact@v4
+        with:
+          name: linux
+          path: build/linux/
+      - name: Download windows build
+        uses: actions/download-artifact@v4
+        with:
+          name: windows
+          path: build/windows/
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            build/android/*
+            build/linux/*
+            build/windows/*
+      - run: flutter pub get
+      - run: dart run create_release.dart
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_PATHS: build/android/,build/linux/,build/windows/
+          INCREMENT_VERSION: 186
+
+  android-appbundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/
+            android/.gradle/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('**/*.gradle*', 'pubspec.lock') }}
+      - run: flutter pub get
+      - name: save release key
+        env:
+          KEY_FILE_BASE64: ${{ secrets.KEY_FILE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$KEY_FILE_BASE64" | base64 -d > "$(pwd)/release.keystore"
+          echo "storeFile=$(pwd)/release.keystore" >> android/key.properties
+          echo "keyAlias=$KEY_ALIAS" >> android/key.properties
+          echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
+          echo "storePassword=$KEY_PASSWORD" >> android/key.properties
+          echo "VERSION_CODE=`expr 185 + $GITHUB_RUN_NUMBER`" > android/version.properties
+
+      - run: flutter build appbundle --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: google-play-android-appbundle
+          path: |
+            build/app/outputs/bundle/release/
+            build/app/outputs/mapping/release/
+            build/app/intermediates/merged_native_libs/release/out/lib/
+
+  google-play-publish:
+    needs: [test-android, android-appbundle]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download appbundle from android build
+        uses: actions/download-artifact@v4
+        with:
+          name: google-play-android-appbundle
+          path: build/app/
+      - name: Upload to google play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: com.prijindal.schemaless
+          track: beta
+          status: completed
+          debugSymbols: build/app/intermediates/merged_native_libs/release/out/lib/
+          mappingFile: build/app/outputs/mapping/release/mapping.txt
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: build/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      
+      - run: flutter pub get
+      - run: flutter build web --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: build/web
+
+  web-publish:
+    needs: [test-linux, web]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download web build from linux build
+        uses: actions/download-artifact@v4
+        with:
+          name: web
+          path: build/web/
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SCHEMALESS_PRIJINDAL }}'
+          channelId: live
+          projectId: schemaless-prijindal
+          
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      - run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev libwebkit2gtk-4.0-dev keybinder-3.0
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: build/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      
+      - run: flutter pub get
+      - run: flutter build linux --release
+      - run: tar -czvf linux.tar.gz -C build/linux/x64/release/bundle .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: linux.tar.gz
+    
+  macos:
+    runs-on: macos-latest
+    # Skipping macos since we are not releasing
+    if: github.ref == 'refs/heads/**macos**'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: build/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      
+      - run: flutter pub get
+      - run: flutter build macos --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: build/macos/Build/Products/Release/schemaless.app
+
+  ios:
+    runs-on: macos-latest
+    # Skipping ios since we are not releasing
+    if: github.ref == 'refs/heads/**ios**'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: build/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      
+      - run: flutter pub get
+      - run: flutter build ios --release --no-codesign --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios
+          path: build/ios
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable" # or: 'beta', 'dev' or 'master'
+          architecture: x64 # optional, x64 or arm64
+          cache: true
+          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: build/
+          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+      
+      - run: flutter pub get
+      - run: flutter build windows --release
+      - name: Compile .ISS to .EXE Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: windows.iss
+          options: /O+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: Output/
