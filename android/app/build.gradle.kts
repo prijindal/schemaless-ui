@@ -5,10 +5,10 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
 }
 
 android {
@@ -47,24 +47,14 @@ android {
 
     buildTypes {
         profile {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.getByName("release")
         }
         debug {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.getByName("release")
         }
 
         release {
-            signingConfig signingConfigs.release
-
-            for (String item : runTasks)
-            if ( item.contains("assembleRelease") || item.contains("bundleRelease")) {
-                minifyEnabled true
-                shrinkResources true
-            }
-
-            ndk {
-                debugSymbolLevel 'FULL'
-            }
+            signingConfig signingConfigs.getByName("release")
         }
     }
 }
