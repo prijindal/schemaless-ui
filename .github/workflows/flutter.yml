@@ -212,13 +212,13 @@ jobs:
         with:
           name: windows
           path: build/windows/
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-path: |
-            build/android/*
-            build/linux/*
-            build/windows/*
+      # - name: Generate artifact attestation
+      #   uses: actions/attest-build-provenance@v2
+      #   with:
+      #     subject-path: |
+      #       build/android/*
+      #       build/linux/*
+      #       build/windows/*
       - run: flutter pub get
       - run: dart run create_release.dart
         env:

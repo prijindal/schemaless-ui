@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
                           DefaultWidgetsLocalizations.delegate,
                           DefaultMaterialLocalizations.delegate,
                         ],
-                        child: LoadingScreen(),
+                        child: LoadingScreen(scaffold: true),
                       ),
                     ),
                   )
