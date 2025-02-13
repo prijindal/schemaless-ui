@@ -29,7 +29,7 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: flutter analyze
-      # - run: flutter test integration_test -d windows -r github --coverage
+      - run: flutter test integration_test -d windows -r github --coverage
       - uses: codecov/codecov-action@v5
         with:
           flags: windows
@@ -78,13 +78,13 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      # - name: run tests
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: 33
-      #     target: default
-      #     arch: x86_64
-      #     script: flutter test integration_test -d android -r github --coverage
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: default
+          arch: x86_64
+          script: flutter test integration_test -d android -r github --coverage
       - uses: codecov/codecov-action@v5
         with:
           flags: android
@@ -117,11 +117,11 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: flutter analyze
-      # - run: flutter test --coverage
-      # - name: Run Integration Tests
-      #   uses: coactions/setup-xvfb@v1
-      #   with:
-      #     run: flutter test integration_test -d linux -r github --coverage
+      - run: flutter test --coverage
+      - name: Run Integration Tests
+        uses: coactions/setup-xvfb@v1
+        with:
+          run: flutter test integration_test -d linux -r github --coverage
       - uses: codecov/codecov-action@v5
         with:
           flags: linux
