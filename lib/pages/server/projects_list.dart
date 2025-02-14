@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -201,6 +204,9 @@ class _ProjectEntityHistoryScreen extends StatelessWidget {
     final entityHistoryRequest = EntityHistoryRequestBuilder();
     entityHistoryRequest.entityName = entity;
     entityHistoryRequest.order = MapBuilder();
+    entityHistoryRequest.order.addAll({
+      "timestamp": EntityHistoryRequestOrderEnum.desc,
+    });
     entityHistoryRequest.params = EntityHistoryRequestParamsBuilder();
     return BuiltList<EntityHistoryRequest>([entityHistoryRequest.build()]);
   }
@@ -227,8 +233,55 @@ class _ProjectEntityHistoryScreen extends StatelessWidget {
                 entityData
                     .map(
                       (data) => ListTile(
+                        isThreeLine: true,
                         title: Text(data.action),
-                        subtitle: Text(data.payload.toString()),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Timestamp: ${data.timestamp.toString()}"),
+                            Text("Entity ID: ${data.entityId}"),
+                            Text(data.payload.toString()),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder:
+                                  (context) => Scaffold(
+                                    appBar: AppBar(
+                                      title: Text(data.timestamp.toString()),
+                                    ),
+                                    body: Center(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                        ),
+                                        width: min(
+                                          600,
+                                          MediaQuery.of(context).size.width,
+                                        ),
+                                        child: ListView(
+                                          children: [
+                                            Text("Entity ID: ${data.entityId}"),
+                                            Text("Action: ${data.action}"),
+                                            Text(
+                                              "Timestamp: ${data.timestamp.toString()}",
+                                            ),
+                                            Text(
+                                              "Created At: ${data.createdAt}",
+                                            ),
+                                            Text("Host Id: ${data.hostId}"),
+                                            Text(
+                                              "Payload: ${JsonEncoder.withIndent("  ").convert(data.payload.value)}",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                            ),
+                          );
+                        },
                       ),
                     )
                     .toList(),

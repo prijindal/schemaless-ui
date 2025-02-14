@@ -212,13 +212,13 @@ jobs:
         with:
           name: windows
           path: build/windows/
-      # - name: Generate artifact attestation
-      #   uses: actions/attest-build-provenance@v2
-      #   with:
-      #     subject-path: |
-      #       build/android/*
-      #       build/linux/*
-      #       build/windows/*
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            build/android/*
+            build/linux/*
+            build/windows/*
       - run: flutter pub get
       - run: dart run create_release.dart
         env:
@@ -271,27 +271,6 @@ jobs:
             build/app/outputs/bundle/release/
             build/app/outputs/mapping/release/
             build/app/intermediates/merged_native_libs/release/out/lib/
-
-  google-play-publish:
-    needs: [test-android, android-appbundle]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Download appbundle from android build
-        uses: actions/download-artifact@v4
-        with:
-          name: google-play-android-appbundle
-          path: build/app/
-      - name: Upload to google play
-        uses: r0adkll/upload-google-play@v1
-        with:
-          releaseFiles: build/app/outputs/bundle/release/app-release.aab
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: com.prijindal.schemaless
-          track: beta
-          status: completed
-          debugSymbols: build/app/intermediates/merged_native_libs/release/out/lib/
-          mappingFile: build/app/outputs/mapping/release/mapping.txt
 
   web:
     runs-on: ubuntu-latest
