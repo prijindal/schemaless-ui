@@ -23,6 +23,9 @@ class ServersScreen extends StatelessWidget {
         stream: manager.watch(),
         builder: (context, box) {
           final list = box.requireData;
+          if (list.isEmpty) {
+            return Center(child: Text("No servers found"));
+          }
           return ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) {

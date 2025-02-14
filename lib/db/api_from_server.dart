@@ -11,6 +11,6 @@ class ApiFromServerInfo {
 
   AdminApi get adminApi => api.getAdminApi();
   HealthApi get healthApi => api.getHealthApi();
-  ProjectApi get projectApi => api.getProjectApi();
   AuthApi get authApi => api.getAuthApi();
+  EntityApi get entityApi => api.getEntityApi();
 }

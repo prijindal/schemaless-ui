@@ -1,16 +1,16 @@
 import 'package:auto_route/annotations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
 import '../../helpers/parse_dio_errors.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
+import 'entity_list.dart';
 import 'health_info.dart';
-import 'projects_list.dart';
 import 'users_list.dart';
 
 @RoutePage()
@@ -75,65 +75,85 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   int currentPageIndex = 0;
   ApiFromServerInfo get api => ApiFromServerInfo(widget.server);
 
-  Future<void> _newProjectDialog() async {
-    final TextEditingController textEditingController = TextEditingController();
-    final projectName = await showDialog<String?>(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text("Create new project"),
-            content: TextField(
-              controller: textEditingController,
-              decoration: InputDecoration(labelText: "Project name"),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop(textEditingController.text);
-                },
-                child: Text("Create"),
-              ),
-            ],
-          ),
-    );
-    if (projectName != null && projectName.isNotEmpty) {
-      final body = CreateProjectRequestBuilder();
-      body.name = projectName;
-      try {
-        await api.projectApi.createProjects(createProjectRequest: body.build());
-        ScaffoldMessenger.of(
-          // ignore: use_build_context_synchronously
-          context,
-        ).showSnackBar(SnackBar(content: Text("Project Created $projectName")));
-      } on DioException catch (e) {
-        // ignore: use_build_context_synchronously
-        await parseDioErrors(context, e);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.server.url} ${widget.server.username}"),
+        actions: [
+          PopupMenuButton(
+            itemBuilder:
+                (context) => [
+                  PopupMenuItem<void>(
+                    child: Text("Generate Token"),
+                    onTap: () async {
+                      try {
+                        final response = await api.authApi.generateKey();
+                        if (response.data == null ||
+                            response.data!.isString == false) {
+                          throw DioException.badResponse(
+                            requestOptions: response.requestOptions,
+                            statusCode: 404,
+                            response: response,
+                          );
+                        }
+                        final jwtToken = response.data!.asString;
+                        await showDialog<void>(
+                          // ignore: use_build_context_synchronously
+                          context: context,
+                          builder:
+                              (context) => SimpleDialog(
+                                title: Text("New token generated"),
+                                children: [
+                                  Text(jwtToken),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Clipboard.setData(
+                                        ClipboardData(text: jwtToken),
+                                      );
+                                    },
+                                    child: Text("Copy to clipboard"),
+                                  ),
+                                ],
+                              ),
+                        );
+                      } on DioException catch (e) {
+                        // ignore: use_build_context_synchronously
+                        await parseDioErrors(context, e);
+                      }
+                    },
+                  ),
+                  PopupMenuItem<void>(
+                    child: Text("Revoke Keys"),
+                    onTap: () async {
+                      try {
+                        final response = await api.authApi.revokeKeys();
+                        if (response.data == null) {
+                          throw DioException.badResponse(
+                            requestOptions: response.requestOptions,
+                            statusCode: 404,
+                            response: response,
+                          );
+                        }
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("All keys are revoked")),
+                        );
+                      } on DioException catch (e) {
+                        // ignore: use_build_context_synchronously
+                        await parseDioErrors(context, e);
+                      }
+                    },
+                  ),
+                ],
+          ),
+        ],
       ),
       body: [
-        ProjectsList(server: widget.server),
+        EntitesList(server: widget.server),
         HealthInfo(server: widget.server),
         UsersList(server: widget.server),
       ].elementAt(currentPageIndex),
-      floatingActionButton:
-          currentPageIndex == 0
-              ? FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () => _newProjectDialog(),
-              )
-              : null,
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
