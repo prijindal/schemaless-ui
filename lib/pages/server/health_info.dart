@@ -29,10 +29,6 @@ class HealthInfo extends StatelessWidget {
           children: [
             ListTile(title: Text("DB"), subtitle: Text(data.db.toString())),
             ListTile(
-              title: Text("Cache"),
-              subtitle: Text(data.cache.toString()),
-            ),
-            ListTile(
               title: Text("Env"),
               subtitle: Text(
                 JsonEncoder.withIndent("  ").convert(data.env.asMap),

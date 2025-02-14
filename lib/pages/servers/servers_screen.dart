@@ -30,6 +30,24 @@ class ServersScreen extends StatelessWidget {
               return ListTile(
                 title: Text(info.url),
                 subtitle: Text("Username: ${info.username}"),
+                trailing: PopupMenuButton(
+                  itemBuilder:
+                      (context) => [
+                        PopupMenuItem<void>(
+                          child: Text("Delete"),
+                          onTap: () async {
+                            await manager
+                                .filter((f) => f.id.equals(info.id))
+                                .delete();
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Server Deleted")),
+                            );
+                          },
+                        ),
+                      ],
+                ),
+
                 onTap:
                     () => GetIt.I<AppRouter>().navigateNamed(
                       "/server/${info.id}",

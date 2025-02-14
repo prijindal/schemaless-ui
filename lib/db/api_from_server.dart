@@ -10,7 +10,6 @@ class ApiFromServerInfo {
         ..setBearerAuth("bearer_auth", info.jwtToken);
 
   AdminApi get adminApi => api.getAdminApi();
-  AppkeysApi get appkeysApi => api.getAppkeysApi();
   HealthApi get healthApi => api.getHealthApi();
   ProjectApi get projectApi => api.getProjectApi();
   AuthApi get authApi => api.getAuthApi();

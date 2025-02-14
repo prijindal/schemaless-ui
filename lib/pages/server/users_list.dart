@@ -1,8 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
+import '../../helpers/parse_dio_errors.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 
@@ -44,18 +46,23 @@ class UsersList extends StatelessWidget {
                         onTap: () async {
                           final body = UserApprovalRequestBodyBuilder();
                           body.approval = user.status != UserStatus.ACTIVATED;
-                          await api.adminApi.userApproval(
-                            userid: user.id,
-                            userApprovalRequestBody: body.build(),
-                          );
-                          // ignore: use_build_context_synchronously
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "User ${user.status == UserStatus.ACTIVATED ? "Deactivate" : "Activated"}",
+                          try {
+                            await api.adminApi.userApproval(
+                              userid: user.id,
+                              userApprovalRequestBody: body.build(),
+                            );
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "User ${user.status == UserStatus.ACTIVATED ? "Deactivate" : "Activated"}",
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } on DioException catch (e) {
+                            // ignore: use_build_context_synchronously
+                            await parseDioErrors(context, e);
+                          }
                         },
                       ),
                     ],

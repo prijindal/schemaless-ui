@@ -1,8 +1,12 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
+import '../../helpers/parse_dio_errors.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 
@@ -30,6 +34,93 @@ class ProjectsList extends StatelessWidget {
             return ListTile(
               title: Text(project.name),
               subtitle: Text("Created At: ${project.createdAt}"),
+              trailing: PopupMenuButton(
+                itemBuilder:
+                    (context) => [
+                      PopupMenuItem<void>(
+                        child: Text("Generate Token"),
+                        onTap: () async {
+                          try {
+                            final response = await api.projectApi.generateKey(
+                              projectid: project.id,
+                            );
+                            if (response.data == null ||
+                                response.data!.isString == false) {
+                              throw DioException.badResponse(
+                                requestOptions: response.requestOptions,
+                                statusCode: 404,
+                                response: response,
+                              );
+                            }
+                            final jwtToken = response.data!.asString;
+                            await showDialog<void>(
+                              // ignore: use_build_context_synchronously
+                              context: context,
+                              builder:
+                                  (context) => SimpleDialog(
+                                    title: Text("New token generated"),
+                                    children: [
+                                      Text(jwtToken),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Clipboard.setData(
+                                            ClipboardData(text: jwtToken),
+                                          );
+                                        },
+                                        child: Text("Copy to clipboard"),
+                                      ),
+                                    ],
+                                  ),
+                            );
+                          } on DioException catch (e) {
+                            // ignore: use_build_context_synchronously
+                            await parseDioErrors(context, e);
+                          }
+                        },
+                      ),
+                      PopupMenuItem<void>(
+                        child: Text("Revoke Keys"),
+                        onTap: () async {
+                          try {
+                            final response = await api.projectApi.revokeKeys(
+                              projectid: project.id,
+                            );
+                            if (response.data == null) {
+                              throw DioException.badResponse(
+                                requestOptions: response.requestOptions,
+                                statusCode: 404,
+                                response: response,
+                              );
+                            }
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("All keys are revoked")),
+                            );
+                          } on DioException catch (e) {
+                            // ignore: use_build_context_synchronously
+                            await parseDioErrors(context, e);
+                          }
+                        },
+                      ),
+                      PopupMenuItem<void>(
+                        child: Text("Delete"),
+                        onTap: () async {
+                          try {
+                            await api.projectApi.deleteProject(
+                              projectid: project.id,
+                            );
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Project Deleted")),
+                            );
+                          } on DioException catch (e) {
+                            // ignore: use_build_context_synchronously
+                            await parseDioErrors(context, e);
+                          }
+                        },
+                      ),
+                    ],
+              ),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
@@ -56,14 +147,94 @@ class _ProjectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Bottom scaffold navigation with app keys, entity data and entity history
-    return Scaffold(
-      appBar: AppBar(title: Text(project.name)),
-      body: ListView(
-        children: [
-          ListTile(title: Text("Project ID"), subtitle: Text(project.id)),
-        ],
+    return FutureBuilder(
+      future: api.projectApi.getProjectEntities(projectid: project.id),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return ErrorScreen(error: snapshot.error!, scaffold: true);
+        }
+        if (snapshot.hasData == false || snapshot.requireData.data == null) {
+          return LoadingScreen(scaffold: true);
+        }
+        return Scaffold(
+          appBar: AppBar(title: Text(project.name)),
+          body: ListView(
+            children:
+                snapshot.data!.data!
+                    .map(
+                      (entity) => ListTile(
+                        title: Text(entity),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder:
+                                  (context) => _ProjectEntityHistoryScreen(
+                                    project: project,
+                                    server: server,
+                                    entity: entity,
+                                  ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                    .toList(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _ProjectEntityHistoryScreen extends StatelessWidget {
+  const _ProjectEntityHistoryScreen({
+    required this.project,
+    required this.server,
+    required this.entity,
+  });
+  final ServerInfoData server;
+  final Project project;
+  final String entity;
+  ApiFromServerInfo get api => ApiFromServerInfo(server);
+
+  BuiltList<EntityHistoryRequest> _buildReqBody() {
+    final entityHistoryRequest = EntityHistoryRequestBuilder();
+    entityHistoryRequest.entityName = entity;
+    entityHistoryRequest.order = MapBuilder();
+    entityHistoryRequest.params = EntityHistoryRequestParamsBuilder();
+    return BuiltList<EntityHistoryRequest>([entityHistoryRequest.build()]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: api.projectApi.searchProjectEntitiesHistory(
+        projectid: project.id,
+        entityHistoryRequest: _buildReqBody(),
       ),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return ErrorScreen(error: snapshot.error!, scaffold: true);
+        }
+        if (snapshot.hasData == false || snapshot.requireData.data == null) {
+          return LoadingScreen(scaffold: true);
+        }
+        final entityData = snapshot.requireData.data!.first.data;
+        return Scaffold(
+          appBar: AppBar(title: Text(project.name)),
+          body: ListView(
+            children:
+                entityData
+                    .map(
+                      (data) => ListTile(
+                        title: Text(data.action),
+                        subtitle: Text(data.payload.toString()),
+                      ),
+                    )
+                    .toList(),
+          ),
+        );
+      },
     );
   }
 }

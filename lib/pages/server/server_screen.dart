@@ -1,10 +1,12 @@
 import 'package:auto_route/annotations.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
+import '../../helpers/parse_dio_errors.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 import 'health_info.dart';
@@ -107,14 +109,9 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
           // ignore: use_build_context_synchronously
           context,
         ).showSnackBar(SnackBar(content: Text("Project Created $projectName")));
-      } catch (e) {
-        debugPrint(e.toString());
-        ScaffoldMessenger.of(
-          // ignore: use_build_context_synchronously
-          context,
-        ).showSnackBar(
-          SnackBar(content: Text("Error creating project $projectName")),
-        );
+      } on DioException catch (e) {
+        // ignore: use_build_context_synchronously
+        await parseDioErrors(context, e);
       }
     }
   }
