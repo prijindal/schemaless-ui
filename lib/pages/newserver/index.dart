@@ -122,53 +122,58 @@ class NewServerScreen extends StatelessWidget {
     appBar: AppBar(title: const Text('New Server')),
     body: FormBuilder(
       key: _formKey,
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          width: min(600, MediaQuery.of(context).size.width),
-          child: ListView(
-            children: [
-              FormBuilderTextField(
-                name: "url",
-                autofocus: true,
-                decoration: InputDecoration(labelText: 'Title'),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.url(
-                    protocols: ["https", "http"],
-                    requireProtocol: true,
-                  ),
-                ]),
-              ),
-              SizedBox(height: 10),
-              FormBuilderTextField(
-                name: "username",
-                decoration: InputDecoration(labelText: 'Username'),
-                validator: FormBuilderValidators.required(),
-              ),
-              SizedBox(height: 10),
-              FormBuilderTextField(
-                name: "password",
-                obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
-                validator: FormBuilderValidators.required(),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () => _login(context),
-                child: Text("Login"),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () => _register(context),
-                child: Text("Register"),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () => _initialize(context),
-                child: Text("Initialize"),
-              ),
-            ],
+      child: AutofillGroup(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            width: min(600, MediaQuery.of(context).size.width),
+            child: ListView(
+              children: [
+                FormBuilderTextField(
+                  name: "url",
+                  autofocus: true,
+                  autofillHints: [AutofillHints.url],
+                  decoration: InputDecoration(labelText: 'Title'),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.url(
+                      protocols: ["https", "http"],
+                      requireProtocol: true,
+                    ),
+                  ]),
+                ),
+                SizedBox(height: 10),
+                FormBuilderTextField(
+                  name: "username",
+                  autofillHints: [AutofillHints.username],
+                  decoration: InputDecoration(labelText: 'Username'),
+                  validator: FormBuilderValidators.required(),
+                ),
+                SizedBox(height: 10),
+                FormBuilderTextField(
+                  name: "password",
+                  obscureText: true,
+                  autofillHints: [AutofillHints.password],
+                  decoration: InputDecoration(labelText: 'Password'),
+                  validator: FormBuilderValidators.required(),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => _login(context),
+                  child: Text("Login"),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => _register(context),
+                  child: Text("Register"),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => _initialize(context),
+                  child: Text("Initialize"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
