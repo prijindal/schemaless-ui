@@ -130,7 +130,6 @@ class _EntityHistoryScreen extends StatelessWidget {
                                             Text(
                                               "Created At: ${data.createdAt}",
                                             ),
-                                            Text("Host Id: ${data.hostId}"),
                                             Text(
                                               "Payload: ${JsonEncoder.withIndent("  ").convert(data.payload.value)}",
                                             ),
