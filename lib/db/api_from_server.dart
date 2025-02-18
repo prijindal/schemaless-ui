@@ -6,8 +6,9 @@ class ApiFromServerInfo {
   final SchemalessOpenapi api;
 
   ApiFromServerInfo(ServerInfoData info)
-    : api = SchemalessOpenapi(basePathOverride: info.url)
-        ..setBearerAuth("bearer_auth", info.jwtToken);
+    : api = SchemalessOpenapi(
+        basePathOverride: Uri.parse(info.url).replace(path: "/api").toString(),
+      )..setBearerAuth("bearer_auth", info.jwtToken);
 
   AdminApi get adminApi => api.getAdminApi();
   HealthApi get healthApi => api.getHealthApi();

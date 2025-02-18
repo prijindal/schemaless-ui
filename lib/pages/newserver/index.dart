@@ -18,18 +18,21 @@ class NewServerScreen extends StatelessWidget {
 
   NewServerScreen({super.key});
 
+  SchemalessOpenapi getApi(String url) => SchemalessOpenapi(
+    basePathOverride: Uri.parse(url).replace(path: "/api").toString(),
+  );
+
   Future<void> _initialize(BuildContext context) async {
     if (_formKey.currentState?.saveAndValidate() == true) {
       final project = _formKey.currentState!.value;
       final url = project["url"] as String;
       final username = project["username"] as String;
       final password = project["password"] as String;
-      final api = SchemalessOpenapi(basePathOverride: url);
       final userLoginRequest = UserLoginRequestBuilder();
       userLoginRequest.username = username;
       userLoginRequest.password = password;
       try {
-        final loginResponse = await api.getLoginApi().initializeServer(
+        final loginResponse = await getApi(url).getLoginApi().initializeServer(
           userLoginRequest: userLoginRequest.build(),
         );
         final responseData = loginResponse.data;
@@ -55,12 +58,11 @@ class NewServerScreen extends StatelessWidget {
       final url = project["url"] as String;
       final username = project["username"] as String;
       final password = project["password"] as String;
-      final api = SchemalessOpenapi(basePathOverride: url);
       final userLoginRequest = UserLoginRequestBuilder();
       userLoginRequest.username = username;
       userLoginRequest.password = password;
       try {
-        final loginResponse = await api.getLoginApi().registerUser(
+        final loginResponse = await getApi(url).getLoginApi().registerUser(
           userLoginRequest: userLoginRequest.build(),
         );
         final responseData = loginResponse.data;
@@ -86,14 +88,13 @@ class NewServerScreen extends StatelessWidget {
       final url = project["url"] as String;
       final username = project["username"] as String;
       final password = project["password"] as String;
-      final api = SchemalessOpenapi(basePathOverride: url);
       final userLoginRequest = UserLoginRequestBuilder();
       userLoginRequest.username = username;
       userLoginRequest.password = password;
       try {
-        final loginResponse = await api.getLoginApi().loginUser(
-          userLoginRequest: userLoginRequest.build(),
-        );
+        final loginResponse = await getApi(
+          url,
+        ).getLoginApi().loginUser(userLoginRequest: userLoginRequest.build());
         final responseData = loginResponse.data;
         if (responseData == null || responseData.isString == false) {
           throw DioException.badResponse(
