@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:schemaless_openapi/schemaless_openapi.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
@@ -85,66 +86,13 @@ class _ApplicationScreen extends StatelessWidget {
                 itemBuilder:
                     (context) => [
                       PopupMenuItem<void>(
-                        child: Text("Generate Token"),
+                        child: Text("Open Web UI"),
                         onTap: () async {
-                          try {
-                            final response = await api.managementApplicationApi
-                                .generateKey(applicationId: application.id);
-                            if (response.data == null ||
-                                response.data!.isString == false) {
-                              throw DioException.badResponse(
-                                requestOptions: response.requestOptions,
-                                statusCode: 404,
-                                response: response,
-                              );
-                            }
-                            final jwtToken = response.data!.asString;
-                            await showDialog<void>(
-                              // ignore: use_build_context_synchronously
-                              context: context,
-                              builder:
-                                  (context) => SimpleDialog(
-                                    title: Text("New token generated"),
-                                    children: [
-                                      Text(jwtToken),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Clipboard.setData(
-                                            ClipboardData(text: jwtToken),
-                                          );
-                                        },
-                                        child: Text("Copy to clipboard"),
-                                      ),
-                                    ],
-                                  ),
-                            );
-                          } on DioException catch (e) {
-                            // ignore: use_build_context_synchronously
-                            await parseDioErrors(context, e);
-                          }
-                        },
-                      ),
-                      PopupMenuItem<void>(
-                        child: Text("Revoke Keys"),
-                        onTap: () async {
-                          try {
-                            final response = await api.managementApplicationApi
-                                .revokeKeys(applicationId: application.id);
-                            if (response.data == null) {
-                              throw DioException.badResponse(
-                                requestOptions: response.requestOptions,
-                                statusCode: 404,
-                                response: response,
-                              );
-                            }
-                            // ignore: use_build_context_synchronously
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("All keys are revoked")),
-                            );
-                          } on DioException catch (e) {
-                            // ignore: use_build_context_synchronously
-                            await parseDioErrors(context, e);
-                          }
+                          launchUrl(
+                            Uri.parse(
+                              "${server.url}/ui/application/${application.id}",
+                            ),
+                          );
                         },
                       ),
                     ],
