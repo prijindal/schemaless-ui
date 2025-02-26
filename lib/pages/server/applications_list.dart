@@ -193,8 +193,8 @@ class _ApplicationScreen extends StatelessWidget {
                                                       appUserId: user.id,
                                                     );
                                               }
-                                              // ignore: use_build_context_synchronously
                                               ScaffoldMessenger.of(
+                                                // ignore: use_build_context_synchronously
                                                 context,
                                               ).showSnackBar(
                                                 SnackBar(
