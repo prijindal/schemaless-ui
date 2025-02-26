@@ -17,7 +17,7 @@ class UsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.adminApi.listUsers(),
+      future: api.managementUserApi.listUsers(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
@@ -44,13 +44,16 @@ class UsersList extends StatelessWidget {
                               : "Activated",
                         ),
                         onTap: () async {
-                          final body = UserApprovalRequestBodyBuilder();
-                          body.approval = user.status != UserStatus.ACTIVATED;
                           try {
-                            await api.adminApi.userApproval(
-                              userid: user.id,
-                              userApprovalRequestBody: body.build(),
-                            );
+                            if (user.status != UserStatus.ACTIVATED) {
+                              await api.managementUserApi.approvUser(
+                                userId: user.id,
+                              );
+                            } else {
+                              await api.managementUserApi.disableUser(
+                                userId: user.id,
+                              );
+                            }
                             // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

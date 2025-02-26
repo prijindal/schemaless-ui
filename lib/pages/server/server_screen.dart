@@ -1,15 +1,15 @@
 import 'package:auto_route/annotations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
 import '../../helpers/parse_dio_errors.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
-import 'entity_list.dart';
+import 'applications_list.dart';
 import 'health_info.dart';
 import 'users_list.dart';
 
@@ -44,7 +44,7 @@ class _ServerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.authApi.verifyUserAuth(),
+      future: api.managementAuthApi.verifyUserAuth(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: true);
@@ -75,6 +75,34 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   int currentPageIndex = 0;
   ApiFromServerInfo get api => ApiFromServerInfo(widget.server);
 
+  Future<void> _addApplication() async {
+    final textController = TextEditingController();
+    final name = await showDialog<String?>(
+      context: context,
+      builder:
+          (context) => SimpleDialog(
+            title: Text("Enter project name"),
+            children: [
+              TextField(
+                controller: textController,
+                decoration: InputDecoration(label: Text("Project name")),
+              ),
+              ElevatedButton(
+                child: Text("Add"),
+                onPressed: () => Navigator.of(context).pop(textController.text),
+              ),
+            ],
+          ),
+    );
+    if (name != null) {
+      final body = CreateApplicationBodyBuilder();
+      body.name = name;
+      await api.managementApplicationApi.createApplication(
+        createApplicationBody: body.build(),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,49 +113,11 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
             itemBuilder:
                 (context) => [
                   PopupMenuItem<void>(
-                    child: Text("Generate Token"),
-                    onTap: () async {
-                      try {
-                        final response = await api.authApi.generateKey();
-                        if (response.data == null ||
-                            response.data!.isString == false) {
-                          throw DioException.badResponse(
-                            requestOptions: response.requestOptions,
-                            statusCode: 404,
-                            response: response,
-                          );
-                        }
-                        final jwtToken = response.data!.asString;
-                        await showDialog<void>(
-                          // ignore: use_build_context_synchronously
-                          context: context,
-                          builder:
-                              (context) => SimpleDialog(
-                                title: Text("New token generated"),
-                                children: [
-                                  Text(jwtToken),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Clipboard.setData(
-                                        ClipboardData(text: jwtToken),
-                                      );
-                                    },
-                                    child: Text("Copy to clipboard"),
-                                  ),
-                                ],
-                              ),
-                        );
-                      } on DioException catch (e) {
-                        // ignore: use_build_context_synchronously
-                        await parseDioErrors(context, e);
-                      }
-                    },
-                  ),
-                  PopupMenuItem<void>(
                     child: Text("Revoke Keys"),
                     onTap: () async {
                       try {
-                        final response = await api.authApi.revokeKeys();
+                        final response =
+                            await api.managementAuthApi.revokeKeys();
                         if (response.data == null) {
                           throw DioException.badResponse(
                             requestOptions: response.requestOptions,
@@ -149,8 +139,16 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
           ),
         ],
       ),
+      floatingActionButton:
+          currentPageIndex == 0
+              ? FloatingActionButton(
+                onPressed: _addApplication,
+                tooltip: "Add Application",
+                child: Icon(Icons.add),
+              )
+              : null,
       body: [
-        EntitesList(server: widget.server),
+        ApplicationsList(server: widget.server),
         HealthInfo(server: widget.server),
         UsersList(server: widget.server),
       ].elementAt(currentPageIndex),

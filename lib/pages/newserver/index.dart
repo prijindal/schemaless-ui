@@ -28,15 +28,15 @@ class NewServerScreen extends StatelessWidget {
       final url = project["url"] as String;
       final username = project["username"] as String;
       final password = project["password"] as String;
-      final userLoginRequest = UserLoginRequestBuilder();
+      final userLoginRequest = ManagementUserLoginRequestBuilder();
       userLoginRequest.username = username;
       userLoginRequest.password = password;
       try {
-        final loginResponse = await getApi(url).getLoginApi().initializeServer(
-          userLoginRequest: userLoginRequest.build(),
-        );
+        final loginResponse = await getApi(url)
+            .getManagementAuthApi()
+            .initialize(managementUserLoginRequest: userLoginRequest.build());
         final responseData = loginResponse.data;
-        if (responseData == null || responseData == false) {
+        if (responseData == null) {
           throw DioException.badResponse(
             requestOptions: loginResponse.requestOptions,
             statusCode: 404,
@@ -58,15 +58,15 @@ class NewServerScreen extends StatelessWidget {
       final url = project["url"] as String;
       final username = project["username"] as String;
       final password = project["password"] as String;
-      final userLoginRequest = UserLoginRequestBuilder();
+      final userLoginRequest = ManagementUserLoginRequestBuilder();
       userLoginRequest.username = username;
       userLoginRequest.password = password;
       try {
-        final loginResponse = await getApi(url).getLoginApi().registerUser(
-          userLoginRequest: userLoginRequest.build(),
-        );
+        final loginResponse = await getApi(url)
+            .getManagementAuthApi()
+            .registerUser(managementUserLoginRequest: userLoginRequest.build());
         final responseData = loginResponse.data;
-        if (responseData == null || responseData == false) {
+        if (responseData == null) {
           throw DioException.badResponse(
             requestOptions: loginResponse.requestOptions,
             statusCode: 404,
@@ -88,22 +88,22 @@ class NewServerScreen extends StatelessWidget {
       final url = project["url"] as String;
       final username = project["username"] as String;
       final password = project["password"] as String;
-      final userLoginRequest = UserLoginRequestBuilder();
+      final userLoginRequest = ManagementUserLoginRequestBuilder();
       userLoginRequest.username = username;
       userLoginRequest.password = password;
       try {
-        final loginResponse = await getApi(
-          url,
-        ).getLoginApi().loginUser(userLoginRequest: userLoginRequest.build());
+        final loginResponse = await getApi(url)
+            .getManagementAuthApi()
+            .loginUser(managementUserLoginRequest: userLoginRequest.build());
         final responseData = loginResponse.data;
-        if (responseData == null || responseData.isString == false) {
+        if (responseData == null) {
           throw DioException.badResponse(
             requestOptions: loginResponse.requestOptions,
             statusCode: 404,
             response: loginResponse,
           );
         }
-        final jwtToken = responseData.asString;
+        final jwtToken = responseData;
         // Login and get the jwt token
         // Save the jwt token in the server_info box
         final info = await GetIt.I<SharedDatabase>().managers.serverInfo

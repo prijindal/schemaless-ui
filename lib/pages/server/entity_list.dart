@@ -9,56 +9,17 @@ import '../../db/database.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 
-class EntitesList extends StatelessWidget {
-  const EntitesList({super.key, required this.server});
-
+class EntityHistoryScreen extends StatelessWidget {
+  const EntityHistoryScreen({
+    super.key,
+    required this.server,
+    required this.entity,
+    required this.application,
+    required this.user,
+  });
   final ServerInfoData server;
-  ApiFromServerInfo get api => ApiFromServerInfo(server);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: api.entityApi.getEntities(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return ErrorScreen(error: snapshot.error!, scaffold: false);
-        }
-        if (snapshot.hasData == false) {
-          return LoadingScreen(scaffold: false);
-        }
-        final entities = snapshot.requireData.data;
-        if (entities == null || entities.isEmpty) {
-          return Center(child: Text("No Entities found"));
-        }
-        return ListView(
-          children:
-              entities
-                  .map(
-                    (entity) => ListTile(
-                      title: Text(entity),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder:
-                                (context) => _EntityHistoryScreen(
-                                  server: server,
-                                  entity: entity,
-                                ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                  .toList(),
-        );
-      },
-    );
-  }
-}
-
-class _EntityHistoryScreen extends StatelessWidget {
-  const _EntityHistoryScreen({required this.server, required this.entity});
-  final ServerInfoData server;
+  final Application application;
+  final ListUsersResponse1 user;
   final String entity;
   ApiFromServerInfo get api => ApiFromServerInfo(server);
 
@@ -76,7 +37,9 @@ class _EntityHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.entityApi.searchEntitiesHistory(
+      future: api.managementEntityApi.searchEntitiesHistory(
+        applicationId: application.id,
+        appUserId: user.id,
         entityHistoryRequest: _buildReqBody(),
       ),
       builder: (context, snapshot) {

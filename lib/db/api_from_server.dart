@@ -8,10 +8,14 @@ class ApiFromServerInfo {
   ApiFromServerInfo(ServerInfoData info)
     : api = SchemalessOpenapi(
         basePathOverride: Uri.parse(info.url).replace(path: "/api").toString(),
-      )..setBearerAuth("bearer_auth", info.jwtToken);
+      )..setBearerAuth("bearer_management", info.jwtToken);
 
-  AdminApi get adminApi => api.getAdminApi();
   HealthApi get healthApi => api.getHealthApi();
-  AuthApi get authApi => api.getAuthApi();
-  EntityApi get entityApi => api.getEntityApi();
+  ManagementApplicationApi get managementApplicationApi =>
+      api.getManagementApplicationApi();
+  ManagementApplicationUserApi get managementApplicationUserApi =>
+      api.getManagementApplicationUserApi();
+  ManagementAuthApi get managementAuthApi => api.getManagementAuthApi();
+  ManagementEntityApi get managementEntityApi => api.getManagementEntityApi();
+  ManagementUserApi get managementUserApi => api.getManagementUserApi();
 }
