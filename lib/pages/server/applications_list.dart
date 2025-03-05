@@ -108,7 +108,7 @@ class _ApplicationScreen extends StatelessWidget {
                         users
                             .map(
                               (user) => ListTile(
-                                title: Text(user.username),
+                                title: Text(user.email),
                                 subtitle: Text(
                                   "status: ${user.status}, createdAt: ${user.createdAt}",
                                 ),
@@ -209,7 +209,7 @@ class _ApplicationUserScreen extends StatelessWidget {
         final entities = snapshot.requireData.data;
         return Scaffold(
           appBar: AppBar(
-            title: Text(user.username),
+            title: Text(user.email),
             actions: [
               PopupMenuButton(
                 itemBuilder:

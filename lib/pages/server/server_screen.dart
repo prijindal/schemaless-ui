@@ -107,7 +107,7 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.server.url} ${widget.server.username}"),
+        title: Text("${widget.server.url} ${widget.server.email}"),
         actions: [
           PopupMenuButton(
             itemBuilder:

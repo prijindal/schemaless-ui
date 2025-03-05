@@ -9,7 +9,7 @@ const _uuid = Uuid();
 class ServerInfo extends Table {
   late final id = text().clientDefault(() => _uuid.v4())();
   late final url = text()();
-  late final username = text()();
+  late final email = text()();
   late final jwtToken = text()();
 
   @override

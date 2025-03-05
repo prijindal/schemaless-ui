@@ -28,12 +28,10 @@ class $ServerInfoTable extends ServerInfo
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _usernameMeta = const VerificationMeta(
-    'username',
-  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
-  late final GeneratedColumn<String> username = GeneratedColumn<String>(
-    'username',
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -51,7 +49,7 @@ class $ServerInfoTable extends ServerInfo
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, url, username, jwtToken];
+  List<GeneratedColumn> get $columns => [id, url, email, jwtToken];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -75,13 +73,13 @@ class $ServerInfoTable extends ServerInfo
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
-    if (data.containsKey('username')) {
+    if (data.containsKey('email')) {
       context.handle(
-        _usernameMeta,
-        username.isAcceptableOrUnknown(data['username']!, _usernameMeta),
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
       );
     } else if (isInserting) {
-      context.missing(_usernameMeta);
+      context.missing(_emailMeta);
     }
     if (data.containsKey('jwt_token')) {
       context.handle(
@@ -110,10 +108,10 @@ class $ServerInfoTable extends ServerInfo
             DriftSqlType.string,
             data['${effectivePrefix}url'],
           )!,
-      username:
+      email:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}username'],
+            data['${effectivePrefix}email'],
           )!,
       jwtToken:
           attachedDatabase.typeMapping.read(
@@ -132,12 +130,12 @@ class $ServerInfoTable extends ServerInfo
 class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
   final String id;
   final String url;
-  final String username;
+  final String email;
   final String jwtToken;
   const ServerInfoData({
     required this.id,
     required this.url,
-    required this.username,
+    required this.email,
     required this.jwtToken,
   });
   @override
@@ -145,7 +143,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['url'] = Variable<String>(url);
-    map['username'] = Variable<String>(username);
+    map['email'] = Variable<String>(email);
     map['jwt_token'] = Variable<String>(jwtToken);
     return map;
   }
@@ -154,7 +152,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return ServerInfoCompanion(
       id: Value(id),
       url: Value(url),
-      username: Value(username),
+      email: Value(email),
       jwtToken: Value(jwtToken),
     );
   }
@@ -167,7 +165,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return ServerInfoData(
       id: serializer.fromJson<String>(json['id']),
       url: serializer.fromJson<String>(json['url']),
-      username: serializer.fromJson<String>(json['username']),
+      email: serializer.fromJson<String>(json['email']),
       jwtToken: serializer.fromJson<String>(json['jwtToken']),
     );
   }
@@ -177,7 +175,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'url': serializer.toJson<String>(url),
-      'username': serializer.toJson<String>(username),
+      'email': serializer.toJson<String>(email),
       'jwtToken': serializer.toJson<String>(jwtToken),
     };
   }
@@ -185,19 +183,19 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
   ServerInfoData copyWith({
     String? id,
     String? url,
-    String? username,
+    String? email,
     String? jwtToken,
   }) => ServerInfoData(
     id: id ?? this.id,
     url: url ?? this.url,
-    username: username ?? this.username,
+    email: email ?? this.email,
     jwtToken: jwtToken ?? this.jwtToken,
   );
   ServerInfoData copyWithCompanion(ServerInfoCompanion data) {
     return ServerInfoData(
       id: data.id.present ? data.id.value : this.id,
       url: data.url.present ? data.url.value : this.url,
-      username: data.username.present ? data.username.value : this.username,
+      email: data.email.present ? data.email.value : this.email,
       jwtToken: data.jwtToken.present ? data.jwtToken.value : this.jwtToken,
     );
   }
@@ -207,57 +205,57 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return (StringBuffer('ServerInfoData(')
           ..write('id: $id, ')
           ..write('url: $url, ')
-          ..write('username: $username, ')
+          ..write('email: $email, ')
           ..write('jwtToken: $jwtToken')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, url, username, jwtToken);
+  int get hashCode => Object.hash(id, url, email, jwtToken);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ServerInfoData &&
           other.id == this.id &&
           other.url == this.url &&
-          other.username == this.username &&
+          other.email == this.email &&
           other.jwtToken == this.jwtToken);
 }
 
 class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
   final Value<String> id;
   final Value<String> url;
-  final Value<String> username;
+  final Value<String> email;
   final Value<String> jwtToken;
   final Value<int> rowid;
   const ServerInfoCompanion({
     this.id = const Value.absent(),
     this.url = const Value.absent(),
-    this.username = const Value.absent(),
+    this.email = const Value.absent(),
     this.jwtToken = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ServerInfoCompanion.insert({
     this.id = const Value.absent(),
     required String url,
-    required String username,
+    required String email,
     required String jwtToken,
     this.rowid = const Value.absent(),
   }) : url = Value(url),
-       username = Value(username),
+       email = Value(email),
        jwtToken = Value(jwtToken);
   static Insertable<ServerInfoData> custom({
     Expression<String>? id,
     Expression<String>? url,
-    Expression<String>? username,
+    Expression<String>? email,
     Expression<String>? jwtToken,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (url != null) 'url': url,
-      if (username != null) 'username': username,
+      if (email != null) 'email': email,
       if (jwtToken != null) 'jwt_token': jwtToken,
       if (rowid != null) 'rowid': rowid,
     });
@@ -266,14 +264,14 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
   ServerInfoCompanion copyWith({
     Value<String>? id,
     Value<String>? url,
-    Value<String>? username,
+    Value<String>? email,
     Value<String>? jwtToken,
     Value<int>? rowid,
   }) {
     return ServerInfoCompanion(
       id: id ?? this.id,
       url: url ?? this.url,
-      username: username ?? this.username,
+      email: email ?? this.email,
       jwtToken: jwtToken ?? this.jwtToken,
       rowid: rowid ?? this.rowid,
     );
@@ -288,8 +286,8 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     if (url.present) {
       map['url'] = Variable<String>(url.value);
     }
-    if (username.present) {
-      map['username'] = Variable<String>(username.value);
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
     }
     if (jwtToken.present) {
       map['jwt_token'] = Variable<String>(jwtToken.value);
@@ -305,7 +303,7 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     return (StringBuffer('ServerInfoCompanion(')
           ..write('id: $id, ')
           ..write('url: $url, ')
-          ..write('username: $username, ')
+          ..write('email: $email, ')
           ..write('jwtToken: $jwtToken, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -328,7 +326,7 @@ typedef $$ServerInfoTableCreateCompanionBuilder =
     ServerInfoCompanion Function({
       Value<String> id,
       required String url,
-      required String username,
+      required String email,
       required String jwtToken,
       Value<int> rowid,
     });
@@ -336,7 +334,7 @@ typedef $$ServerInfoTableUpdateCompanionBuilder =
     ServerInfoCompanion Function({
       Value<String> id,
       Value<String> url,
-      Value<String> username,
+      Value<String> email,
       Value<String> jwtToken,
       Value<int> rowid,
     });
@@ -360,8 +358,8 @@ class $$ServerInfoTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get username => $composableBuilder(
-    column: $table.username,
+  ColumnFilters<String> get email => $composableBuilder(
+    column: $table.email,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -390,8 +388,8 @@ class $$ServerInfoTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get username => $composableBuilder(
-    column: $table.username,
+  ColumnOrderings<String> get email => $composableBuilder(
+    column: $table.email,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -416,8 +414,8 @@ class $$ServerInfoTableAnnotationComposer
   GeneratedColumn<String> get url =>
       $composableBuilder(column: $table.url, builder: (column) => column);
 
-  GeneratedColumn<String> get username =>
-      $composableBuilder(column: $table.username, builder: (column) => column);
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
 
   GeneratedColumn<String> get jwtToken =>
       $composableBuilder(column: $table.jwtToken, builder: (column) => column);
@@ -456,13 +454,13 @@ class $$ServerInfoTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> url = const Value.absent(),
-                Value<String> username = const Value.absent(),
+                Value<String> email = const Value.absent(),
                 Value<String> jwtToken = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ServerInfoCompanion(
                 id: id,
                 url: url,
-                username: username,
+                email: email,
                 jwtToken: jwtToken,
                 rowid: rowid,
               ),
@@ -470,13 +468,13 @@ class $$ServerInfoTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 required String url,
-                required String username,
+                required String email,
                 required String jwtToken,
                 Value<int> rowid = const Value.absent(),
               }) => ServerInfoCompanion.insert(
                 id: id,
                 url: url,
-                username: username,
+                email: email,
                 jwtToken: jwtToken,
                 rowid: rowid,
               ),

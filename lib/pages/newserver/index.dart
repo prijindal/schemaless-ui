@@ -26,10 +26,10 @@ class NewServerScreen extends StatelessWidget {
     if (_formKey.currentState?.saveAndValidate() == true) {
       final project = _formKey.currentState!.value;
       final url = project["url"] as String;
-      final username = project["username"] as String;
+      final email = project["email"] as String;
       final password = project["password"] as String;
       final userLoginRequest = ManagementUserLoginRequestBuilder();
-      userLoginRequest.username = username;
+      userLoginRequest.email = email;
       userLoginRequest.password = password;
       try {
         final loginResponse = await getApi(url)
@@ -56,10 +56,10 @@ class NewServerScreen extends StatelessWidget {
     if (_formKey.currentState?.saveAndValidate() == true) {
       final project = _formKey.currentState!.value;
       final url = project["url"] as String;
-      final username = project["username"] as String;
+      final email = project["email"] as String;
       final password = project["password"] as String;
       final userLoginRequest = ManagementUserLoginRequestBuilder();
-      userLoginRequest.username = username;
+      userLoginRequest.email = email;
       userLoginRequest.password = password;
       try {
         final loginResponse = await getApi(url)
@@ -86,10 +86,10 @@ class NewServerScreen extends StatelessWidget {
     if (_formKey.currentState?.saveAndValidate() == true) {
       final project = _formKey.currentState!.value;
       final url = project["url"] as String;
-      final username = project["username"] as String;
+      final email = project["email"] as String;
       final password = project["password"] as String;
       final userLoginRequest = ManagementUserLoginRequestBuilder();
-      userLoginRequest.username = username;
+      userLoginRequest.email = email;
       userLoginRequest.password = password;
       try {
         final loginResponse = await getApi(url)
@@ -108,7 +108,7 @@ class NewServerScreen extends StatelessWidget {
         // Save the jwt token in the server_info box
         final info = await GetIt.I<SharedDatabase>().managers.serverInfo
             .createReturning(
-              (o) => o(url: url, username: username, jwtToken: jwtToken),
+              (o) => o(url: url, email: email, jwtToken: jwtToken),
             );
         GetIt.I<AppRouter>().replaceNamed("/server/${info.id}");
       } on DioException catch (e) {
@@ -145,10 +145,14 @@ class NewServerScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 FormBuilderTextField(
-                  name: "username",
-                  autofillHints: [AutofillHints.username],
-                  decoration: InputDecoration(labelText: 'Username'),
-                  validator: FormBuilderValidators.required(),
+                  name: "email",
+                  keyboardType: TextInputType.emailAddress,
+                  autofillHints: [AutofillHints.email],
+                  decoration: InputDecoration(labelText: 'Email'),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.email(),
+                  ]),
                 ),
                 SizedBox(height: 10),
                 FormBuilderTextField(

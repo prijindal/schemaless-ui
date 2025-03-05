@@ -30,7 +30,7 @@ class UsersList extends StatelessWidget {
           itemBuilder: (context, index) {
             final user = snapshot.requireData.data![index];
             return ListTile(
-              title: Text(user.username),
+              title: Text(user.email),
               subtitle: Text(
                 "isAdmin: ${user.isAdmin}, status: ${user.status}, createdAt: ${user.createdAt}",
               ),
