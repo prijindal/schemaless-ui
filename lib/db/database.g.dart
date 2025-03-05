@@ -48,8 +48,29 @@ class $ServerInfoTable extends ServerInfo
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _allowInsecureMeta = const VerificationMeta(
+    'allowInsecure',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, url, email, jwtToken];
+  late final GeneratedColumn<bool> allowInsecure = GeneratedColumn<bool>(
+    'allow_insecure',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("allow_insecure" IN (0, 1))',
+    ),
+    clientDefault: () => false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    url,
+    email,
+    jwtToken,
+    allowInsecure,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -89,6 +110,15 @@ class $ServerInfoTable extends ServerInfo
     } else if (isInserting) {
       context.missing(_jwtTokenMeta);
     }
+    if (data.containsKey('allow_insecure')) {
+      context.handle(
+        _allowInsecureMeta,
+        allowInsecure.isAcceptableOrUnknown(
+          data['allow_insecure']!,
+          _allowInsecureMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -118,6 +148,11 @@ class $ServerInfoTable extends ServerInfo
             DriftSqlType.string,
             data['${effectivePrefix}jwt_token'],
           )!,
+      allowInsecure:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.bool,
+            data['${effectivePrefix}allow_insecure'],
+          )!,
     );
   }
 
@@ -132,11 +167,13 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
   final String url;
   final String email;
   final String jwtToken;
+  final bool allowInsecure;
   const ServerInfoData({
     required this.id,
     required this.url,
     required this.email,
     required this.jwtToken,
+    required this.allowInsecure,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -145,6 +182,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     map['url'] = Variable<String>(url);
     map['email'] = Variable<String>(email);
     map['jwt_token'] = Variable<String>(jwtToken);
+    map['allow_insecure'] = Variable<bool>(allowInsecure);
     return map;
   }
 
@@ -154,6 +192,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
       url: Value(url),
       email: Value(email),
       jwtToken: Value(jwtToken),
+      allowInsecure: Value(allowInsecure),
     );
   }
 
@@ -167,6 +206,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
       url: serializer.fromJson<String>(json['url']),
       email: serializer.fromJson<String>(json['email']),
       jwtToken: serializer.fromJson<String>(json['jwtToken']),
+      allowInsecure: serializer.fromJson<bool>(json['allowInsecure']),
     );
   }
   @override
@@ -177,6 +217,7 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
       'url': serializer.toJson<String>(url),
       'email': serializer.toJson<String>(email),
       'jwtToken': serializer.toJson<String>(jwtToken),
+      'allowInsecure': serializer.toJson<bool>(allowInsecure),
     };
   }
 
@@ -185,11 +226,13 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     String? url,
     String? email,
     String? jwtToken,
+    bool? allowInsecure,
   }) => ServerInfoData(
     id: id ?? this.id,
     url: url ?? this.url,
     email: email ?? this.email,
     jwtToken: jwtToken ?? this.jwtToken,
+    allowInsecure: allowInsecure ?? this.allowInsecure,
   );
   ServerInfoData copyWithCompanion(ServerInfoCompanion data) {
     return ServerInfoData(
@@ -197,6 +240,10 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
       url: data.url.present ? data.url.value : this.url,
       email: data.email.present ? data.email.value : this.email,
       jwtToken: data.jwtToken.present ? data.jwtToken.value : this.jwtToken,
+      allowInsecure:
+          data.allowInsecure.present
+              ? data.allowInsecure.value
+              : this.allowInsecure,
     );
   }
 
@@ -206,13 +253,14 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
           ..write('id: $id, ')
           ..write('url: $url, ')
           ..write('email: $email, ')
-          ..write('jwtToken: $jwtToken')
+          ..write('jwtToken: $jwtToken, ')
+          ..write('allowInsecure: $allowInsecure')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, url, email, jwtToken);
+  int get hashCode => Object.hash(id, url, email, jwtToken, allowInsecure);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -220,7 +268,8 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
           other.id == this.id &&
           other.url == this.url &&
           other.email == this.email &&
-          other.jwtToken == this.jwtToken);
+          other.jwtToken == this.jwtToken &&
+          other.allowInsecure == this.allowInsecure);
 }
 
 class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
@@ -228,12 +277,14 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
   final Value<String> url;
   final Value<String> email;
   final Value<String> jwtToken;
+  final Value<bool> allowInsecure;
   final Value<int> rowid;
   const ServerInfoCompanion({
     this.id = const Value.absent(),
     this.url = const Value.absent(),
     this.email = const Value.absent(),
     this.jwtToken = const Value.absent(),
+    this.allowInsecure = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ServerInfoCompanion.insert({
@@ -241,6 +292,7 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     required String url,
     required String email,
     required String jwtToken,
+    this.allowInsecure = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : url = Value(url),
        email = Value(email),
@@ -250,6 +302,7 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     Expression<String>? url,
     Expression<String>? email,
     Expression<String>? jwtToken,
+    Expression<bool>? allowInsecure,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -257,6 +310,7 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
       if (url != null) 'url': url,
       if (email != null) 'email': email,
       if (jwtToken != null) 'jwt_token': jwtToken,
+      if (allowInsecure != null) 'allow_insecure': allowInsecure,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -266,6 +320,7 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     Value<String>? url,
     Value<String>? email,
     Value<String>? jwtToken,
+    Value<bool>? allowInsecure,
     Value<int>? rowid,
   }) {
     return ServerInfoCompanion(
@@ -273,6 +328,7 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
       url: url ?? this.url,
       email: email ?? this.email,
       jwtToken: jwtToken ?? this.jwtToken,
+      allowInsecure: allowInsecure ?? this.allowInsecure,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -292,6 +348,9 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     if (jwtToken.present) {
       map['jwt_token'] = Variable<String>(jwtToken.value);
     }
+    if (allowInsecure.present) {
+      map['allow_insecure'] = Variable<bool>(allowInsecure.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -305,6 +364,7 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
           ..write('url: $url, ')
           ..write('email: $email, ')
           ..write('jwtToken: $jwtToken, ')
+          ..write('allowInsecure: $allowInsecure, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -328,6 +388,7 @@ typedef $$ServerInfoTableCreateCompanionBuilder =
       required String url,
       required String email,
       required String jwtToken,
+      Value<bool> allowInsecure,
       Value<int> rowid,
     });
 typedef $$ServerInfoTableUpdateCompanionBuilder =
@@ -336,6 +397,7 @@ typedef $$ServerInfoTableUpdateCompanionBuilder =
       Value<String> url,
       Value<String> email,
       Value<String> jwtToken,
+      Value<bool> allowInsecure,
       Value<int> rowid,
     });
 
@@ -365,6 +427,11 @@ class $$ServerInfoTableFilterComposer
 
   ColumnFilters<String> get jwtToken => $composableBuilder(
     column: $table.jwtToken,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allowInsecure => $composableBuilder(
+    column: $table.allowInsecure,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -397,6 +464,11 @@ class $$ServerInfoTableOrderingComposer
     column: $table.jwtToken,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get allowInsecure => $composableBuilder(
+    column: $table.allowInsecure,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ServerInfoTableAnnotationComposer
@@ -419,6 +491,11 @@ class $$ServerInfoTableAnnotationComposer
 
   GeneratedColumn<String> get jwtToken =>
       $composableBuilder(column: $table.jwtToken, builder: (column) => column);
+
+  GeneratedColumn<bool> get allowInsecure => $composableBuilder(
+    column: $table.allowInsecure,
+    builder: (column) => column,
+  );
 }
 
 class $$ServerInfoTableTableManager
@@ -456,12 +533,14 @@ class $$ServerInfoTableTableManager
                 Value<String> url = const Value.absent(),
                 Value<String> email = const Value.absent(),
                 Value<String> jwtToken = const Value.absent(),
+                Value<bool> allowInsecure = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ServerInfoCompanion(
                 id: id,
                 url: url,
                 email: email,
                 jwtToken: jwtToken,
+                allowInsecure: allowInsecure,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -470,12 +549,14 @@ class $$ServerInfoTableTableManager
                 required String url,
                 required String email,
                 required String jwtToken,
+                Value<bool> allowInsecure = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ServerInfoCompanion.insert(
                 id: id,
                 url: url,
                 email: email,
                 jwtToken: jwtToken,
+                allowInsecure: allowInsecure,
                 rowid: rowid,
               ),
           withReferenceMapper:

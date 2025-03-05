@@ -11,6 +11,7 @@ class ServerInfo extends Table {
   late final url = text()();
   late final email = text()();
   late final jwtToken = text()();
+  late final allowInsecure = boolean().clientDefault(() => false)();
 
   @override
   Set<Column> get primaryKey => {id};

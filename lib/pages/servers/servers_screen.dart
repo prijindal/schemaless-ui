@@ -15,7 +15,7 @@ class ServersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Servers')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => GetIt.I<AppRouter>().navigateNamed("/newserver"),
+        onPressed: () => GetIt.I<AppRouter>().navigatePath("/newserver"),
         child: Icon(Icons.add),
       ),
       body: StreamBuilder<List<ServerInfoData>>(
@@ -52,9 +52,8 @@ class ServersScreen extends StatelessWidget {
                 ),
 
                 onTap:
-                    () => GetIt.I<AppRouter>().navigateNamed(
-                      "/server/${info.id}",
-                    ),
+                    () =>
+                        GetIt.I<AppRouter>().navigatePath("/server/${info.id}"),
               );
             },
           );
