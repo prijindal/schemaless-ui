@@ -90,7 +90,7 @@ class _ApplicationScreen extends StatelessWidget {
                         onTap: () async {
                           launchUrl(
                             Uri.parse(
-                              "${server.url}/ui/application/${application.id}",
+                              "${server.url}/application/${application.id}",
                             ),
                           );
                         },
