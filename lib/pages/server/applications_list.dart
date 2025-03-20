@@ -20,7 +20,10 @@ class ApplicationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.managementApplicationApi.listApplications(),
+      future: api.managementApplicationApi.listApplications(
+        limit: 1000,
+        offset: 0,
+      ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
