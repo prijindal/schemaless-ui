@@ -681,7 +681,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: fd8dd05fcbcf74300bfb45fa0fbe61bd164dd891
+      resolved-ref: "709b5d0639aec53b9287208d5c8abdce1cf38179"
       url: "https://github.com/prijindal/schemaless_openapi.git"
     source: git
     version: "1.0.0"
@@ -742,10 +742,10 @@ packages:
     dependency: "direct main"
     description:
       name: sqlite3_flutter_libs
-      sha256: "7adb4cc96dc08648a5eb1d80a7619070796ca6db03901ff2b6dcb15ee30468f3"
+      sha256: "1a96b59227828d9eb1463191d684b37a27d66ee5ed7597fcf42eee6452c88a14"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.31"
+    version: "0.5.32"
   sqlparser:
     dependency: transitive
     description:

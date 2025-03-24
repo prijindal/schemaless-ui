@@ -61,125 +61,211 @@ class ApplicationsList extends StatelessWidget {
   }
 }
 
-class _ApplicationScreen extends StatelessWidget {
+class _ApplicationScreen extends StatefulWidget {
   const _ApplicationScreen({required this.server, required this.application});
   final ServerInfoData server;
   final Application application;
-  ApiFromServerInfo get api => ApiFromServerInfo(server);
 
   @override
-  Widget build(BuildContext context) {
+  State<_ApplicationScreen> createState() => _ApplicationScreenState();
+}
+
+class _ApplicationScreenState extends State<_ApplicationScreen> {
+  int currentPageIndex = 0;
+  ApiFromServerInfo get api => ApiFromServerInfo(widget.server);
+
+  Widget _buildUsersList() {
     return FutureBuilder(
       future: api.managementApplicationUserApi.listUsers(
-        applicationId: application.id,
+        applicationId: widget.application.id,
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return ErrorScreen(error: snapshot.error!, scaffold: true);
+          return ErrorScreen(error: snapshot.error!, scaffold: false);
         }
         if (snapshot.hasData == false) {
-          return LoadingScreen(scaffold: true);
+          return LoadingScreen(scaffold: false);
         }
         final users = snapshot.requireData.data;
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(application.name),
-            actions: [
-              PopupMenuButton(
-                itemBuilder:
-                    (context) => [
-                      PopupMenuItem<void>(
-                        child: Text("Open Web UI"),
-                        onTap: () async {
-                          launchUrl(
-                            Uri.parse(
-                              "${server.url}/application/${application.id}",
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-              ),
-            ],
-          ),
-
-          body:
-              (users == null || users.isEmpty)
-                  ? Center(child: Text("No Users found"))
-                  : ListView(
-                    children:
-                        users
-                            .map(
-                              (user) => ListTile(
-                                title: Text(user.email),
-                                subtitle: Text(
-                                  "status: ${user.status}, createdAt: ${user.createdAt}",
-                                ),
-                                trailing: PopupMenuButton(
-                                  itemBuilder:
-                                      (context) => [
-                                        PopupMenuItem<void>(
-                                          child: Text(
-                                            user.status == UserStatus.ACTIVATED
-                                                ? "Deactivate"
-                                                : "Activated",
-                                          ),
-                                          onTap: () async {
-                                            try {
-                                              if (user.status !=
-                                                  UserStatus.ACTIVATED) {
-                                                await api
-                                                    .managementApplicationUserApi
-                                                    .approveUser(
-                                                      applicationId:
-                                                          application.id,
-                                                      appUserId: user.id,
-                                                    );
-                                              } else {
-                                                await api
-                                                    .managementApplicationUserApi
-                                                    .disableUser(
-                                                      applicationId:
-                                                          application.id,
-                                                      appUserId: user.id,
-                                                    );
-                                              }
-                                              ScaffoldMessenger.of(
-                                                // ignore: use_build_context_synchronously
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "User ${user.status == UserStatus.ACTIVATED ? "Deactivate" : "Activated"}",
-                                                  ),
-                                                ),
-                                              );
-                                            } on DioException catch (e) {
-                                              // ignore: use_build_context_synchronously
-                                              await parseDioErrors(context, e);
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute<void>(
-                                      builder:
-                                          (context) => _ApplicationUserScreen(
-                                            server: server,
-                                            application: application,
-                                            user: user,
-                                          ),
+        return (users == null || users.isEmpty)
+            ? Center(child: Text("No Users found"))
+            : ListView(
+              children:
+                  users
+                      .map(
+                        (user) => ListTile(
+                          title: Text(user.email),
+                          subtitle: Text(
+                            "status: ${user.status}, createdAt: ${user.createdAt}",
+                          ),
+                          trailing: PopupMenuButton(
+                            itemBuilder:
+                                (context) => [
+                                  PopupMenuItem<void>(
+                                    child: Text(
+                                      user.status == UserStatus.ACTIVATED
+                                          ? "Deactivate"
+                                          : "Activated",
                                     ),
-                                  );
-                                },
+                                    onTap: () async {
+                                      try {
+                                        if (user.status !=
+                                            UserStatus.ACTIVATED) {
+                                          await api.managementApplicationUserApi
+                                              .approveUser(
+                                                applicationId:
+                                                    widget.application.id,
+                                                appUserId: user.id,
+                                              );
+                                        } else {
+                                          await api.managementApplicationUserApi
+                                              .disableUser(
+                                                applicationId:
+                                                    widget.application.id,
+                                                appUserId: user.id,
+                                              );
+                                        }
+                                        ScaffoldMessenger.of(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "User ${user.status == UserStatus.ACTIVATED ? "Deactivate" : "Activated"}",
+                                            ),
+                                          ),
+                                        );
+                                      } on DioException catch (e) {
+                                        // ignore: use_build_context_synchronously
+                                        await parseDioErrors(context, e);
+                                      }
+                                    },
+                                  ),
+                                ],
+                          ),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder:
+                                    (context) => _ApplicationUserScreen(
+                                      server: widget.server,
+                                      application: widget.application,
+                                      user: user,
+                                    ),
                               ),
-                            )
-                            .toList(),
-                  ),
-        );
+                            );
+                          },
+                        ),
+                      )
+                      .toList(),
+            );
       },
+    );
+  }
+
+  Widget _buildDomainsList() {
+    return FutureBuilder(
+      future: api.managementApplicationDomainApi.listDomains(
+        applicationId: widget.application.id,
+      ),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return ErrorScreen(error: snapshot.error!, scaffold: false);
+        }
+        if (snapshot.hasData == false) {
+          return LoadingScreen(scaffold: false);
+        }
+        final domains = snapshot.requireData.data;
+        return (domains == null || domains.isEmpty)
+            ? Center(child: Text("No Domains found"))
+            : ListView(
+              children:
+                  domains
+                      .map(
+                        (domain) => ListTile(
+                          title: Text(domain.domainName),
+                          subtitle: Text(
+                            "status: ${domain.status}, createdAt: ${domain.createdAt}",
+                          ),
+                          trailing: PopupMenuButton(
+                            itemBuilder:
+                                (context) => [
+                                  PopupMenuItem<void>(
+                                    child: Text("Verify"),
+                                    onTap: () async {
+                                      try {
+                                        await api.managementApplicationDomainApi
+                                            .verifyDomain(
+                                              applicationId:
+                                                  widget.application.id,
+                                              domainId: domain.id,
+                                            );
+                                        ScaffoldMessenger.of(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text("Domain verified"),
+                                          ),
+                                        );
+                                      } on DioException catch (e) {
+                                        await parseDioErrors(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                          e,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+            );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.application.name),
+        actions: [
+          PopupMenuButton(
+            itemBuilder:
+                (context) => [
+                  PopupMenuItem<void>(
+                    child: Text("Open Web UI"),
+                    onTap: () async {
+                      launchUrl(
+                        Uri.parse(
+                          "${widget.server.url}/application/${widget.application.id}",
+                        ),
+                      );
+                    },
+                  ),
+                ],
+          ),
+        ],
+      ),
+      body: [
+        _buildUsersList(),
+        _buildDomainsList(),
+      ].elementAt(currentPageIndex),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        selectedIndex: currentPageIndex,
+        destinations: [
+          NavigationDestination(icon: Icon(Icons.people), label: "Users"),
+          NavigationDestination(icon: Icon(Icons.domain), label: "Domains"),
+        ],
+      ),
     );
   }
 }

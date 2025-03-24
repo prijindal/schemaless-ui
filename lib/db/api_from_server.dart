@@ -26,6 +26,8 @@ class ApiFromServerInfo {
       api.getManagementApplicationApi();
   ManagementApplicationUserApi get managementApplicationUserApi =>
       api.getManagementApplicationUserApi();
+  ManagementApplicationDomainApi get managementApplicationDomainApi =>
+      api.getManagementApplicationDomainApi();
   ManagementAuthApi get managementAuthApi => api.getManagementAuthApi();
   ManagementEntityApi get managementEntityApi => api.getManagementEntityApi();
   ManagementUserApi get managementUserApi => api.getManagementUserApi();
