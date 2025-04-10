@@ -1,48 +1,48 @@
-import 'dart:io';
+import 'package:grpc/grpc_connection_interface.dart';
 
-import 'package:dio/io.dart';
-import 'package:schemaless_openapi/schemaless_openapi.dart';
-
+import '../schemaless_proto/management/services.pbgrpc.dart';
 import 'database.dart';
+import 'get_channel/main.dart';
 
 class ApiFromServerInfo {
-  final SchemalessOpenapi api;
+  final ClientChannelBase channel;
+  final CallOptions callOptions;
 
   ApiFromServerInfo(ServerInfoData info)
-    : api = SchemalessOpenapi(
-        basePathOverride: Uri.parse(info.url).replace(path: "/api").toString(),
-      )..setBearerAuth("bearer_management", info.jwtToken) {
-    if (info.allowInsecure) {
-      (api.dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-        final client = HttpClient();
-        client.badCertificateCallback = (cert, host, port) => true;
-        return client;
-      };
-    }
-  }
+    : channel = getChannelFromUrl(
+        info.url,
+        tls: info.tls,
+        allowInsecure: info.allowInsecure,
+      ),
+      callOptions = CallOptions(
+        metadata: {"authorization": "Bearer ${info.jwtToken}"},
+      );
 
-  HealthApi get healthApi => api.getHealthApi();
-  ManagementApplicationApi get managementApplicationApi =>
-      api.getManagementApplicationApi();
-  ManagementApplicationUserApi get managementApplicationUserApi =>
-      api.getManagementApplicationUserApi();
-  ManagementApplicationDomainApi get managementApplicationDomainApi =>
-      api.getManagementApplicationDomainApi();
-  ManagementAuthApi get managementAuthApi => api.getManagementAuthApi();
-  ManagementEntityApi get managementEntityApi => api.getManagementEntityApi();
-  ManagementUserApi get managementUserApi => api.getManagementUserApi();
+  AuthServiceClient get authClient =>
+      AuthServiceClient(channel, options: callOptions);
+  HealthServiceClient get healthClient =>
+      HealthServiceClient(channel, options: callOptions);
+  ManagementUserServiceClient get managementUserClient =>
+      ManagementUserServiceClient(channel, options: callOptions);
+  ApplicationServiceClient get applicationClient =>
+      ApplicationServiceClient(channel, options: callOptions);
+  ApplicationDomainServiceClient get applicationDomainClient =>
+      ApplicationDomainServiceClient(channel, options: callOptions);
+  ApplicationUserServiceClient get applicationUserClient =>
+      ApplicationUserServiceClient(channel, options: callOptions);
+  EntityServiceClient get entityClient =>
+      EntityServiceClient(channel, options: callOptions);
 }
 
-SchemalessOpenapi getApiFromUrl(String url, {bool allowInsecure = false}) {
-  final api = SchemalessOpenapi(
-    basePathOverride: Uri.parse(url).replace(path: "/api").toString(),
+LoginServiceClient getLoginApiFromUrl(
+  String url, {
+  bool tls = false,
+  bool allowInsecure = false,
+}) {
+  final channel = getChannelFromUrl(
+    url,
+    tls: tls,
+    allowInsecure: allowInsecure,
   );
-  if (allowInsecure) {
-    (api.dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-      final client = HttpClient();
-      client.badCertificateCallback = (cert, host, port) => true;
-      return client;
-    };
-  }
-  return api;
+  return LoginServiceClient(channel);
 }

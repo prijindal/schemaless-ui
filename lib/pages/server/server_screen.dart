@@ -1,12 +1,12 @@
 import 'package:auto_route/annotations.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
-import '../../helpers/parse_dio_errors.dart';
+import '../../helpers/parse_errors.dart';
+import '../../schemaless_proto/google/protobuf/empty.pb.dart';
+import '../../schemaless_proto/management/services.pb.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 import 'applications_list.dart';
@@ -44,17 +44,17 @@ class _ServerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.managementAuthApi.verifyUserAuth(),
+      future: api.authClient.verifyUser(Empty()),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: true);
         }
-        if (snapshot.hasData == false || snapshot.requireData.data == null) {
+        if (snapshot.hasData == false) {
           return LoadingScreen(scaffold: true);
         }
         return _ServerScreenScaffold(
           server: server,
-          isAdmin: snapshot.requireData.data?.isAdmin ?? false,
+          isAdmin: snapshot.requireData.isAdmin,
         );
       },
     );
@@ -95,10 +95,8 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
           ),
     );
     if (name != null) {
-      final body = CreateApplicationBodyBuilder();
-      body.name = name;
-      await api.managementApplicationApi.createApplication(
-        createApplicationBody: body.build(),
+      await api.applicationClient.createApplication(
+        CreateApplicationRequest(name: name),
       );
     }
   }
@@ -116,22 +114,14 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
                     child: Text("Revoke Keys"),
                     onTap: () async {
                       try {
-                        final response =
-                            await api.managementAuthApi.revokeKeys();
-                        if (response.data == null) {
-                          throw DioException.badResponse(
-                            requestOptions: response.requestOptions,
-                            statusCode: 404,
-                            response: response,
-                          );
-                        }
+                        await api.authClient.revokeKey(Empty());
                         // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("All keys are revoked")),
                         );
-                      } on DioException catch (e) {
+                      } on Exception catch (e) {
                         // ignore: use_build_context_synchronously
-                        await parseDioErrors(context, e);
+                        await parseErrors(context, e);
                       }
                     },
                   ),

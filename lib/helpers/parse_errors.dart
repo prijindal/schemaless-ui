@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-Future<void> parseDioErrors(BuildContext context, DioException error) async {
+Future<void> parseErrors(BuildContext context, Exception error) async {
   debugPrint(error.toString());
   String message = "Unknown error occurred";
-  if (error.response != null) {
-    if (error.response!.data["message"] is String) {
-      message = error.response!.data["message"] as String;
-    }
-  }
+  // if (error.response != null) {
+  //   if (error.response!.data["message"] is String) {
+  //     message = error.response!.data["message"] as String;
+  //   }
+  // }
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
@@ -38,7 +37,7 @@ Future<void> parseDioErrors(BuildContext context, DioException error) async {
                         horizontal: 8,
                       ),
                       width: min(400, MediaQuery.of(context).size.width),
-                      child: Text(jsonEncode(error.response.toString())),
+                      child: Text(jsonEncode(error.toString())),
                     ),
                   ],
                 ),

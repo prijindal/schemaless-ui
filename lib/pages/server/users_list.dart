@@ -1,12 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
-import '../../helpers/parse_dio_errors.dart';
+import '../../helpers/listify_stream.dart';
+import '../../helpers/parse_errors.dart';
+import '../../schemaless_proto/google/protobuf/empty.pb.dart';
+import '../../schemaless_proto/management/services.pb.dart';
+import '../../schemaless_proto/types/login.pb.dart';
 import '../errors/error_screen.dart';
-import '../loading.dart';
 
 class UsersList extends StatelessWidget {
   const UsersList({super.key, required this.server});
@@ -16,19 +17,20 @@ class UsersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: api.managementUserApi.listUsers(),
+    return StreamBuilder(
+      stream: listifyStream(api.managementUserClient.listUsers(Empty())),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
         }
-        if (snapshot.hasData == false || snapshot.requireData.data == null) {
-          return LoadingScreen(scaffold: false);
+        final users = snapshot.data;
+        if (users == null || users.isEmpty) {
+          return Center(child: Text("No data found"));
         }
         return ListView.builder(
-          itemCount: snapshot.requireData.data!.length,
+          itemCount: users.length,
           itemBuilder: (context, index) {
-            final user = snapshot.requireData.data![index];
+            final user = users[index];
             return ListTile(
               title: Text(user.email),
               subtitle: Text(
@@ -39,32 +41,30 @@ class UsersList extends StatelessWidget {
                     (context) => [
                       PopupMenuItem<void>(
                         child: Text(
-                          user.status == UserStatus.ACTIVATED
+                          user.status == UserStatus.UserActivated
                               ? "Deactivate"
                               : "Activated",
                         ),
                         onTap: () async {
                           try {
-                            if (user.status != UserStatus.ACTIVATED) {
-                              await api.managementUserApi.approvUser(
-                                userId: user.id,
-                              );
-                            } else {
-                              await api.managementUserApi.disableUser(
-                                userId: user.id,
-                              );
-                            }
+                            await api.managementUserClient.toggleUserApproval(
+                              ToggleUserApprovalRequest(
+                                iD: user.iD,
+                                approve:
+                                    user.status != UserStatus.UserActivated,
+                              ),
+                            );
                             // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  "User ${user.status == UserStatus.ACTIVATED ? "Deactivate" : "Activated"}",
+                                  "User ${user.status == UserStatus.UserActivated ? "Deactivate" : "Activated"}",
                                 ),
                               ),
                             );
-                          } on DioException catch (e) {
+                          } on Exception catch (e) {
                             // ignore: use_build_context_synchronously
-                            await parseDioErrors(context, e);
+                            await parseErrors(context, e);
                           }
                         },
                       ),

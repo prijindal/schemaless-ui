@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
+import '../../schemaless_proto/google/protobuf/empty.pb.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 
@@ -16,35 +15,34 @@ class HealthInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.healthApi.getCumulativeHealth(),
+      future: api.healthClient.cumulativeHealth(Empty()),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
         }
-        if (snapshot.hasData == false || snapshot.requireData.data == null) {
+        if (snapshot.hasData == false) {
           return LoadingScreen(scaffold: false);
         }
-        final data = snapshot.requireData.data!;
+        final data = snapshot.requireData;
         return ListView(
           children: [
-            ListTile(title: Text("DB"), subtitle: Text(data.db.toString())),
+            ListTile(title: Text("DB"), subtitle: Text(data.dB.toString())),
             ListTile(
-              title: Text("Env"),
-              subtitle: Text(
-                JsonEncoder.withIndent("  ").convert(data.env.asMap),
-              ),
+              title: Text("PubSub"),
+              subtitle: Text(data.pubSub.toString()),
             ),
             ListTile(
-              title: Text("hostname"),
-              subtitle: Text(data.os.hostname?.asString ?? "null"),
+              title: Text("Cache"),
+              subtitle: Text(data.cache.toString()),
             ),
+            ListTile(title: Text("hostname"), subtitle: Text(data.hostname)),
             ListTile(
               title: Text("host time"),
-              subtitle: Text(data.os.time.toString()),
+              subtitle: Text(data.currentTime.toString()),
             ),
             ListTile(
-              title: Text("host time"),
-              subtitle: Text(data.os.uptime?.asNum.toString() ?? "null"),
+              title: Text("uptime"),
+              subtitle: Text(data.uptime.toString()),
             ),
           ],
         );

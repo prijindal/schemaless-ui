@@ -1,14 +1,19 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:schemaless_openapi/schemaless_openapi.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
-import '../../helpers/parse_dio_errors.dart';
+import '../../helpers/listify_stream.dart';
+import '../../helpers/parse_errors.dart';
+import '../../schemaless_proto/google/protobuf/empty.pb.dart';
+import '../../schemaless_proto/google/protobuf/timestamp.pb.dart';
+import '../../schemaless_proto/management/services.pb.dart';
+import '../../schemaless_proto/types/entity.pb.dart';
+import '../../schemaless_proto/types/login.pb.dart';
 import '../errors/error_screen.dart';
-import '../loading.dart';
 import 'entity_list.dart';
 
 class ApplicationsList extends StatelessWidget {
@@ -19,19 +24,13 @@ class ApplicationsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: api.managementApplicationApi.listApplications(
-        limit: 1000,
-        offset: 0,
-      ),
+    return StreamBuilder(
+      stream: listifyStream(api.applicationClient.listApplications(Empty())),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
         }
-        if (snapshot.hasData == false) {
-          return LoadingScreen(scaffold: false);
-        }
-        final applications = snapshot.requireData.data;
+        final applications = snapshot.data;
         if (applications == null || applications.isEmpty) {
           return Center(child: Text("No Applications found"));
         }
@@ -41,6 +40,7 @@ class ApplicationsList extends StatelessWidget {
                   .map(
                     (application) => ListTile(
                       title: Text(application.name),
+                      subtitle: Text(application.iD),
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute<void>(
@@ -75,18 +75,17 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
   ApiFromServerInfo get api => ApiFromServerInfo(widget.server);
 
   Widget _buildUsersList() {
-    return FutureBuilder(
-      future: api.managementApplicationUserApi.listUsers(
-        applicationId: widget.application.id,
+    return StreamBuilder(
+      stream: listifyStream(
+        api.applicationUserClient.listUsers(
+          ListUsersRequest(applicationID: widget.application.iD),
+        ),
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
         }
-        if (snapshot.hasData == false) {
-          return LoadingScreen(scaffold: false);
-        }
-        final users = snapshot.requireData.data;
+        final users = snapshot.data;
         return (users == null || users.isEmpty)
             ? Center(child: Text("No Users found"))
             : ListView(
@@ -103,41 +102,36 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
                                 (context) => [
                                   PopupMenuItem<void>(
                                     child: Text(
-                                      user.status == UserStatus.ACTIVATED
+                                      user.status == UserStatus.UserActivated
                                           ? "Deactivate"
                                           : "Activated",
                                     ),
                                     onTap: () async {
                                       try {
-                                        if (user.status !=
-                                            UserStatus.ACTIVATED) {
-                                          await api.managementApplicationUserApi
-                                              .approveUser(
-                                                applicationId:
-                                                    widget.application.id,
-                                                appUserId: user.id,
-                                              );
-                                        } else {
-                                          await api.managementApplicationUserApi
-                                              .disableUser(
-                                                applicationId:
-                                                    widget.application.id,
-                                                appUserId: user.id,
-                                              );
-                                        }
+                                        await api.applicationUserClient
+                                            .toggleUserApproval(
+                                              ApplicationToggleUserApprovalRequest(
+                                                applicationID:
+                                                    widget.application.iD,
+                                                iD: user.iD,
+                                                approve:
+                                                    user.status !=
+                                                    UserStatus.UserActivated,
+                                              ),
+                                            );
                                         ScaffoldMessenger.of(
                                           // ignore: use_build_context_synchronously
                                           context,
                                         ).showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              "User ${user.status == UserStatus.ACTIVATED ? "Deactivate" : "Activated"}",
+                                              "User ${user.status == UserStatus.UserActivated ? "Deactivate" : "Activated"}",
                                             ),
                                           ),
                                         );
-                                      } on DioException catch (e) {
+                                      } on Exception catch (e) {
                                         // ignore: use_build_context_synchronously
-                                        await parseDioErrors(context, e);
+                                        await parseErrors(context, e);
                                       }
                                     },
                                   ),
@@ -164,18 +158,17 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
   }
 
   Widget _buildDomainsList() {
-    return FutureBuilder(
-      future: api.managementApplicationDomainApi.listDomains(
-        applicationId: widget.application.id,
+    return StreamBuilder(
+      stream: listifyStream(
+        api.applicationDomainClient.listApplicationDomains(
+          ListApplicationDomainRequest(applicationID: widget.application.iD),
+        ),
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
         }
-        if (snapshot.hasData == false) {
-          return LoadingScreen(scaffold: false);
-        }
-        final domains = snapshot.requireData.data;
+        final domains = snapshot.data;
         return (domains == null || domains.isEmpty)
             ? Center(child: Text("No Domains found"))
             : ListView(
@@ -194,11 +187,11 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
                                     child: Text("Verify"),
                                     onTap: () async {
                                       try {
-                                        await api.managementApplicationDomainApi
+                                        await api.applicationDomainClient
                                             .verifyDomain(
-                                              applicationId:
-                                                  widget.application.id,
-                                              domainId: domain.id,
+                                              GetDomainRequest(
+                                                domainID: domain.iD,
+                                              ),
                                             );
                                         ScaffoldMessenger.of(
                                           // ignore: use_build_context_synchronously
@@ -208,8 +201,8 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
                                             content: Text("Domain verified"),
                                           ),
                                         );
-                                      } on DioException catch (e) {
-                                        await parseDioErrors(
+                                      } on Exception catch (e) {
+                                        await parseErrors(
                                           // ignore: use_build_context_synchronously
                                           context,
                                           e,
@@ -227,6 +220,47 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
     );
   }
 
+  Future<void> _addUser() async {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    await showDialog<String?>(
+      context: context,
+      builder:
+          (context) => SimpleDialog(
+            title: Text("Insert Application User"),
+            children: [
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(label: Text("Email")),
+              ),
+              TextField(
+                controller: passwordController,
+                decoration: InputDecoration(label: Text("Password")),
+              ),
+              ElevatedButton(
+                child: Text("Add"),
+                onPressed:
+                    () => Navigator.of(context).pop(emailController.text),
+              ),
+            ],
+          ),
+    );
+    if (emailController.text.isNotEmpty) {
+      try {
+        await api.applicationUserClient.registerUser(
+          ApplicationUserRegisterRequest(
+            applicationID: widget.application.iD,
+            email: emailController.text,
+            password: passwordController.text,
+          ),
+        );
+      } on Exception catch (e) {
+        // ignore: use_build_context_synchronously
+        parseErrors(context, e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,10 +273,8 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
                   PopupMenuItem<void>(
                     child: Text("Open Web UI"),
                     onTap: () async {
-                      launchUrl(
-                        Uri.parse(
-                          "${widget.server.url}/application/${widget.application.id}",
-                        ),
+                      Clipboard.setData(
+                        ClipboardData(text: widget.application.iD),
                       );
                     },
                   ),
@@ -250,6 +282,14 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
           ),
         ],
       ),
+      floatingActionButton:
+          currentPageIndex == 0
+              ? FloatingActionButton(
+                onPressed: () => _addUser(),
+                tooltip: "Add Entity",
+                child: Icon(Icons.add),
+              )
+              : null,
       body: [
         _buildUsersList(),
         _buildDomainsList(),
@@ -278,24 +318,73 @@ class _ApplicationUserScreen extends StatelessWidget {
   });
   final ServerInfoData server;
   final Application application;
-  final ListUsersResponse1 user;
+  final ApplicationUser user;
   ApiFromServerInfo get api => ApiFromServerInfo(server);
+
+  Future<void> _addEntity(BuildContext context) async {
+    final textController = TextEditingController();
+    final name = await showDialog<String?>(
+      context: context,
+      builder:
+          (context) => SimpleDialog(
+            title: Text("Insert Random Data"),
+            children: [
+              TextField(
+                controller: textController,
+                decoration: InputDecoration(label: Text("Entity name")),
+              ),
+              ElevatedButton(
+                child: Text("Add"),
+                onPressed: () => Navigator.of(context).pop(textController.text),
+              ),
+            ],
+          ),
+    );
+    if (name != null) {
+      try {
+        await api.entityClient.entityAction(
+          AppUserEntityActionRequest(
+            applicationID: application.iD,
+            appUserID: user.iD,
+            entityActionRequest: EntityActionRequest(
+              hostID: Uuid().v4(),
+              actionId: Uuid().v4(),
+              entityName: name,
+              action: EntityAction.CREATE,
+              createdAt: Timestamp.fromDateTime(DateTime.now()),
+              entityId: Uuid().v4(),
+              payload:
+                  jsonEncode({
+                    "title": "Sample title",
+                    "description": Uuid().v4(),
+                  }).codeUnits,
+              requestID: Uuid().v4(),
+            ),
+          ),
+        );
+      } on Exception catch (e) {
+        // ignore: use_build_context_synchronously
+        parseErrors(context, e);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: api.managementEntityApi.getEntities(
-        applicationId: application.id,
-        appUserId: user.id,
+    return StreamBuilder(
+      stream: listifyStream(
+        api.entityClient.listEntityTypes(
+          ListEntityTypesRequest(
+            appUserID: user.iD,
+            applicationID: application.iD,
+          ),
+        ),
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: true);
         }
-        if (snapshot.hasData == false) {
-          return LoadingScreen(scaffold: true);
-        }
-        final entities = snapshot.requireData.data;
+        final entities = snapshot.data;
         return Scaffold(
           appBar: AppBar(
             title: Text(user.email),
@@ -307,20 +396,14 @@ class _ApplicationUserScreen extends StatelessWidget {
                         child: Text("Generate Token"),
                         onTap: () async {
                           try {
-                            final response = await api
-                                .managementApplicationUserApi
+                            final response = await api.applicationUserClient
                                 .generateKey(
-                                  applicationId: application.id,
-                                  appUserId: user.id,
+                                  ApplicationUserGetRequest(
+                                    applicationID: application.iD,
+                                    iD: user.iD,
+                                  ),
                                 );
-                            if (response.data == null) {
-                              throw DioException.badResponse(
-                                requestOptions: response.requestOptions,
-                                statusCode: 404,
-                                response: response,
-                              );
-                            }
-                            final jwtToken = response.data!;
+                            final jwtToken = response.token;
                             await showDialog<void>(
                               // ignore: use_build_context_synchronously
                               context: context,
@@ -340,9 +423,9 @@ class _ApplicationUserScreen extends StatelessWidget {
                                     ],
                                   ),
                             );
-                          } on DioException catch (e) {
+                          } on Exception catch (e) {
                             // ignore: use_build_context_synchronously
-                            await parseDioErrors(context, e);
+                            await parseErrors(context, e);
                           }
                         },
                       ),
@@ -350,26 +433,19 @@ class _ApplicationUserScreen extends StatelessWidget {
                         child: Text("Revoke Keys"),
                         onTap: () async {
                           try {
-                            final response = await api
-                                .managementApplicationUserApi
-                                .revokeKeys(
-                                  applicationId: application.id,
-                                  appUserId: user.id,
-                                );
-                            if (response.data == null) {
-                              throw DioException.badResponse(
-                                requestOptions: response.requestOptions,
-                                statusCode: 404,
-                                response: response,
-                              );
-                            }
+                            await api.applicationUserClient.revokeKey(
+                              ApplicationUserGetRequest(
+                                applicationID: application.iD,
+                                iD: user.iD,
+                              ),
+                            );
                             // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text("All keys are revoked")),
                             );
-                          } on DioException catch (e) {
+                          } on Exception catch (e) {
                             // ignore: use_build_context_synchronously
-                            await parseDioErrors(context, e);
+                            await parseErrors(context, e);
                           }
                         },
                       ),
@@ -385,7 +461,7 @@ class _ApplicationUserScreen extends StatelessWidget {
                         entities
                             .map(
                               (entity) => ListTile(
-                                title: Text(entity),
+                                title: Text(entity.entityType),
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute<void>(
@@ -394,7 +470,7 @@ class _ApplicationUserScreen extends StatelessWidget {
                                             server: server,
                                             application: application,
                                             user: user,
-                                            entity: entity,
+                                            entity: entity.entityType,
                                           ),
                                     ),
                                   );
@@ -403,6 +479,11 @@ class _ApplicationUserScreen extends StatelessWidget {
                             )
                             .toList(),
                   ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => _addEntity(context),
+            tooltip: "Add Entity",
+            child: Icon(Icons.add),
+          ),
         );
       },
     );

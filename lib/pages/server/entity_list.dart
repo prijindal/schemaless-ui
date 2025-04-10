@@ -1,13 +1,11 @@
-import 'dart:convert';
-
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:schemaless_openapi/schemaless_openapi.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
+import '../../helpers/listify_stream.dart';
+import '../../schemaless_proto/management/services.pb.dart';
+import '../../schemaless_proto/types/entity.pb.dart';
 import '../errors/error_screen.dart';
-import '../loading.dart';
 
 class EntityHistoryScreen extends StatelessWidget {
   const EntityHistoryScreen({
@@ -19,95 +17,103 @@ class EntityHistoryScreen extends StatelessWidget {
   });
   final ServerInfoData server;
   final Application application;
-  final ListUsersResponse1 user;
+  final ApplicationUser user;
   final String entity;
   ApiFromServerInfo get api => ApiFromServerInfo(server);
 
-  BuiltList<EntityHistoryRequest> _buildReqBody() {
-    final entityHistoryRequest = EntityHistoryRequestBuilder();
-    entityHistoryRequest.entityName = entity;
-    entityHistoryRequest.order = MapBuilder();
-    entityHistoryRequest.order.addAll({
-      "timestamp": EntityHistoryRequestOrderEnum.desc,
-    });
-    entityHistoryRequest.params = EntityHistoryRequestParamsBuilder();
-    return BuiltList<EntityHistoryRequest>([entityHistoryRequest.build()]);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: api.managementEntityApi.searchEntitiesHistory(
-        applicationId: application.id,
-        appUserId: user.id,
-        entityHistoryRequest: _buildReqBody(),
+    return StreamBuilder(
+      stream: listifyStream(
+        api.entityClient.searchEntityHistory(
+          AppUserSearchEntityHistoryRequest(
+            appUserID: user.iD,
+            applicationID: application.iD,
+            searchEntityHistoryRequest: SearchEntityHistoryRequest(
+              params: EntityHistoryRequestParams(
+                entityName: EntityHistoryRequestEntityNameParam(in_1: [entity]),
+              ),
+              order: [
+                EntityHistoryRequestOrder(
+                  field_1: EntityHistoryOrderField.CreatedAt,
+                  value: EntityHistoryOrderValue.DESC,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: true);
         }
-        if (snapshot.hasData == false || snapshot.requireData.data == null) {
-          return LoadingScreen(scaffold: true);
-        }
-        final entityData = snapshot.requireData.data!.first.data;
-        if (entityData.isEmpty) {
-          return Center(child: Text("No data found"));
-        }
+        final entityData = snapshot.data;
         return Scaffold(
           appBar: AppBar(title: Text(entity)),
-          body: ListView(
-            children:
-                entityData
-                    .map(
-                      (data) => ListTile(
-                        isThreeLine: true,
-                        title: Text(data.action),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Timestamp: ${data.timestamp.toString()}"),
-                            Text("Entity ID: ${data.entityId}"),
-                            Text(data.payload.toString()),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder:
-                                  (context) => Scaffold(
-                                    appBar: AppBar(
-                                      title: Text(data.timestamp.toString()),
+          body:
+              entityData == null || entityData.isEmpty
+                  ? Center(child: Text("No data found"))
+                  : ListView(
+                    children:
+                        entityData
+                            .map(
+                              (data) => ListTile(
+                                isThreeLine: true,
+                                title: Text(data.action.toString()),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Timestamp: ${data.createdAt.toString()}",
                                     ),
-                                    body: Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                        ),
-                                        child: ListView(
-                                          children: [
-                                            Text("Entity ID: ${data.entityId}"),
-                                            Text("Action: ${data.action}"),
-                                            Text(
-                                              "Timestamp: ${data.timestamp.toString()}",
+                                    Text("Entity ID: ${data.entityID}"),
+                                    Text(String.fromCharCodes(data.payload)),
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute<void>(
+                                      builder:
+                                          (context) => Scaffold(
+                                            appBar: AppBar(
+                                              title: Text(
+                                                data.createdAt.toString(),
+                                              ),
                                             ),
-                                            Text(
-                                              "Created At: ${data.createdAt}",
+                                            body: Center(
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 10,
+                                                ),
+                                                child: ListView(
+                                                  children: [
+                                                    Text(
+                                                      "Entity ID: ${data.entityID}",
+                                                    ),
+                                                    Text(
+                                                      "Action: ${data.action}",
+                                                    ),
+                                                    Text(
+                                                      "Timestamp: ${data.createdAt.toString()}",
+                                                    ),
+                                                    Text(
+                                                      "Created At: ${data.createdAt}",
+                                                    ),
+                                                    Text(
+                                                      "Payload: ${String.fromCharCodes(data.payload)}",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                            Text(
-                                              "Payload: ${JsonEncoder.withIndent("  ").convert(data.payload.value)}",
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                          ),
                                     ),
-                                  ),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                    .toList(),
-          ),
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
+                  ),
         );
       },
     );
