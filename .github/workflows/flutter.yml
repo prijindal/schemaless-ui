@@ -169,18 +169,22 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: android-arm64-v8a
+          retention-days: 1
           path: build/app/outputs/apk/release/app-arm64-v8a-release.apk
       - uses: actions/upload-artifact@v4
         with:
           name: android-armeabi-v7a
+          retention-days: 1
           path: build/app/outputs/apk/release/app-armeabi-v7a-release.apk
       - uses: actions/upload-artifact@v4
         with:
           name: android-x86_64
+          retention-days: 1
           path: build/app/outputs/apk/release/app-x86_64-release.apk
       - uses: actions/upload-artifact@v4
         with:
           name: android-output-metadata
+          retention-days: 1
           path: build/app/outputs/apk/release/output-metadata.json
 
   github-release:
@@ -267,6 +271,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: google-play-android-appbundle
+          retention-days: 1
           path: |
             build/app/outputs/bundle/release/
             build/app/outputs/mapping/release/
@@ -295,6 +300,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: web
+          retention-days: 1
           path: build/web
 
   web-publish:
@@ -342,6 +348,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: linux
+          retention-days: 1
           path: linux.tar.gz
     
   macos:
@@ -369,6 +376,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: macos
+          retention-days: 1
           path: build/macos/Build/Products/Release/schemaless.app
 
   ios:
@@ -396,6 +404,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ios
+          retention-days: 1
           path: build/ios
 
   windows:
@@ -426,4 +435,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: windows
+          retention-days: 1
           path: Output/
