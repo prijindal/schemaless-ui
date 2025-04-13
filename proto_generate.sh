@@ -6,5 +6,5 @@ protoc --dart_out=grpc:lib/schemaless_proto \
     google/protobuf/duration.proto \
     google/protobuf/struct.proto \
     google/protobuf/timestamp.proto \
-    --proto_path=../schemaless-config-pull/proto/ \
-    -Iprotos ../schemaless-config-pull/proto/**/*.proto
+    --proto_path=../schemaless-backend/proto/ \
+    -Iprotos ../schemaless-backend/proto/**/*.proto

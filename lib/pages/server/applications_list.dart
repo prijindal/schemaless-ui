@@ -371,20 +371,18 @@ class _ApplicationUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: listifyStream(
-        api.entityClient.listEntityTypes(
-          ListEntityTypesRequest(
-            appUserID: user.iD,
-            applicationID: application.iD,
-          ),
+    return FutureBuilder(
+      future: api.entityClient.listEntityTypes(
+        ListEntityTypesRequest(
+          appUserID: user.iD,
+          applicationID: application.iD,
         ),
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: true);
         }
-        final entities = snapshot.data;
+        final data = snapshot.data;
         return Scaffold(
           appBar: AppBar(
             title: Text(user.email),
@@ -454,14 +452,14 @@ class _ApplicationUserScreen extends StatelessWidget {
             ],
           ),
           body:
-              entities == null || entities.isEmpty
+              data == null || data.entityType.isEmpty
                   ? Center(child: Text("No Entities found"))
                   : ListView(
                     children:
-                        entities
+                        data.entityType
                             .map(
                               (entity) => ListTile(
-                                title: Text(entity.entityType),
+                                title: Text(entity),
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute<void>(
@@ -470,7 +468,7 @@ class _ApplicationUserScreen extends StatelessWidget {
                                             server: server,
                                             application: application,
                                             user: user,
-                                            entity: entity.entityType,
+                                            entity: entity,
                                           ),
                                     ),
                                   );

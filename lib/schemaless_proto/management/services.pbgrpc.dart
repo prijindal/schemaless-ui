@@ -714,8 +714,8 @@ class EntityServiceClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseStream<$4.ListEntityTypesResponse> listEntityTypes($5.ListEntityTypesRequest request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$listEntityTypes, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseFuture<$4.ListEntityTypesResponse> listEntityTypes($5.ListEntityTypesRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$listEntityTypes, request, options: options);
   }
 
   $grpc.ResponseStream<$4.EntityHistory> searchEntityHistory($5.AppUserSearchEntityHistoryRequest request, {$grpc.CallOptions? options}) {
@@ -740,7 +740,7 @@ abstract class EntityServiceBase extends $grpc.Service {
         'ListEntityTypes',
         listEntityTypes_Pre,
         false,
-        true,
+        false,
         ($core.List<$core.int> value) => $5.ListEntityTypesRequest.fromBuffer(value),
         ($4.ListEntityTypesResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$5.AppUserSearchEntityHistoryRequest, $4.EntityHistory>(
@@ -766,8 +766,8 @@ abstract class EntityServiceBase extends $grpc.Service {
         ($4.EntityActionResponse value) => value.writeToBuffer()));
   }
 
-  $async.Stream<$4.ListEntityTypesResponse> listEntityTypes_Pre($grpc.ServiceCall $call, $async.Future<$5.ListEntityTypesRequest> $request) async* {
-    yield* listEntityTypes($call, await $request);
+  $async.Future<$4.ListEntityTypesResponse> listEntityTypes_Pre($grpc.ServiceCall $call, $async.Future<$5.ListEntityTypesRequest> $request) async {
+    return listEntityTypes($call, await $request);
   }
 
   $async.Stream<$4.EntityHistory> searchEntityHistory_Pre($grpc.ServiceCall $call, $async.Future<$5.AppUserSearchEntityHistoryRequest> $request) async* {
@@ -778,7 +778,7 @@ abstract class EntityServiceBase extends $grpc.Service {
     return entityAction($call, await $request);
   }
 
-  $async.Stream<$4.ListEntityTypesResponse> listEntityTypes($grpc.ServiceCall call, $5.ListEntityTypesRequest request);
+  $async.Future<$4.ListEntityTypesResponse> listEntityTypes($grpc.ServiceCall call, $5.ListEntityTypesRequest request);
   $async.Stream<$4.EntityHistory> searchEntityHistory($grpc.ServiceCall call, $5.AppUserSearchEntityHistoryRequest request);
   $async.Stream<$4.EntityActionResponse> streamEntityAction($grpc.ServiceCall call, $async.Stream<$5.AppUserEntityActionRequest> request);
   $async.Future<$4.EntityActionResponse> entityAction($grpc.ServiceCall call, $5.AppUserEntityActionRequest request);
