@@ -325,6 +325,128 @@ class VerifyUserResponse extends $pb.GeneratedMessage {
   void clearIsAdmin() => $_clearField(2);
 }
 
+class ListManagementUsersRequest extends $pb.GeneratedMessage {
+  factory ListManagementUsersRequest({
+    $core.int? limit,
+    $core.int? page,
+  }) {
+    final $result = create();
+    if (limit != null) {
+      $result.limit = limit;
+    }
+    if (page != null) {
+      $result.page = page;
+    }
+    return $result;
+  }
+  ListManagementUsersRequest._() : super();
+  factory ListManagementUsersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListManagementUsersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListManagementUsersRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'Limit', $pb.PbFieldType.O3, protoName: 'Limit')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Page', $pb.PbFieldType.O3, protoName: 'Page')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListManagementUsersRequest clone() => ListManagementUsersRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListManagementUsersRequest copyWith(void Function(ListManagementUsersRequest) updates) => super.copyWith((message) => updates(message as ListManagementUsersRequest)) as ListManagementUsersRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListManagementUsersRequest create() => ListManagementUsersRequest._();
+  ListManagementUsersRequest createEmptyInstance() => create();
+  static $pb.PbList<ListManagementUsersRequest> createRepeated() => $pb.PbList<ListManagementUsersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ListManagementUsersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListManagementUsersRequest>(create);
+  static ListManagementUsersRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get limit => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set limit($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLimit() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLimit() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+}
+
+class ListManagementUsersResponse extends $pb.GeneratedMessage {
+  factory ListManagementUsersResponse({
+    $core.Iterable<ManagementUser>? users,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (users != null) {
+      $result.users.addAll(users);
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
+  ListManagementUsersResponse._() : super();
+  factory ListManagementUsersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListManagementUsersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListManagementUsersResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..pc<ManagementUser>(1, _omitFieldNames ? '' : 'Users', $pb.PbFieldType.PM, protoName: 'Users', subBuilder: ManagementUser.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Count', $pb.PbFieldType.O3, protoName: 'Count')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListManagementUsersResponse clone() => ListManagementUsersResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListManagementUsersResponse copyWith(void Function(ListManagementUsersResponse) updates) => super.copyWith((message) => updates(message as ListManagementUsersResponse)) as ListManagementUsersResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListManagementUsersResponse create() => ListManagementUsersResponse._();
+  ListManagementUsersResponse createEmptyInstance() => create();
+  static $pb.PbList<ListManagementUsersResponse> createRepeated() => $pb.PbList<ListManagementUsersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ListManagementUsersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListManagementUsersResponse>(create);
+  static ListManagementUsersResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<ManagementUser> get users => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+}
+
 class ManagementUser extends $pb.GeneratedMessage {
   factory ManagementUser({
     $core.String? iD,
@@ -561,6 +683,128 @@ class DeleteUserRequest extends $pb.GeneratedMessage {
   $core.bool hasID() => $_has(0);
   @$pb.TagNumber(1)
   void clearID() => $_clearField(1);
+}
+
+class ListApplicationsRequest extends $pb.GeneratedMessage {
+  factory ListApplicationsRequest({
+    $core.int? limit,
+    $core.int? page,
+  }) {
+    final $result = create();
+    if (limit != null) {
+      $result.limit = limit;
+    }
+    if (page != null) {
+      $result.page = page;
+    }
+    return $result;
+  }
+  ListApplicationsRequest._() : super();
+  factory ListApplicationsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListApplicationsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListApplicationsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'Limit', $pb.PbFieldType.O3, protoName: 'Limit')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Page', $pb.PbFieldType.O3, protoName: 'Page')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListApplicationsRequest clone() => ListApplicationsRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListApplicationsRequest copyWith(void Function(ListApplicationsRequest) updates) => super.copyWith((message) => updates(message as ListApplicationsRequest)) as ListApplicationsRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationsRequest create() => ListApplicationsRequest._();
+  ListApplicationsRequest createEmptyInstance() => create();
+  static $pb.PbList<ListApplicationsRequest> createRepeated() => $pb.PbList<ListApplicationsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListApplicationsRequest>(create);
+  static ListApplicationsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get limit => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set limit($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLimit() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLimit() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+}
+
+class ListApplicationsResponse extends $pb.GeneratedMessage {
+  factory ListApplicationsResponse({
+    $core.Iterable<Application>? applications,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (applications != null) {
+      $result.applications.addAll(applications);
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
+  ListApplicationsResponse._() : super();
+  factory ListApplicationsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListApplicationsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListApplicationsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..pc<Application>(1, _omitFieldNames ? '' : 'Applications', $pb.PbFieldType.PM, protoName: 'Applications', subBuilder: Application.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Count', $pb.PbFieldType.O3, protoName: 'Count')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListApplicationsResponse clone() => ListApplicationsResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListApplicationsResponse copyWith(void Function(ListApplicationsResponse) updates) => super.copyWith((message) => updates(message as ListApplicationsResponse)) as ListApplicationsResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationsResponse create() => ListApplicationsResponse._();
+  ListApplicationsResponse createEmptyInstance() => create();
+  static $pb.PbList<ListApplicationsResponse> createRepeated() => $pb.PbList<ListApplicationsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListApplicationsResponse>(create);
+  static ListApplicationsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<Application> get applications => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
 }
 
 class Application extends $pb.GeneratedMessage {
@@ -861,9 +1105,17 @@ class GetApplicationRequest extends $pb.GeneratedMessage {
 
 class ListApplicationDomainRequest extends $pb.GeneratedMessage {
   factory ListApplicationDomainRequest({
+    $core.int? limit,
+    $core.int? page,
     $core.String? applicationID,
   }) {
     final $result = create();
+    if (limit != null) {
+      $result.limit = limit;
+    }
+    if (page != null) {
+      $result.page = page;
+    }
     if (applicationID != null) {
       $result.applicationID = applicationID;
     }
@@ -874,7 +1126,9 @@ class ListApplicationDomainRequest extends $pb.GeneratedMessage {
   factory ListApplicationDomainRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListApplicationDomainRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'Limit', $pb.PbFieldType.O3, protoName: 'Limit')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Page', $pb.PbFieldType.O3, protoName: 'Page')
+    ..aOS(3, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
     ..hasRequiredFields = false
   ;
 
@@ -898,6 +1152,132 @@ class ListApplicationDomainRequest extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static ListApplicationDomainRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListApplicationDomainRequest>(create);
   static ListApplicationDomainRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get limit => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set limit($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLimit() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLimit() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get applicationID => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set applicationID($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasApplicationID() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearApplicationID() => $_clearField(3);
+}
+
+class ListApplicationDomainResponse extends $pb.GeneratedMessage {
+  factory ListApplicationDomainResponse({
+    $core.Iterable<Domain>? domains,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (domains != null) {
+      $result.domains.addAll(domains);
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
+  ListApplicationDomainResponse._() : super();
+  factory ListApplicationDomainResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListApplicationDomainResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListApplicationDomainResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..pc<Domain>(1, _omitFieldNames ? '' : 'Domains', $pb.PbFieldType.PM, protoName: 'Domains', subBuilder: Domain.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Count', $pb.PbFieldType.O3, protoName: 'Count')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListApplicationDomainResponse clone() => ListApplicationDomainResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListApplicationDomainResponse copyWith(void Function(ListApplicationDomainResponse) updates) => super.copyWith((message) => updates(message as ListApplicationDomainResponse)) as ListApplicationDomainResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationDomainResponse create() => ListApplicationDomainResponse._();
+  ListApplicationDomainResponse createEmptyInstance() => create();
+  static $pb.PbList<ListApplicationDomainResponse> createRepeated() => $pb.PbList<ListApplicationDomainResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationDomainResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListApplicationDomainResponse>(create);
+  static ListApplicationDomainResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<Domain> get domains => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+}
+
+class StreamApplicationDomainRequest extends $pb.GeneratedMessage {
+  factory StreamApplicationDomainRequest({
+    $core.String? applicationID,
+  }) {
+    final $result = create();
+    if (applicationID != null) {
+      $result.applicationID = applicationID;
+    }
+    return $result;
+  }
+  StreamApplicationDomainRequest._() : super();
+  factory StreamApplicationDomainRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StreamApplicationDomainRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'StreamApplicationDomainRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  StreamApplicationDomainRequest clone() => StreamApplicationDomainRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  StreamApplicationDomainRequest copyWith(void Function(StreamApplicationDomainRequest) updates) => super.copyWith((message) => updates(message as StreamApplicationDomainRequest)) as StreamApplicationDomainRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StreamApplicationDomainRequest create() => StreamApplicationDomainRequest._();
+  StreamApplicationDomainRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamApplicationDomainRequest> createRepeated() => $pb.PbList<StreamApplicationDomainRequest>();
+  @$core.pragma('dart2js:noInline')
+  static StreamApplicationDomainRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StreamApplicationDomainRequest>(create);
+  static StreamApplicationDomainRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get applicationID => $_getSZ(0);
@@ -1253,8 +1633,144 @@ class GetDomainRequest extends $pb.GeneratedMessage {
   void clearDomainID() => $_clearField(1);
 }
 
-class ListUsersRequest extends $pb.GeneratedMessage {
-  factory ListUsersRequest({
+class ListApplicationUsersRequest extends $pb.GeneratedMessage {
+  factory ListApplicationUsersRequest({
+    $core.int? limit,
+    $core.int? page,
+    $core.String? applicationID,
+  }) {
+    final $result = create();
+    if (limit != null) {
+      $result.limit = limit;
+    }
+    if (page != null) {
+      $result.page = page;
+    }
+    if (applicationID != null) {
+      $result.applicationID = applicationID;
+    }
+    return $result;
+  }
+  ListApplicationUsersRequest._() : super();
+  factory ListApplicationUsersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListApplicationUsersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListApplicationUsersRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'Limit', $pb.PbFieldType.O3, protoName: 'Limit')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Page', $pb.PbFieldType.O3, protoName: 'Page')
+    ..aOS(3, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListApplicationUsersRequest clone() => ListApplicationUsersRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListApplicationUsersRequest copyWith(void Function(ListApplicationUsersRequest) updates) => super.copyWith((message) => updates(message as ListApplicationUsersRequest)) as ListApplicationUsersRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationUsersRequest create() => ListApplicationUsersRequest._();
+  ListApplicationUsersRequest createEmptyInstance() => create();
+  static $pb.PbList<ListApplicationUsersRequest> createRepeated() => $pb.PbList<ListApplicationUsersRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationUsersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListApplicationUsersRequest>(create);
+  static ListApplicationUsersRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get limit => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set limit($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLimit() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLimit() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get applicationID => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set applicationID($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasApplicationID() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearApplicationID() => $_clearField(3);
+}
+
+class ListApplicationUsersResponse extends $pb.GeneratedMessage {
+  factory ListApplicationUsersResponse({
+    $core.Iterable<ApplicationUser>? applicationUsers,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (applicationUsers != null) {
+      $result.applicationUsers.addAll(applicationUsers);
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
+  ListApplicationUsersResponse._() : super();
+  factory ListApplicationUsersResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ListApplicationUsersResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListApplicationUsersResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+    ..pc<ApplicationUser>(1, _omitFieldNames ? '' : 'ApplicationUsers', $pb.PbFieldType.PM, protoName: 'ApplicationUsers', subBuilder: ApplicationUser.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'Count', $pb.PbFieldType.O3, protoName: 'Count')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ListApplicationUsersResponse clone() => ListApplicationUsersResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ListApplicationUsersResponse copyWith(void Function(ListApplicationUsersResponse) updates) => super.copyWith((message) => updates(message as ListApplicationUsersResponse)) as ListApplicationUsersResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationUsersResponse create() => ListApplicationUsersResponse._();
+  ListApplicationUsersResponse createEmptyInstance() => create();
+  static $pb.PbList<ListApplicationUsersResponse> createRepeated() => $pb.PbList<ListApplicationUsersResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ListApplicationUsersResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListApplicationUsersResponse>(create);
+  static ListApplicationUsersResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<ApplicationUser> get applicationUsers => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+}
+
+class StreamUsersRequest extends $pb.GeneratedMessage {
+  factory StreamUsersRequest({
     $core.String? applicationID,
   }) {
     final $result = create();
@@ -1263,11 +1779,11 @@ class ListUsersRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  ListUsersRequest._() : super();
-  factory ListUsersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ListUsersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  StreamUsersRequest._() : super();
+  factory StreamUsersRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory StreamUsersRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListUsersRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'StreamUsersRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
     ..hasRequiredFields = false
   ;
@@ -1276,22 +1792,22 @@ class ListUsersRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  ListUsersRequest clone() => ListUsersRequest()..mergeFromMessage(this);
+  StreamUsersRequest clone() => StreamUsersRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  ListUsersRequest copyWith(void Function(ListUsersRequest) updates) => super.copyWith((message) => updates(message as ListUsersRequest)) as ListUsersRequest;
+  StreamUsersRequest copyWith(void Function(StreamUsersRequest) updates) => super.copyWith((message) => updates(message as StreamUsersRequest)) as StreamUsersRequest;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ListUsersRequest create() => ListUsersRequest._();
-  ListUsersRequest createEmptyInstance() => create();
-  static $pb.PbList<ListUsersRequest> createRepeated() => $pb.PbList<ListUsersRequest>();
+  static StreamUsersRequest create() => StreamUsersRequest._();
+  StreamUsersRequest createEmptyInstance() => create();
+  static $pb.PbList<StreamUsersRequest> createRepeated() => $pb.PbList<StreamUsersRequest>();
   @$core.pragma('dart2js:noInline')
-  static ListUsersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListUsersRequest>(create);
-  static ListUsersRequest? _defaultInstance;
+  static StreamUsersRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StreamUsersRequest>(create);
+  static StreamUsersRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get applicationID => $_getSZ(0);
@@ -1747,8 +2263,8 @@ class ListEntityTypesRequest extends $pb.GeneratedMessage {
   void clearAppUserID() => $_clearField(2);
 }
 
-class AppUserSearchEntityHistoryRequest extends $pb.GeneratedMessage {
-  factory AppUserSearchEntityHistoryRequest({
+class AppUserStreamEntityHistoryRequest extends $pb.GeneratedMessage {
+  factory AppUserStreamEntityHistoryRequest({
     $4.SearchEntityHistoryRequest? searchEntityHistoryRequest,
     $core.String? applicationID,
     $core.String? appUserID,
@@ -1765,11 +2281,11 @@ class AppUserSearchEntityHistoryRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  AppUserSearchEntityHistoryRequest._() : super();
-  factory AppUserSearchEntityHistoryRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AppUserSearchEntityHistoryRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  AppUserStreamEntityHistoryRequest._() : super();
+  factory AppUserStreamEntityHistoryRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AppUserStreamEntityHistoryRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AppUserSearchEntityHistoryRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AppUserStreamEntityHistoryRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'management_services'), createEmptyInstance: create)
     ..aOM<$4.SearchEntityHistoryRequest>(1, _omitFieldNames ? '' : 'SearchEntityHistoryRequest', protoName: 'SearchEntityHistoryRequest', subBuilder: $4.SearchEntityHistoryRequest.create)
     ..aOS(2, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
     ..aOS(3, _omitFieldNames ? '' : 'AppUserID', protoName: 'AppUserID')
@@ -1780,22 +2296,22 @@ class AppUserSearchEntityHistoryRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  AppUserSearchEntityHistoryRequest clone() => AppUserSearchEntityHistoryRequest()..mergeFromMessage(this);
+  AppUserStreamEntityHistoryRequest clone() => AppUserStreamEntityHistoryRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  AppUserSearchEntityHistoryRequest copyWith(void Function(AppUserSearchEntityHistoryRequest) updates) => super.copyWith((message) => updates(message as AppUserSearchEntityHistoryRequest)) as AppUserSearchEntityHistoryRequest;
+  AppUserStreamEntityHistoryRequest copyWith(void Function(AppUserStreamEntityHistoryRequest) updates) => super.copyWith((message) => updates(message as AppUserStreamEntityHistoryRequest)) as AppUserStreamEntityHistoryRequest;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static AppUserSearchEntityHistoryRequest create() => AppUserSearchEntityHistoryRequest._();
-  AppUserSearchEntityHistoryRequest createEmptyInstance() => create();
-  static $pb.PbList<AppUserSearchEntityHistoryRequest> createRepeated() => $pb.PbList<AppUserSearchEntityHistoryRequest>();
+  static AppUserStreamEntityHistoryRequest create() => AppUserStreamEntityHistoryRequest._();
+  AppUserStreamEntityHistoryRequest createEmptyInstance() => create();
+  static $pb.PbList<AppUserStreamEntityHistoryRequest> createRepeated() => $pb.PbList<AppUserStreamEntityHistoryRequest>();
   @$core.pragma('dart2js:noInline')
-  static AppUserSearchEntityHistoryRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AppUserSearchEntityHistoryRequest>(create);
-  static AppUserSearchEntityHistoryRequest? _defaultInstance;
+  static AppUserStreamEntityHistoryRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AppUserStreamEntityHistoryRequest>(create);
+  static AppUserStreamEntityHistoryRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $4.SearchEntityHistoryRequest get searchEntityHistoryRequest => $_getN(0);

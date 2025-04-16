@@ -25,7 +25,7 @@ class ApplicationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: listifyStream(api.applicationClient.listApplications(Empty())),
+      stream: listifyStream(api.applicationClient.streamApplications(Empty())),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
@@ -77,8 +77,8 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
   Widget _buildUsersList() {
     return StreamBuilder(
       stream: listifyStream(
-        api.applicationUserClient.listUsers(
-          ListUsersRequest(applicationID: widget.application.iD),
+        api.applicationUserClient.streamUsers(
+          StreamUsersRequest(applicationID: widget.application.iD),
         ),
       ),
       builder: (context, snapshot) {
@@ -160,8 +160,8 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
   Widget _buildDomainsList() {
     return StreamBuilder(
       stream: listifyStream(
-        api.applicationDomainClient.listApplicationDomains(
-          ListApplicationDomainRequest(applicationID: widget.application.iD),
+        api.applicationDomainClient.streamApplicationDomains(
+          StreamApplicationDomainRequest(applicationID: widget.application.iD),
         ),
       ),
       builder: (context, snapshot) {

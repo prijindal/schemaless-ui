@@ -18,7 +18,7 @@ class UsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: listifyStream(api.managementUserClient.listUsers(Empty())),
+      stream: listifyStream(api.managementUserClient.streamUsers(Empty())),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);

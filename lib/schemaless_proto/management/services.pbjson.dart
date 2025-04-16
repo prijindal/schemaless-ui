@@ -90,6 +90,34 @@ final $typed_data.Uint8List verifyUserResponseDescriptor = $convert.base64Decode
     'ChJWZXJpZnlVc2VyUmVzcG9uc2USDgoCSUQYASABKAlSAklEEhgKB0lzQWRtaW4YAiABKAhSB0'
     'lzQWRtaW4=');
 
+@$core.Deprecated('Use listManagementUsersRequestDescriptor instead')
+const ListManagementUsersRequest$json = {
+  '1': 'ListManagementUsersRequest',
+  '2': [
+    {'1': 'Limit', '3': 1, '4': 1, '5': 5, '10': 'Limit'},
+    {'1': 'Page', '3': 2, '4': 1, '5': 5, '10': 'Page'},
+  ],
+};
+
+/// Descriptor for `ListManagementUsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listManagementUsersRequestDescriptor = $convert.base64Decode(
+    'ChpMaXN0TWFuYWdlbWVudFVzZXJzUmVxdWVzdBIUCgVMaW1pdBgBIAEoBVIFTGltaXQSEgoEUG'
+    'FnZRgCIAEoBVIEUGFnZQ==');
+
+@$core.Deprecated('Use listManagementUsersResponseDescriptor instead')
+const ListManagementUsersResponse$json = {
+  '1': 'ListManagementUsersResponse',
+  '2': [
+    {'1': 'Users', '3': 1, '4': 3, '5': 11, '6': '.management_services.ManagementUser', '10': 'Users'},
+    {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
+  ],
+};
+
+/// Descriptor for `ListManagementUsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listManagementUsersResponseDescriptor = $convert.base64Decode(
+    'ChtMaXN0TWFuYWdlbWVudFVzZXJzUmVzcG9uc2USOQoFVXNlcnMYASADKAsyIy5tYW5hZ2VtZW'
+    '50X3NlcnZpY2VzLk1hbmFnZW1lbnRVc2VyUgVVc2VycxIUCgVDb3VudBgCIAEoBVIFQ291bnQ=');
+
 @$core.Deprecated('Use managementUserDescriptor instead')
 const ManagementUser$json = {
   '1': 'ManagementUser',
@@ -136,6 +164,35 @@ const DeleteUserRequest$json = {
 /// Descriptor for `DeleteUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteUserRequestDescriptor = $convert.base64Decode(
     'ChFEZWxldGVVc2VyUmVxdWVzdBIOCgJJRBgBIAEoCVICSUQ=');
+
+@$core.Deprecated('Use listApplicationsRequestDescriptor instead')
+const ListApplicationsRequest$json = {
+  '1': 'ListApplicationsRequest',
+  '2': [
+    {'1': 'Limit', '3': 1, '4': 1, '5': 5, '10': 'Limit'},
+    {'1': 'Page', '3': 2, '4': 1, '5': 5, '10': 'Page'},
+  ],
+};
+
+/// Descriptor for `ListApplicationsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listApplicationsRequestDescriptor = $convert.base64Decode(
+    'ChdMaXN0QXBwbGljYXRpb25zUmVxdWVzdBIUCgVMaW1pdBgBIAEoBVIFTGltaXQSEgoEUGFnZR'
+    'gCIAEoBVIEUGFnZQ==');
+
+@$core.Deprecated('Use listApplicationsResponseDescriptor instead')
+const ListApplicationsResponse$json = {
+  '1': 'ListApplicationsResponse',
+  '2': [
+    {'1': 'Applications', '3': 1, '4': 3, '5': 11, '6': '.management_services.Application', '10': 'Applications'},
+    {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
+  ],
+};
+
+/// Descriptor for `ListApplicationsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listApplicationsResponseDescriptor = $convert.base64Decode(
+    'ChhMaXN0QXBwbGljYXRpb25zUmVzcG9uc2USRAoMQXBwbGljYXRpb25zGAEgAygLMiAubWFuYW'
+    'dlbWVudF9zZXJ2aWNlcy5BcHBsaWNhdGlvblIMQXBwbGljYXRpb25zEhQKBUNvdW50GAIgASgF'
+    'UgVDb3VudA==');
 
 @$core.Deprecated('Use applicationDescriptor instead')
 const Application$json = {
@@ -207,14 +264,43 @@ final $typed_data.Uint8List getApplicationRequestDescriptor = $convert.base64Dec
 const ListApplicationDomainRequest$json = {
   '1': 'ListApplicationDomainRequest',
   '2': [
-    {'1': 'ApplicationID', '3': 1, '4': 1, '5': 9, '10': 'ApplicationID'},
+    {'1': 'Limit', '3': 1, '4': 1, '5': 5, '10': 'Limit'},
+    {'1': 'Page', '3': 2, '4': 1, '5': 5, '10': 'Page'},
+    {'1': 'ApplicationID', '3': 3, '4': 1, '5': 9, '10': 'ApplicationID'},
   ],
 };
 
 /// Descriptor for `ListApplicationDomainRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listApplicationDomainRequestDescriptor = $convert.base64Decode(
-    'ChxMaXN0QXBwbGljYXRpb25Eb21haW5SZXF1ZXN0EiQKDUFwcGxpY2F0aW9uSUQYASABKAlSDU'
-    'FwcGxpY2F0aW9uSUQ=');
+    'ChxMaXN0QXBwbGljYXRpb25Eb21haW5SZXF1ZXN0EhQKBUxpbWl0GAEgASgFUgVMaW1pdBISCg'
+    'RQYWdlGAIgASgFUgRQYWdlEiQKDUFwcGxpY2F0aW9uSUQYAyABKAlSDUFwcGxpY2F0aW9uSUQ=');
+
+@$core.Deprecated('Use listApplicationDomainResponseDescriptor instead')
+const ListApplicationDomainResponse$json = {
+  '1': 'ListApplicationDomainResponse',
+  '2': [
+    {'1': 'Domains', '3': 1, '4': 3, '5': 11, '6': '.management_services.Domain', '10': 'Domains'},
+    {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
+  ],
+};
+
+/// Descriptor for `ListApplicationDomainResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listApplicationDomainResponseDescriptor = $convert.base64Decode(
+    'Ch1MaXN0QXBwbGljYXRpb25Eb21haW5SZXNwb25zZRI1CgdEb21haW5zGAEgAygLMhsubWFuYW'
+    'dlbWVudF9zZXJ2aWNlcy5Eb21haW5SB0RvbWFpbnMSFAoFQ291bnQYAiABKAVSBUNvdW50');
+
+@$core.Deprecated('Use streamApplicationDomainRequestDescriptor instead')
+const StreamApplicationDomainRequest$json = {
+  '1': 'StreamApplicationDomainRequest',
+  '2': [
+    {'1': 'ApplicationID', '3': 1, '4': 1, '5': 9, '10': 'ApplicationID'},
+  ],
+};
+
+/// Descriptor for `StreamApplicationDomainRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamApplicationDomainRequestDescriptor = $convert.base64Decode(
+    'Ch5TdHJlYW1BcHBsaWNhdGlvbkRvbWFpblJlcXVlc3QSJAoNQXBwbGljYXRpb25JRBgBIAEoCV'
+    'INQXBwbGljYXRpb25JRA==');
 
 @$core.Deprecated('Use domainDescriptor instead')
 const Domain$json = {
@@ -282,18 +368,48 @@ const GetDomainRequest$json = {
 final $typed_data.Uint8List getDomainRequestDescriptor = $convert.base64Decode(
     'ChBHZXREb21haW5SZXF1ZXN0EhoKCERvbWFpbklEGAEgASgJUghEb21haW5JRA==');
 
-@$core.Deprecated('Use listUsersRequestDescriptor instead')
-const ListUsersRequest$json = {
-  '1': 'ListUsersRequest',
+@$core.Deprecated('Use listApplicationUsersRequestDescriptor instead')
+const ListApplicationUsersRequest$json = {
+  '1': 'ListApplicationUsersRequest',
+  '2': [
+    {'1': 'Limit', '3': 1, '4': 1, '5': 5, '10': 'Limit'},
+    {'1': 'Page', '3': 2, '4': 1, '5': 5, '10': 'Page'},
+    {'1': 'ApplicationID', '3': 3, '4': 1, '5': 9, '10': 'ApplicationID'},
+  ],
+};
+
+/// Descriptor for `ListApplicationUsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listApplicationUsersRequestDescriptor = $convert.base64Decode(
+    'ChtMaXN0QXBwbGljYXRpb25Vc2Vyc1JlcXVlc3QSFAoFTGltaXQYASABKAVSBUxpbWl0EhIKBF'
+    'BhZ2UYAiABKAVSBFBhZ2USJAoNQXBwbGljYXRpb25JRBgDIAEoCVINQXBwbGljYXRpb25JRA==');
+
+@$core.Deprecated('Use listApplicationUsersResponseDescriptor instead')
+const ListApplicationUsersResponse$json = {
+  '1': 'ListApplicationUsersResponse',
+  '2': [
+    {'1': 'ApplicationUsers', '3': 1, '4': 3, '5': 11, '6': '.management_services.ApplicationUser', '10': 'ApplicationUsers'},
+    {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
+  ],
+};
+
+/// Descriptor for `ListApplicationUsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listApplicationUsersResponseDescriptor = $convert.base64Decode(
+    'ChxMaXN0QXBwbGljYXRpb25Vc2Vyc1Jlc3BvbnNlElAKEEFwcGxpY2F0aW9uVXNlcnMYASADKA'
+    'syJC5tYW5hZ2VtZW50X3NlcnZpY2VzLkFwcGxpY2F0aW9uVXNlclIQQXBwbGljYXRpb25Vc2Vy'
+    'cxIUCgVDb3VudBgCIAEoBVIFQ291bnQ=');
+
+@$core.Deprecated('Use streamUsersRequestDescriptor instead')
+const StreamUsersRequest$json = {
+  '1': 'StreamUsersRequest',
   '2': [
     {'1': 'ApplicationID', '3': 1, '4': 1, '5': 9, '10': 'ApplicationID'},
   ],
 };
 
-/// Descriptor for `ListUsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listUsersRequestDescriptor = $convert.base64Decode(
-    'ChBMaXN0VXNlcnNSZXF1ZXN0EiQKDUFwcGxpY2F0aW9uSUQYASABKAlSDUFwcGxpY2F0aW9uSU'
-    'Q=');
+/// Descriptor for `StreamUsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List streamUsersRequestDescriptor = $convert.base64Decode(
+    'ChJTdHJlYW1Vc2Vyc1JlcXVlc3QSJAoNQXBwbGljYXRpb25JRBgBIAEoCVINQXBwbGljYXRpb2'
+    '5JRA==');
 
 @$core.Deprecated('Use applicationToggleUserApprovalRequestDescriptor instead')
 const ApplicationToggleUserApprovalRequest$json = {
@@ -386,9 +502,9 @@ final $typed_data.Uint8List listEntityTypesRequestDescriptor = $convert.base64De
     'ChZMaXN0RW50aXR5VHlwZXNSZXF1ZXN0EiQKDUFwcGxpY2F0aW9uSUQYASABKAlSDUFwcGxpY2'
     'F0aW9uSUQSHAoJQXBwVXNlcklEGAIgASgJUglBcHBVc2VySUQ=');
 
-@$core.Deprecated('Use appUserSearchEntityHistoryRequestDescriptor instead')
-const AppUserSearchEntityHistoryRequest$json = {
-  '1': 'AppUserSearchEntityHistoryRequest',
+@$core.Deprecated('Use appUserStreamEntityHistoryRequestDescriptor instead')
+const AppUserStreamEntityHistoryRequest$json = {
+  '1': 'AppUserStreamEntityHistoryRequest',
   '2': [
     {'1': 'SearchEntityHistoryRequest', '3': 1, '4': 1, '5': 11, '6': '.types.SearchEntityHistoryRequest', '10': 'SearchEntityHistoryRequest'},
     {'1': 'ApplicationID', '3': 2, '4': 1, '5': 9, '10': 'ApplicationID'},
@@ -396,9 +512,9 @@ const AppUserSearchEntityHistoryRequest$json = {
   ],
 };
 
-/// Descriptor for `AppUserSearchEntityHistoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List appUserSearchEntityHistoryRequestDescriptor = $convert.base64Decode(
-    'CiFBcHBVc2VyU2VhcmNoRW50aXR5SGlzdG9yeVJlcXVlc3QSYQoaU2VhcmNoRW50aXR5SGlzdG'
+/// Descriptor for `AppUserStreamEntityHistoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List appUserStreamEntityHistoryRequestDescriptor = $convert.base64Decode(
+    'CiFBcHBVc2VyU3RyZWFtRW50aXR5SGlzdG9yeVJlcXVlc3QSYQoaU2VhcmNoRW50aXR5SGlzdG'
     '9yeVJlcXVlc3QYASABKAsyIS50eXBlcy5TZWFyY2hFbnRpdHlIaXN0b3J5UmVxdWVzdFIaU2Vh'
     'cmNoRW50aXR5SGlzdG9yeVJlcXVlc3QSJAoNQXBwbGljYXRpb25JRBgCIAEoCVINQXBwbGljYX'
     'Rpb25JRBIcCglBcHBVc2VySUQYAyABKAlSCUFwcFVzZXJJRA==');

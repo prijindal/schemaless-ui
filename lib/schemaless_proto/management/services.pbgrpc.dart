@@ -239,8 +239,12 @@ abstract class AuthServiceBase extends $grpc.Service {
 }
 @$pb.GrpcServiceName('management_services.ManagementUserService')
 class ManagementUserServiceClient extends $grpc.Client {
-  static final _$listUsers = $grpc.ClientMethod<$0.Empty, $5.ManagementUser>(
+  static final _$listUsers = $grpc.ClientMethod<$5.ListManagementUsersRequest, $5.ListManagementUsersResponse>(
       '/management_services.ManagementUserService/ListUsers',
+      ($5.ListManagementUsersRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $5.ListManagementUsersResponse.fromBuffer(value));
+  static final _$streamUsers = $grpc.ClientMethod<$0.Empty, $5.ManagementUser>(
+      '/management_services.ManagementUserService/StreamUsers',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $5.ManagementUser.fromBuffer(value));
   static final _$toggleUserApproval = $grpc.ClientMethod<$5.ToggleUserApprovalRequest, $0.Empty>(
@@ -258,8 +262,12 @@ class ManagementUserServiceClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseStream<$5.ManagementUser> listUsers($0.Empty request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$listUsers, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseFuture<$5.ListManagementUsersResponse> listUsers($5.ListManagementUsersRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$listUsers, request, options: options);
+  }
+
+  $grpc.ResponseStream<$5.ManagementUser> streamUsers($0.Empty request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$streamUsers, $async.Stream.fromIterable([request]), options: options);
   }
 
   $grpc.ResponseFuture<$0.Empty> toggleUserApproval($5.ToggleUserApprovalRequest request, {$grpc.CallOptions? options}) {
@@ -276,9 +284,16 @@ abstract class ManagementUserServiceBase extends $grpc.Service {
   $core.String get $name => 'management_services.ManagementUserService';
 
   ManagementUserServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.Empty, $5.ManagementUser>(
+    $addMethod($grpc.ServiceMethod<$5.ListManagementUsersRequest, $5.ListManagementUsersResponse>(
         'ListUsers',
         listUsers_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $5.ListManagementUsersRequest.fromBuffer(value),
+        ($5.ListManagementUsersResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $5.ManagementUser>(
+        'StreamUsers',
+        streamUsers_Pre,
         false,
         true,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
@@ -299,8 +314,12 @@ abstract class ManagementUserServiceBase extends $grpc.Service {
         ($0.Empty value) => value.writeToBuffer()));
   }
 
-  $async.Stream<$5.ManagementUser> listUsers_Pre($grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async* {
-    yield* listUsers($call, await $request);
+  $async.Future<$5.ListManagementUsersResponse> listUsers_Pre($grpc.ServiceCall $call, $async.Future<$5.ListManagementUsersRequest> $request) async {
+    return listUsers($call, await $request);
+  }
+
+  $async.Stream<$5.ManagementUser> streamUsers_Pre($grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async* {
+    yield* streamUsers($call, await $request);
   }
 
   $async.Future<$0.Empty> toggleUserApproval_Pre($grpc.ServiceCall $call, $async.Future<$5.ToggleUserApprovalRequest> $request) async {
@@ -311,14 +330,19 @@ abstract class ManagementUserServiceBase extends $grpc.Service {
     return deleteUser($call, await $request);
   }
 
-  $async.Stream<$5.ManagementUser> listUsers($grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$5.ListManagementUsersResponse> listUsers($grpc.ServiceCall call, $5.ListManagementUsersRequest request);
+  $async.Stream<$5.ManagementUser> streamUsers($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$0.Empty> toggleUserApproval($grpc.ServiceCall call, $5.ToggleUserApprovalRequest request);
   $async.Future<$0.Empty> deleteUser($grpc.ServiceCall call, $5.DeleteUserRequest request);
 }
 @$pb.GrpcServiceName('management_services.ApplicationService')
 class ApplicationServiceClient extends $grpc.Client {
-  static final _$listApplications = $grpc.ClientMethod<$0.Empty, $5.Application>(
+  static final _$listApplications = $grpc.ClientMethod<$5.ListApplicationsRequest, $5.ListApplicationsResponse>(
       '/management_services.ApplicationService/ListApplications',
+      ($5.ListApplicationsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $5.ListApplicationsResponse.fromBuffer(value));
+  static final _$streamApplications = $grpc.ClientMethod<$0.Empty, $5.Application>(
+      '/management_services.ApplicationService/StreamApplications',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $5.Application.fromBuffer(value));
   static final _$getApplication = $grpc.ClientMethod<$5.GetApplicationRequest, $5.Application>(
@@ -340,8 +364,12 @@ class ApplicationServiceClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseStream<$5.Application> listApplications($0.Empty request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$listApplications, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseFuture<$5.ListApplicationsResponse> listApplications($5.ListApplicationsRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$listApplications, request, options: options);
+  }
+
+  $grpc.ResponseStream<$5.Application> streamApplications($0.Empty request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$streamApplications, $async.Stream.fromIterable([request]), options: options);
   }
 
   $grpc.ResponseFuture<$5.Application> getApplication($5.GetApplicationRequest request, {$grpc.CallOptions? options}) {
@@ -362,9 +390,16 @@ abstract class ApplicationServiceBase extends $grpc.Service {
   $core.String get $name => 'management_services.ApplicationService';
 
   ApplicationServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.Empty, $5.Application>(
+    $addMethod($grpc.ServiceMethod<$5.ListApplicationsRequest, $5.ListApplicationsResponse>(
         'ListApplications',
         listApplications_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $5.ListApplicationsRequest.fromBuffer(value),
+        ($5.ListApplicationsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $5.Application>(
+        'StreamApplications',
+        streamApplications_Pre,
         false,
         true,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
@@ -392,8 +427,12 @@ abstract class ApplicationServiceBase extends $grpc.Service {
         ($0.Empty value) => value.writeToBuffer()));
   }
 
-  $async.Stream<$5.Application> listApplications_Pre($grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async* {
-    yield* listApplications($call, await $request);
+  $async.Future<$5.ListApplicationsResponse> listApplications_Pre($grpc.ServiceCall $call, $async.Future<$5.ListApplicationsRequest> $request) async {
+    return listApplications($call, await $request);
+  }
+
+  $async.Stream<$5.Application> streamApplications_Pre($grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async* {
+    yield* streamApplications($call, await $request);
   }
 
   $async.Future<$5.Application> getApplication_Pre($grpc.ServiceCall $call, $async.Future<$5.GetApplicationRequest> $request) async {
@@ -408,16 +447,21 @@ abstract class ApplicationServiceBase extends $grpc.Service {
     return deleteApplication($call, await $request);
   }
 
-  $async.Stream<$5.Application> listApplications($grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$5.ListApplicationsResponse> listApplications($grpc.ServiceCall call, $5.ListApplicationsRequest request);
+  $async.Stream<$5.Application> streamApplications($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$5.Application> getApplication($grpc.ServiceCall call, $5.GetApplicationRequest request);
   $async.Future<$5.CreateApplicationResponse> createApplication($grpc.ServiceCall call, $5.CreateApplicationRequest request);
   $async.Future<$0.Empty> deleteApplication($grpc.ServiceCall call, $5.DeleteApplicationRequest request);
 }
 @$pb.GrpcServiceName('management_services.ApplicationDomainService')
 class ApplicationDomainServiceClient extends $grpc.Client {
-  static final _$listApplicationDomains = $grpc.ClientMethod<$5.ListApplicationDomainRequest, $5.Domain>(
+  static final _$listApplicationDomains = $grpc.ClientMethod<$5.ListApplicationDomainRequest, $5.ListApplicationDomainResponse>(
       '/management_services.ApplicationDomainService/ListApplicationDomains',
       ($5.ListApplicationDomainRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $5.ListApplicationDomainResponse.fromBuffer(value));
+  static final _$streamApplicationDomains = $grpc.ClientMethod<$5.StreamApplicationDomainRequest, $5.Domain>(
+      '/management_services.ApplicationDomainService/StreamApplicationDomains',
+      ($5.StreamApplicationDomainRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $5.Domain.fromBuffer(value));
   static final _$createDomain = $grpc.ClientMethod<$5.CreateDomainRequest, $5.Domain>(
       '/management_services.ApplicationDomainService/CreateDomain',
@@ -446,8 +490,12 @@ class ApplicationDomainServiceClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseStream<$5.Domain> listApplicationDomains($5.ListApplicationDomainRequest request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$listApplicationDomains, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseFuture<$5.ListApplicationDomainResponse> listApplicationDomains($5.ListApplicationDomainRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$listApplicationDomains, request, options: options);
+  }
+
+  $grpc.ResponseStream<$5.Domain> streamApplicationDomains($5.StreamApplicationDomainRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$streamApplicationDomains, $async.Stream.fromIterable([request]), options: options);
   }
 
   $grpc.ResponseFuture<$5.Domain> createDomain($5.CreateDomainRequest request, {$grpc.CallOptions? options}) {
@@ -476,12 +524,19 @@ abstract class ApplicationDomainServiceBase extends $grpc.Service {
   $core.String get $name => 'management_services.ApplicationDomainService';
 
   ApplicationDomainServiceBase() {
-    $addMethod($grpc.ServiceMethod<$5.ListApplicationDomainRequest, $5.Domain>(
+    $addMethod($grpc.ServiceMethod<$5.ListApplicationDomainRequest, $5.ListApplicationDomainResponse>(
         'ListApplicationDomains',
         listApplicationDomains_Pre,
         false,
-        true,
+        false,
         ($core.List<$core.int> value) => $5.ListApplicationDomainRequest.fromBuffer(value),
+        ($5.ListApplicationDomainResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$5.StreamApplicationDomainRequest, $5.Domain>(
+        'StreamApplicationDomains',
+        streamApplicationDomains_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $5.StreamApplicationDomainRequest.fromBuffer(value),
         ($5.Domain value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$5.CreateDomainRequest, $5.Domain>(
         'CreateDomain',
@@ -520,8 +575,12 @@ abstract class ApplicationDomainServiceBase extends $grpc.Service {
         ($0.Empty value) => value.writeToBuffer()));
   }
 
-  $async.Stream<$5.Domain> listApplicationDomains_Pre($grpc.ServiceCall $call, $async.Future<$5.ListApplicationDomainRequest> $request) async* {
-    yield* listApplicationDomains($call, await $request);
+  $async.Future<$5.ListApplicationDomainResponse> listApplicationDomains_Pre($grpc.ServiceCall $call, $async.Future<$5.ListApplicationDomainRequest> $request) async {
+    return listApplicationDomains($call, await $request);
+  }
+
+  $async.Stream<$5.Domain> streamApplicationDomains_Pre($grpc.ServiceCall $call, $async.Future<$5.StreamApplicationDomainRequest> $request) async* {
+    yield* streamApplicationDomains($call, await $request);
   }
 
   $async.Future<$5.Domain> createDomain_Pre($grpc.ServiceCall $call, $async.Future<$5.CreateDomainRequest> $request) async {
@@ -544,7 +603,8 @@ abstract class ApplicationDomainServiceBase extends $grpc.Service {
     return deleteDomain($call, await $request);
   }
 
-  $async.Stream<$5.Domain> listApplicationDomains($grpc.ServiceCall call, $5.ListApplicationDomainRequest request);
+  $async.Future<$5.ListApplicationDomainResponse> listApplicationDomains($grpc.ServiceCall call, $5.ListApplicationDomainRequest request);
+  $async.Stream<$5.Domain> streamApplicationDomains($grpc.ServiceCall call, $5.StreamApplicationDomainRequest request);
   $async.Future<$5.Domain> createDomain($grpc.ServiceCall call, $5.CreateDomainRequest request);
   $async.Future<$5.Domain> getDomain($grpc.ServiceCall call, $5.GetDomainRequest request);
   $async.Future<$5.Domain> updateDomain($grpc.ServiceCall call, $5.UpdateDomainRequest request);
@@ -553,9 +613,13 @@ abstract class ApplicationDomainServiceBase extends $grpc.Service {
 }
 @$pb.GrpcServiceName('management_services.ApplicationUserService')
 class ApplicationUserServiceClient extends $grpc.Client {
-  static final _$listUsers = $grpc.ClientMethod<$5.ListUsersRequest, $5.ApplicationUser>(
+  static final _$listUsers = $grpc.ClientMethod<$5.ListApplicationUsersRequest, $5.ListApplicationUsersResponse>(
       '/management_services.ApplicationUserService/ListUsers',
-      ($5.ListUsersRequest value) => value.writeToBuffer(),
+      ($5.ListApplicationUsersRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $5.ListApplicationUsersResponse.fromBuffer(value));
+  static final _$streamUsers = $grpc.ClientMethod<$5.StreamUsersRequest, $5.ApplicationUser>(
+      '/management_services.ApplicationUserService/StreamUsers',
+      ($5.StreamUsersRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $5.ApplicationUser.fromBuffer(value));
   static final _$toggleUserApproval = $grpc.ClientMethod<$5.ApplicationToggleUserApprovalRequest, $0.Empty>(
       '/management_services.ApplicationUserService/ToggleUserApproval',
@@ -584,8 +648,12 @@ class ApplicationUserServiceClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseStream<$5.ApplicationUser> listUsers($5.ListUsersRequest request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$listUsers, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseFuture<$5.ListApplicationUsersResponse> listUsers($5.ListApplicationUsersRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$listUsers, request, options: options);
+  }
+
+  $grpc.ResponseStream<$5.ApplicationUser> streamUsers($5.StreamUsersRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$streamUsers, $async.Stream.fromIterable([request]), options: options);
   }
 
   $grpc.ResponseFuture<$0.Empty> toggleUserApproval($5.ApplicationToggleUserApprovalRequest request, {$grpc.CallOptions? options}) {
@@ -614,12 +682,19 @@ abstract class ApplicationUserServiceBase extends $grpc.Service {
   $core.String get $name => 'management_services.ApplicationUserService';
 
   ApplicationUserServiceBase() {
-    $addMethod($grpc.ServiceMethod<$5.ListUsersRequest, $5.ApplicationUser>(
+    $addMethod($grpc.ServiceMethod<$5.ListApplicationUsersRequest, $5.ListApplicationUsersResponse>(
         'ListUsers',
         listUsers_Pre,
         false,
+        false,
+        ($core.List<$core.int> value) => $5.ListApplicationUsersRequest.fromBuffer(value),
+        ($5.ListApplicationUsersResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$5.StreamUsersRequest, $5.ApplicationUser>(
+        'StreamUsers',
+        streamUsers_Pre,
+        false,
         true,
-        ($core.List<$core.int> value) => $5.ListUsersRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $5.StreamUsersRequest.fromBuffer(value),
         ($5.ApplicationUser value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$5.ApplicationToggleUserApprovalRequest, $0.Empty>(
         'ToggleUserApproval',
@@ -658,8 +733,12 @@ abstract class ApplicationUserServiceBase extends $grpc.Service {
         ($0.Empty value) => value.writeToBuffer()));
   }
 
-  $async.Stream<$5.ApplicationUser> listUsers_Pre($grpc.ServiceCall $call, $async.Future<$5.ListUsersRequest> $request) async* {
-    yield* listUsers($call, await $request);
+  $async.Future<$5.ListApplicationUsersResponse> listUsers_Pre($grpc.ServiceCall $call, $async.Future<$5.ListApplicationUsersRequest> $request) async {
+    return listUsers($call, await $request);
+  }
+
+  $async.Stream<$5.ApplicationUser> streamUsers_Pre($grpc.ServiceCall $call, $async.Future<$5.StreamUsersRequest> $request) async* {
+    yield* streamUsers($call, await $request);
   }
 
   $async.Future<$0.Empty> toggleUserApproval_Pre($grpc.ServiceCall $call, $async.Future<$5.ApplicationToggleUserApprovalRequest> $request) async {
@@ -682,7 +761,8 @@ abstract class ApplicationUserServiceBase extends $grpc.Service {
     return revokeKey($call, await $request);
   }
 
-  $async.Stream<$5.ApplicationUser> listUsers($grpc.ServiceCall call, $5.ListUsersRequest request);
+  $async.Future<$5.ListApplicationUsersResponse> listUsers($grpc.ServiceCall call, $5.ListApplicationUsersRequest request);
+  $async.Stream<$5.ApplicationUser> streamUsers($grpc.ServiceCall call, $5.StreamUsersRequest request);
   $async.Future<$0.Empty> toggleUserApproval($grpc.ServiceCall call, $5.ApplicationToggleUserApprovalRequest request);
   $async.Future<$5.ApplicationUserRegisterResponse> registerUser($grpc.ServiceCall call, $5.ApplicationUserRegisterRequest request);
   $async.Future<$5.ApplicationUser> getUser($grpc.ServiceCall call, $5.ApplicationUserGetRequest request);
@@ -695,9 +775,9 @@ class EntityServiceClient extends $grpc.Client {
       '/management_services.EntityService/ListEntityTypes',
       ($5.ListEntityTypesRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $4.ListEntityTypesResponse.fromBuffer(value));
-  static final _$searchEntityHistory = $grpc.ClientMethod<$5.AppUserSearchEntityHistoryRequest, $4.EntityHistory>(
-      '/management_services.EntityService/SearchEntityHistory',
-      ($5.AppUserSearchEntityHistoryRequest value) => value.writeToBuffer(),
+  static final _$streamEntityHistory = $grpc.ClientMethod<$5.AppUserStreamEntityHistoryRequest, $4.EntityHistory>(
+      '/management_services.EntityService/StreamEntityHistory',
+      ($5.AppUserStreamEntityHistoryRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $4.EntityHistory.fromBuffer(value));
   static final _$streamEntityAction = $grpc.ClientMethod<$5.AppUserEntityActionRequest, $4.EntityActionResponse>(
       '/management_services.EntityService/StreamEntityAction',
@@ -718,8 +798,8 @@ class EntityServiceClient extends $grpc.Client {
     return $createUnaryCall(_$listEntityTypes, request, options: options);
   }
 
-  $grpc.ResponseStream<$4.EntityHistory> searchEntityHistory($5.AppUserSearchEntityHistoryRequest request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$searchEntityHistory, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseStream<$4.EntityHistory> streamEntityHistory($5.AppUserStreamEntityHistoryRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$streamEntityHistory, $async.Stream.fromIterable([request]), options: options);
   }
 
   $grpc.ResponseStream<$4.EntityActionResponse> streamEntityAction($async.Stream<$5.AppUserEntityActionRequest> request, {$grpc.CallOptions? options}) {
@@ -743,12 +823,12 @@ abstract class EntityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $5.ListEntityTypesRequest.fromBuffer(value),
         ($4.ListEntityTypesResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$5.AppUserSearchEntityHistoryRequest, $4.EntityHistory>(
-        'SearchEntityHistory',
-        searchEntityHistory_Pre,
+    $addMethod($grpc.ServiceMethod<$5.AppUserStreamEntityHistoryRequest, $4.EntityHistory>(
+        'StreamEntityHistory',
+        streamEntityHistory_Pre,
         false,
         true,
-        ($core.List<$core.int> value) => $5.AppUserSearchEntityHistoryRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $5.AppUserStreamEntityHistoryRequest.fromBuffer(value),
         ($4.EntityHistory value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$5.AppUserEntityActionRequest, $4.EntityActionResponse>(
         'StreamEntityAction',
@@ -770,8 +850,8 @@ abstract class EntityServiceBase extends $grpc.Service {
     return listEntityTypes($call, await $request);
   }
 
-  $async.Stream<$4.EntityHistory> searchEntityHistory_Pre($grpc.ServiceCall $call, $async.Future<$5.AppUserSearchEntityHistoryRequest> $request) async* {
-    yield* searchEntityHistory($call, await $request);
+  $async.Stream<$4.EntityHistory> streamEntityHistory_Pre($grpc.ServiceCall $call, $async.Future<$5.AppUserStreamEntityHistoryRequest> $request) async* {
+    yield* streamEntityHistory($call, await $request);
   }
 
   $async.Future<$4.EntityActionResponse> entityAction_Pre($grpc.ServiceCall $call, $async.Future<$5.AppUserEntityActionRequest> $request) async {
@@ -779,7 +859,7 @@ abstract class EntityServiceBase extends $grpc.Service {
   }
 
   $async.Future<$4.ListEntityTypesResponse> listEntityTypes($grpc.ServiceCall call, $5.ListEntityTypesRequest request);
-  $async.Stream<$4.EntityHistory> searchEntityHistory($grpc.ServiceCall call, $5.AppUserSearchEntityHistoryRequest request);
+  $async.Stream<$4.EntityHistory> streamEntityHistory($grpc.ServiceCall call, $5.AppUserStreamEntityHistoryRequest request);
   $async.Stream<$4.EntityActionResponse> streamEntityAction($grpc.ServiceCall call, $async.Stream<$5.AppUserEntityActionRequest> request);
   $async.Future<$4.EntityActionResponse> entityAction($grpc.ServiceCall call, $5.AppUserEntityActionRequest request);
 }

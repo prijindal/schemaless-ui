@@ -25,8 +25,8 @@ class EntityHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: listifyStream(
-        api.entityClient.searchEntityHistory(
-          AppUserSearchEntityHistoryRequest(
+        api.entityClient.streamEntityHistory(
+          AppUserStreamEntityHistoryRequest(
             appUserID: user.iD,
             applicationID: application.iD,
             searchEntityHistoryRequest: SearchEntityHistoryRequest(
