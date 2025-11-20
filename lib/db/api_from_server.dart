@@ -1,14 +1,16 @@
 import 'package:grpc/grpc_connection_interface.dart';
 
+import '../schemaless_proto/application/services.pbgrpc.dart'
+    as application_service;
 import '../schemaless_proto/management/services.pbgrpc.dart';
 import 'database.dart';
 import 'get_channel/main.dart';
 
-class ApiFromServerInfo {
+class ManagementApiFromServerInfo {
   final ClientChannelBase channel;
   final CallOptions callOptions;
 
-  ApiFromServerInfo(ServerInfoData info)
+  ManagementApiFromServerInfo(ServerInfoData info)
     : channel = getChannelFromUrl(
         info.url,
         tls: info.tls,
@@ -28,10 +30,24 @@ class ApiFromServerInfo {
       ApplicationServiceClient(channel, options: callOptions);
   ApplicationDomainServiceClient get applicationDomainClient =>
       ApplicationDomainServiceClient(channel, options: callOptions);
-  ApplicationUserServiceClient get applicationUserClient =>
-      ApplicationUserServiceClient(channel, options: callOptions);
-  EntityServiceClient get entityClient =>
-      EntityServiceClient(channel, options: callOptions);
+}
+
+class ApplicationApiFromServerInfo {
+  final ClientChannelBase channel;
+  final CallOptions callOptions;
+
+  ApplicationApiFromServerInfo(ServerInfoData info)
+    : channel = getChannelFromUrl(
+        info.url,
+        tls: info.tls,
+        allowInsecure: info.allowInsecure,
+      ),
+      callOptions = CallOptions(
+        metadata: {"authorization": "Bearer ${info.jwtToken}"},
+      );
+
+  application_service.EntityServiceClient get entityClient =>
+      application_service.EntityServiceClient(channel, options: callOptions);
 }
 
 LoginServiceClient getLoginApiFromUrl(

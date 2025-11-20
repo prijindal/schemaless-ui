@@ -39,7 +39,7 @@ class _ServerScreen extends StatelessWidget {
   const _ServerScreen({required this.server});
 
   final ServerInfoData server;
-  ApiFromServerInfo get api => ApiFromServerInfo(server);
+  ManagementApiFromServerInfo get api => ManagementApiFromServerInfo(server);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class _ServerScreenScaffold extends StatefulWidget {
 
 class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   int currentPageIndex = 0;
-  ApiFromServerInfo get api => ApiFromServerInfo(widget.server);
+  ManagementApiFromServerInfo get api => ManagementApiFromServerInfo(widget.server);
 
   Future<void> _addApplication() async {
     final textController = TextEditingController();

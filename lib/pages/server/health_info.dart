@@ -10,7 +10,7 @@ class HealthInfo extends StatelessWidget {
   const HealthInfo({super.key, required this.server});
   final ServerInfoData server;
 
-  ApiFromServerInfo get api => ApiFromServerInfo(server);
+  ManagementApiFromServerInfo get api => ManagementApiFromServerInfo(server);
 
   @override
   Widget build(BuildContext context) {

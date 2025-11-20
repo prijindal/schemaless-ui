@@ -13,7 +13,7 @@ class UsersList extends StatelessWidget {
   const UsersList({super.key, required this.server});
   final ServerInfoData server;
 
-  ApiFromServerInfo get api => ApiFromServerInfo(server);
+  ManagementApiFromServerInfo get api => ManagementApiFromServerInfo(server);
 
   @override
   Widget build(BuildContext context) {

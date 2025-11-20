@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
 import '../../helpers/listify_stream.dart';
-import '../../schemaless_proto/management/services.pb.dart';
 import '../../schemaless_proto/types/entity.pb.dart';
 import '../errors/error_screen.dart';
 
@@ -12,34 +11,26 @@ class EntityHistoryScreen extends StatelessWidget {
     super.key,
     required this.server,
     required this.entity,
-    required this.application,
-    required this.user,
   });
   final ServerInfoData server;
-  final Application application;
-  final ApplicationUser user;
   final String entity;
-  ApiFromServerInfo get api => ApiFromServerInfo(server);
+  ApplicationApiFromServerInfo get api => ApplicationApiFromServerInfo(server);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: listifyStream(
         api.entityClient.streamEntityHistory(
-          AppUserStreamEntityHistoryRequest(
-            appUserID: user.iD,
-            applicationID: application.iD,
-            searchEntityHistoryRequest: SearchEntityHistoryRequest(
-              params: EntityHistoryRequestParams(
-                entityName: EntityHistoryRequestEntityNameParam(in_1: [entity]),
-              ),
-              order: [
-                EntityHistoryRequestOrder(
-                  field_1: EntityHistoryOrderField.CreatedAt,
-                  value: EntityHistoryOrderValue.DESC,
-                ),
-              ],
+          SearchEntityHistoryRequest(
+            params: EntityHistoryRequestParams(
+              entityName: EntityHistoryRequestEntityNameParam(in_1: [entity]),
             ),
+            order: [
+              EntityHistoryRequestOrder(
+                field_1: EntityHistoryOrderField.CreatedAt,
+                value: EntityHistoryOrderValue.DESC,
+              ),
+            ],
           ),
         ),
       ),

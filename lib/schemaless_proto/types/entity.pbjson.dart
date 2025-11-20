@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: types/entity.proto
-//
+// Generated from types/entity.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -23,9 +24,10 @@ const EntityHistoryOrderField$json = {
 };
 
 /// Descriptor for `EntityHistoryOrderField`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List entityHistoryOrderFieldDescriptor = $convert.base64Decode(
-    'ChdFbnRpdHlIaXN0b3J5T3JkZXJGaWVsZBINCglDcmVhdGVkQXQQABINCglVcGRhdGVkQXQQAQ'
-    '==');
+final $typed_data.Uint8List entityHistoryOrderFieldDescriptor =
+    $convert.base64Decode(
+        'ChdFbnRpdHlIaXN0b3J5T3JkZXJGaWVsZBINCglDcmVhdGVkQXQQABINCglVcGRhdGVkQXQQAQ'
+        '==');
 
 @$core.Deprecated('Use entityHistoryOrderValueDescriptor instead')
 const EntityHistoryOrderValue$json = {
@@ -37,8 +39,9 @@ const EntityHistoryOrderValue$json = {
 };
 
 /// Descriptor for `EntityHistoryOrderValue`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List entityHistoryOrderValueDescriptor = $convert.base64Decode(
-    'ChdFbnRpdHlIaXN0b3J5T3JkZXJWYWx1ZRIHCgNBU0MQABIICgRERVNDEAE=');
+final $typed_data.Uint8List entityHistoryOrderValueDescriptor =
+    $convert.base64Decode(
+        'ChdFbnRpdHlIaXN0b3J5T3JkZXJWYWx1ZRIHCgNBU0MQABIICgRERVNDEAE=');
 
 @$core.Deprecated('Use entityActionDescriptor instead')
 const EntityAction$json = {
@@ -64,8 +67,9 @@ const EntityActionResponseStatus$json = {
 };
 
 /// Descriptor for `EntityActionResponseStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List entityActionResponseStatusDescriptor = $convert.base64Decode(
-    'ChpFbnRpdHlBY3Rpb25SZXNwb25zZVN0YXR1cxILCgdTdWNjZXNzEAASCQoFRXJyb3IQAQ==');
+final $typed_data.Uint8List entityActionResponseStatusDescriptor =
+    $convert.base64Decode(
+        'ChpFbnRpdHlBY3Rpb25SZXNwb25zZVN0YXR1cxILCgdTdWNjZXNzEAASCQoFRXJyb3IQAQ==');
 
 @$core.Deprecated('Use listEntityTypesResponseDescriptor instead')
 const ListEntityTypesResponse$json = {
@@ -76,16 +80,31 @@ const ListEntityTypesResponse$json = {
 };
 
 /// Descriptor for `ListEntityTypesResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listEntityTypesResponseDescriptor = $convert.base64Decode(
-    'ChdMaXN0RW50aXR5VHlwZXNSZXNwb25zZRIeCgpFbnRpdHlUeXBlGAEgAygJUgpFbnRpdHlUeX'
-    'Bl');
+final $typed_data.Uint8List listEntityTypesResponseDescriptor =
+    $convert.base64Decode(
+        'ChdMaXN0RW50aXR5VHlwZXNSZXNwb25zZRIeCgpFbnRpdHlUeXBlGAEgAygJUgpFbnRpdHlUeX'
+        'Bl');
 
 @$core.Deprecated('Use entityHistoryRequestOrderDescriptor instead')
 const EntityHistoryRequestOrder$json = {
   '1': 'EntityHistoryRequestOrder',
   '2': [
-    {'1': 'Field', '3': 1, '4': 1, '5': 14, '6': '.types.EntityHistoryOrderField', '10': 'Field'},
-    {'1': 'Value', '3': 2, '4': 1, '5': 14, '6': '.types.EntityHistoryOrderValue', '10': 'Value'},
+    {
+      '1': 'Field',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.types.EntityHistoryOrderField',
+      '10': 'Field'
+    },
+    {
+      '1': 'Value',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.types.EntityHistoryOrderValue',
+      '10': 'Value'
+    },
   ],
 };
 
@@ -99,16 +118,31 @@ final $typed_data.Uint8List entityHistoryRequestOrderDescriptor = $convert.base6
 const EntityHistoryRequestDateParam$json = {
   '1': 'EntityHistoryRequestDateParam',
   '2': [
-    {'1': 'gte', '3': 1, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'gte'},
-    {'1': 'lte', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lte'},
+    {
+      '1': 'gte',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'gte'
+    },
+    {
+      '1': 'lte',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lte'
+    },
   ],
 };
 
 /// Descriptor for `EntityHistoryRequestDateParam`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List entityHistoryRequestDateParamDescriptor = $convert.base64Decode(
-    'Ch1FbnRpdHlIaXN0b3J5UmVxdWVzdERhdGVQYXJhbRIsCgNndGUYASABKAsyGi5nb29nbGUucH'
-    'JvdG9idWYuVGltZXN0YW1wUgNndGUSLAoDbHRlGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRp'
-    'bWVzdGFtcFIDbHRl');
+final $typed_data.Uint8List entityHistoryRequestDateParamDescriptor =
+    $convert.base64Decode(
+        'Ch1FbnRpdHlIaXN0b3J5UmVxdWVzdERhdGVQYXJhbRIsCgNndGUYASABKAsyGi5nb29nbGUucH'
+        'JvdG9idWYuVGltZXN0YW1wUgNndGUSLAoDbHRlGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRp'
+        'bWVzdGFtcFIDbHRl');
 
 @$core.Deprecated('Use entityHistoryRequestHostIDParamDescriptor instead')
 const EntityHistoryRequestHostIDParam$json = {
@@ -120,9 +154,10 @@ const EntityHistoryRequestHostIDParam$json = {
 };
 
 /// Descriptor for `EntityHistoryRequestHostIDParam`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List entityHistoryRequestHostIDParamDescriptor = $convert.base64Decode(
-    'Ch9FbnRpdHlIaXN0b3J5UmVxdWVzdEhvc3RJRFBhcmFtEg4KAmVxGAEgASgJUgJlcRIQCgNuZX'
-    'EYAiABKAlSA25lcQ==');
+final $typed_data.Uint8List entityHistoryRequestHostIDParamDescriptor =
+    $convert.base64Decode(
+        'Ch9FbnRpdHlIaXN0b3J5UmVxdWVzdEhvc3RJRFBhcmFtEg4KAmVxGAEgASgJUgJlcRIQCgNuZX'
+        'EYAiABKAlSA25lcQ==');
 
 @$core.Deprecated('Use entityHistoryRequestEntityNameParamDescriptor instead')
 const EntityHistoryRequestEntityNameParam$json = {
@@ -133,16 +168,38 @@ const EntityHistoryRequestEntityNameParam$json = {
 };
 
 /// Descriptor for `EntityHistoryRequestEntityNameParam`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List entityHistoryRequestEntityNameParamDescriptor = $convert.base64Decode(
-    'CiNFbnRpdHlIaXN0b3J5UmVxdWVzdEVudGl0eU5hbWVQYXJhbRIOCgJpbhgBIAMoCVICaW4=');
+final $typed_data.Uint8List entityHistoryRequestEntityNameParamDescriptor =
+    $convert.base64Decode(
+        'CiNFbnRpdHlIaXN0b3J5UmVxdWVzdEVudGl0eU5hbWVQYXJhbRIOCgJpbhgBIAMoCVICaW4=');
 
 @$core.Deprecated('Use entityHistoryRequestParamsDescriptor instead')
 const EntityHistoryRequestParams$json = {
   '1': 'EntityHistoryRequestParams',
   '2': [
-    {'1': 'CreatedAt', '3': 1, '4': 1, '5': 11, '6': '.types.EntityHistoryRequestDateParam', '10': 'CreatedAt'},
-    {'1': 'HostID', '3': 2, '4': 1, '5': 11, '6': '.types.EntityHistoryRequestHostIDParam', '10': 'HostID'},
-    {'1': 'EntityName', '3': 3, '4': 1, '5': 11, '6': '.types.EntityHistoryRequestEntityNameParam', '10': 'EntityName'},
+    {
+      '1': 'CreatedAt',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.types.EntityHistoryRequestDateParam',
+      '10': 'CreatedAt'
+    },
+    {
+      '1': 'HostID',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.types.EntityHistoryRequestHostIDParam',
+      '10': 'HostID'
+    },
+    {
+      '1': 'EntityName',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.types.EntityHistoryRequestEntityNameParam',
+      '10': 'EntityName'
+    },
   ],
 };
 
@@ -158,16 +215,31 @@ final $typed_data.Uint8List entityHistoryRequestParamsDescriptor = $convert.base
 const SearchEntityHistoryRequest$json = {
   '1': 'SearchEntityHistoryRequest',
   '2': [
-    {'1': 'Params', '3': 1, '4': 1, '5': 11, '6': '.types.EntityHistoryRequestParams', '10': 'Params'},
-    {'1': 'Order', '3': 2, '4': 3, '5': 11, '6': '.types.EntityHistoryRequestOrder', '10': 'Order'},
+    {
+      '1': 'Params',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.types.EntityHistoryRequestParams',
+      '10': 'Params'
+    },
+    {
+      '1': 'Order',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.types.EntityHistoryRequestOrder',
+      '10': 'Order'
+    },
   ],
 };
 
 /// Descriptor for `SearchEntityHistoryRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List searchEntityHistoryRequestDescriptor = $convert.base64Decode(
-    'ChpTZWFyY2hFbnRpdHlIaXN0b3J5UmVxdWVzdBI5CgZQYXJhbXMYASABKAsyIS50eXBlcy5Fbn'
-    'RpdHlIaXN0b3J5UmVxdWVzdFBhcmFtc1IGUGFyYW1zEjYKBU9yZGVyGAIgAygLMiAudHlwZXMu'
-    'RW50aXR5SGlzdG9yeVJlcXVlc3RPcmRlclIFT3JkZXI=');
+final $typed_data.Uint8List searchEntityHistoryRequestDescriptor =
+    $convert.base64Decode(
+        'ChpTZWFyY2hFbnRpdHlIaXN0b3J5UmVxdWVzdBI5CgZQYXJhbXMYASABKAsyIS50eXBlcy5Fbn'
+        'RpdHlIaXN0b3J5UmVxdWVzdFBhcmFtc1IGUGFyYW1zEjYKBU9yZGVyGAIgAygLMiAudHlwZXMu'
+        'RW50aXR5SGlzdG9yeVJlcXVlc3RPcmRlclIFT3JkZXI=');
 
 @$core.Deprecated('Use entityHistoryDescriptor instead')
 const EntityHistory$json = {
@@ -175,11 +247,32 @@ const EntityHistory$json = {
   '2': [
     {'1': 'ID', '3': 1, '4': 1, '5': 9, '10': 'ID'},
     {'1': 'EntityName', '3': 2, '4': 1, '5': 9, '10': 'EntityName'},
-    {'1': 'CreatedAt', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'CreatedAt'},
-    {'1': 'UpdatedAt', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'UpdatedAt'},
+    {
+      '1': 'CreatedAt',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'CreatedAt'
+    },
+    {
+      '1': 'UpdatedAt',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'UpdatedAt'
+    },
     {'1': 'HostID', '3': 5, '4': 1, '5': 9, '10': 'HostID'},
     {'1': 'EntityID', '3': 6, '4': 1, '5': 9, '10': 'EntityID'},
-    {'1': 'Action', '3': 7, '4': 1, '5': 14, '6': '.types.EntityAction', '10': 'Action'},
+    {
+      '1': 'Action',
+      '3': 7,
+      '4': 1,
+      '5': 14,
+      '6': '.types.EntityAction',
+      '10': 'Action'
+    },
     {'1': 'Payload', '3': 8, '4': 1, '5': 12, '10': 'Payload'},
   ],
 };
@@ -200,8 +293,22 @@ const EntityActionRequest$json = {
     {'1': 'HostID', '3': 1, '4': 1, '5': 9, '10': 'HostID'},
     {'1': 'ActionId', '3': 2, '4': 1, '5': 9, '10': 'ActionId'},
     {'1': 'EntityName', '3': 3, '4': 1, '5': 9, '10': 'EntityName'},
-    {'1': 'Action', '3': 4, '4': 1, '5': 14, '6': '.types.EntityAction', '10': 'Action'},
-    {'1': 'CreatedAt', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'CreatedAt'},
+    {
+      '1': 'Action',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.types.EntityAction',
+      '10': 'Action'
+    },
+    {
+      '1': 'CreatedAt',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'CreatedAt'
+    },
     {'1': 'EntityId', '3': 6, '4': 1, '5': 9, '10': 'EntityId'},
     {'1': 'Payload', '3': 7, '4': 1, '5': 12, '10': 'Payload'},
     {'1': 'RequestID', '3': 8, '4': 1, '5': 9, '10': 'RequestID'},
@@ -222,7 +329,14 @@ const EntityActionResponse$json = {
   '1': 'EntityActionResponse',
   '2': [
     {'1': 'RequestID', '3': 1, '4': 1, '5': 9, '10': 'RequestID'},
-    {'1': 'Status', '3': 2, '4': 1, '5': 14, '6': '.types.EntityActionResponseStatus', '10': 'Status'},
+    {
+      '1': 'Status',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.types.EntityActionResponseStatus',
+      '10': 'Status'
+    },
   ],
 };
 
@@ -230,4 +344,3 @@ const EntityActionResponse$json = {
 final $typed_data.Uint8List entityActionResponseDescriptor = $convert.base64Decode(
     'ChRFbnRpdHlBY3Rpb25SZXNwb25zZRIcCglSZXF1ZXN0SUQYASABKAlSCVJlcXVlc3RJRBI5Cg'
     'ZTdGF0dXMYAiABKA4yIS50eXBlcy5FbnRpdHlBY3Rpb25SZXNwb25zZVN0YXR1c1IGU3RhdHVz');
-
