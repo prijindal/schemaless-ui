@@ -8,33 +8,33 @@ permissions:
   attestations: write
 
 jobs:
-  test-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable" # or: 'beta', 'dev' or 'master'
-          architecture: x64 # optional, x64 or arm64
-          cache: true
-          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+  # test-windows:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable" # or: 'beta', 'dev' or 'master'
+  #         architecture: x64 # optional, x64 or arm64
+  #         cache: true
+  #         cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+  #         cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: build/
-          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+  #     - name: Cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: build/
+  #         key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
       
-      - run: flutter --version
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: flutter test integration_test -d windows -r github --coverage
-      - uses: codecov/codecov-action@v5
-        with:
-          flags: windows
-        env: 
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  #     - run: flutter --version
+  #     - run: flutter pub get
+  #     - run: flutter analyze
+  #     - run: flutter test integration_test -d windows -r github --coverage
+  #     - uses: codecov/codecov-action@v5
+  #       with:
+  #         flags: windows
+  #       env: 
+  #         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test-android:
     runs-on: ubuntu-latest
@@ -92,7 +92,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test-linux:
-    runs-on: ubuntu-22.04 # libwebkit2gtk-4.1 is not compatible with flutter
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -187,48 +187,48 @@ jobs:
           retention-days: 1
           path: build/app/outputs/apk/release/output-metadata.json
 
-  github-release:
-    needs: [test-linux, test-windows, test-android, android-apk, linux, windows]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable" # or: 'beta', 'dev' or 'master'
-          architecture: x64 # optional, x64 or arm64
-          cache: true
-          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
-      - name: Download apks from android build
-        uses: actions/download-artifact@v4
-        with:
-          pattern: android-*
-          merge-multiple: true
-          path: build/android/
-      - name: Download linux build
-        uses: actions/download-artifact@v4
-        with:
-          name: linux
-          path: build/linux/
-      - name: Download windows build
-        uses: actions/download-artifact@v4
-        with:
-          name: windows
-          path: build/windows/
-      # - name: Generate artifact attestation
-      #   uses: actions/attest-build-provenance@v2
-      #   with:
-      #     subject-path: |
-      #       build/android/*
-      #       build/linux/*
-      #       build/windows/*
-      - run: flutter pub get
-      - run: dart run create_release.dart
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_PATHS: build/android/,build/linux/,build/windows/
-          INCREMENT_VERSION: 186
+  # github-release:
+  #   needs: [test-linux, test-windows, test-android, android-apk, linux, windows]
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable" # or: 'beta', 'dev' or 'master'
+  #         architecture: x64 # optional, x64 or arm64
+  #         cache: true
+  #         cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+  #         cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+  #     - name: Download apks from android build
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         pattern: android-*
+  #         merge-multiple: true
+  #         path: build/android/
+  #     - name: Download linux build
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: linux
+  #         path: build/linux/
+  #     - name: Download windows build
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: windows
+  #         path: build/windows/
+  #     # - name: Generate artifact attestation
+  #     #   uses: actions/attest-build-provenance@v2
+  #     #   with:
+  #     #     subject-path: |
+  #     #       build/android/*
+  #     #       build/linux/*
+  #     #       build/windows/*
+  #     - run: flutter pub get
+  #     - run: dart run create_release.dart
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         RELEASE_PATHS: build/android/,build/linux/,build/windows/
+  #         INCREMENT_VERSION: 186
 
   android-appbundle:
     runs-on: ubuntu-latest
@@ -322,7 +322,7 @@ jobs:
           projectId: schemaless-prijindal
           
   linux:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -351,89 +351,89 @@ jobs:
           retention-days: 1
           path: linux.tar.gz
     
-  macos:
-    runs-on: macos-latest
-    # Skipping macos since we are not releasing
-    if: github.ref == 'refs/heads/**macos**'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable" # or: 'beta', 'dev' or 'master'
-          architecture: x64 # optional, x64 or arm64
-          cache: true
-          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+  # macos:
+  #   runs-on: macos-latest
+  #   # Skipping macos since we are not releasing
+  #   if: github.ref == 'refs/heads/**macos**'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable" # or: 'beta', 'dev' or 'master'
+  #         architecture: x64 # optional, x64 or arm64
+  #         cache: true
+  #         cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+  #         cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: build/
-          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+  #     - name: Cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: build/
+  #         key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
       
-      - run: flutter pub get
-      - run: flutter build macos --release
-      - uses: actions/upload-artifact@v4
-        with:
-          name: macos
-          retention-days: 1
-          path: build/macos/Build/Products/Release/schemaless.app
+  #     - run: flutter pub get
+  #     - run: flutter build macos --release
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: macos
+  #         retention-days: 1
+  #         path: build/macos/Build/Products/Release/schemaless.app
 
-  ios:
-    runs-on: macos-latest
-    # Skipping ios since we are not releasing
-    if: github.ref == 'refs/heads/**ios**'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable" # or: 'beta', 'dev' or 'master'
-          architecture: x64 # optional, x64 or arm64
-          cache: true
-          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+  # ios:
+  #   runs-on: macos-latest
+  #   # Skipping ios since we are not releasing
+  #   if: github.ref == 'refs/heads/**ios**'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable" # or: 'beta', 'dev' or 'master'
+  #         architecture: x64 # optional, x64 or arm64
+  #         cache: true
+  #         cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+  #         cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: build/
-          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+  #     - name: Cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: build/
+  #         key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
       
-      - run: flutter pub get
-      - run: flutter build ios --release --no-codesign --release
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ios
-          retention-days: 1
-          path: build/ios
+  #     - run: flutter pub get
+  #     - run: flutter build ios --release --no-codesign --release
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: ios
+  #         retention-days: 1
+  #         path: build/ios
 
-  windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable" # or: 'beta', 'dev' or 'master'
-          architecture: x64 # optional, x64 or arm64
-          cache: true
-          cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+  # windows:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable" # or: 'beta', 'dev' or 'master'
+  #         architecture: x64 # optional, x64 or arm64
+  #         cache: true
+  #         cache-key: 'flutter-${{ github.job }}-:os:-:channel:-:version:-:arch:-:hash:'
+  #         cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
       
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: build/
-          key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
+  #     - name: Cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: build/
+  #         key: ${{ runner.os }}-flutter-${{ github.job }}-${{ hashFiles('pubspec.lock') }}
       
-      - run: flutter pub get
-      - run: flutter build windows --release
-      - name: Compile .ISS to .EXE Installer
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
-        with:
-          path: windows.iss
-          options: /O+
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows
-          retention-days: 1
-          path: Output/
+  #     - run: flutter pub get
+  #     - run: flutter build windows --release
+  #     - name: Compile .ISS to .EXE Installer
+  #       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+  #       with:
+  #         path: windows.iss
+  #         options: /O+
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: windows
+  #         retention-days: 1
+  #         path: Output/

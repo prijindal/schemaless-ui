@@ -18,7 +18,6 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../google/protobuf/empty.pb.dart' as $0;
 import '../types/health.pb.dart' as $1;
-import '../types/login.pb.dart' as $3;
 import 'services.pb.dart' as $2;
 
 export 'services.pb.dart';
@@ -100,138 +99,6 @@ abstract class HealthServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Empty request);
 }
 
-@$pb.GrpcServiceName('management_services.LoginService')
-class LoginServiceClient extends $grpc.Client {
-  /// The hostname for this service.
-  static const $core.String defaultHost = '';
-
-  /// OAuth scopes needed for the client.
-  static const $core.List<$core.String> oauthScopes = [
-    '',
-  ];
-
-  LoginServiceClient(super.channel, {super.options, super.interceptors});
-
-  $grpc.ResponseFuture<$3.LoginResponse> loginUser(
-    $3.LoginRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$loginUser, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$2.RegisterResponse> initialize(
-    $3.LoginRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$initialize, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$2.RegisterResponse> registerUser(
-    $3.LoginRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$registerUser, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$2.InitializedResponse> isInitialized(
-    $0.Empty request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$isInitialized, request, options: options);
-  }
-
-  // method descriptors
-
-  static final _$loginUser =
-      $grpc.ClientMethod<$3.LoginRequest, $3.LoginResponse>(
-          '/management_services.LoginService/LoginUser',
-          ($3.LoginRequest value) => value.writeToBuffer(),
-          $3.LoginResponse.fromBuffer);
-  static final _$initialize =
-      $grpc.ClientMethod<$3.LoginRequest, $2.RegisterResponse>(
-          '/management_services.LoginService/Initialize',
-          ($3.LoginRequest value) => value.writeToBuffer(),
-          $2.RegisterResponse.fromBuffer);
-  static final _$registerUser =
-      $grpc.ClientMethod<$3.LoginRequest, $2.RegisterResponse>(
-          '/management_services.LoginService/RegisterUser',
-          ($3.LoginRequest value) => value.writeToBuffer(),
-          $2.RegisterResponse.fromBuffer);
-  static final _$isInitialized =
-      $grpc.ClientMethod<$0.Empty, $2.InitializedResponse>(
-          '/management_services.LoginService/IsInitialized',
-          ($0.Empty value) => value.writeToBuffer(),
-          $2.InitializedResponse.fromBuffer);
-}
-
-@$pb.GrpcServiceName('management_services.LoginService')
-abstract class LoginServiceBase extends $grpc.Service {
-  $core.String get $name => 'management_services.LoginService';
-
-  LoginServiceBase() {
-    $addMethod($grpc.ServiceMethod<$3.LoginRequest, $3.LoginResponse>(
-        'LoginUser',
-        loginUser_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $3.LoginRequest.fromBuffer(value),
-        ($3.LoginResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$3.LoginRequest, $2.RegisterResponse>(
-        'Initialize',
-        initialize_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $3.LoginRequest.fromBuffer(value),
-        ($2.RegisterResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$3.LoginRequest, $2.RegisterResponse>(
-        'RegisterUser',
-        registerUser_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $3.LoginRequest.fromBuffer(value),
-        ($2.RegisterResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $2.InitializedResponse>(
-        'IsInitialized',
-        isInitialized_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($2.InitializedResponse value) => value.writeToBuffer()));
-  }
-
-  $async.Future<$3.LoginResponse> loginUser_Pre(
-      $grpc.ServiceCall $call, $async.Future<$3.LoginRequest> $request) async {
-    return loginUser($call, await $request);
-  }
-
-  $async.Future<$3.LoginResponse> loginUser(
-      $grpc.ServiceCall call, $3.LoginRequest request);
-
-  $async.Future<$2.RegisterResponse> initialize_Pre(
-      $grpc.ServiceCall $call, $async.Future<$3.LoginRequest> $request) async {
-    return initialize($call, await $request);
-  }
-
-  $async.Future<$2.RegisterResponse> initialize(
-      $grpc.ServiceCall call, $3.LoginRequest request);
-
-  $async.Future<$2.RegisterResponse> registerUser_Pre(
-      $grpc.ServiceCall $call, $async.Future<$3.LoginRequest> $request) async {
-    return registerUser($call, await $request);
-  }
-
-  $async.Future<$2.RegisterResponse> registerUser(
-      $grpc.ServiceCall call, $3.LoginRequest request);
-
-  $async.Future<$2.InitializedResponse> isInitialized_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
-    return isInitialized($call, await $request);
-  }
-
-  $async.Future<$2.InitializedResponse> isInitialized(
-      $grpc.ServiceCall call, $0.Empty request);
-}
-
 @$pb.GrpcServiceName('management_services.AuthService')
 class AuthServiceClient extends $grpc.Client {
   /// The hostname for this service.
@@ -251,13 +118,6 @@ class AuthServiceClient extends $grpc.Client {
     return $createUnaryCall(_$verifyUser, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.Empty> revokeKey(
-    $0.Empty request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$revokeKey, request, options: options);
-  }
-
   // method descriptors
 
   static final _$verifyUser =
@@ -265,10 +125,6 @@ class AuthServiceClient extends $grpc.Client {
           '/management_services.AuthService/VerifyUser',
           ($0.Empty value) => value.writeToBuffer(),
           $2.VerifyUserResponse.fromBuffer);
-  static final _$revokeKey = $grpc.ClientMethod<$0.Empty, $0.Empty>(
-      '/management_services.AuthService/RevokeKey',
-      ($0.Empty value) => value.writeToBuffer(),
-      $0.Empty.fromBuffer);
 }
 
 @$pb.GrpcServiceName('management_services.AuthService')
@@ -283,13 +139,6 @@ abstract class AuthServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($2.VerifyUserResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $0.Empty>(
-        'RevokeKey',
-        revokeKey_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($0.Empty value) => value.writeToBuffer()));
   }
 
   $async.Future<$2.VerifyUserResponse> verifyUser_Pre(
@@ -299,151 +148,6 @@ abstract class AuthServiceBase extends $grpc.Service {
 
   $async.Future<$2.VerifyUserResponse> verifyUser(
       $grpc.ServiceCall call, $0.Empty request);
-
-  $async.Future<$0.Empty> revokeKey_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
-    return revokeKey($call, await $request);
-  }
-
-  $async.Future<$0.Empty> revokeKey($grpc.ServiceCall call, $0.Empty request);
-}
-
-@$pb.GrpcServiceName('management_services.ManagementUserService')
-class ManagementUserServiceClient extends $grpc.Client {
-  /// The hostname for this service.
-  static const $core.String defaultHost = '';
-
-  /// OAuth scopes needed for the client.
-  static const $core.List<$core.String> oauthScopes = [
-    '',
-  ];
-
-  ManagementUserServiceClient(super.channel,
-      {super.options, super.interceptors});
-
-  $grpc.ResponseFuture<$2.ListManagementUsersResponse> listUsers(
-    $2.ListManagementUsersRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$listUsers, request, options: options);
-  }
-
-  $grpc.ResponseStream<$2.ManagementUser> streamUsers(
-    $0.Empty request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createStreamingCall(
-        _$streamUsers, $async.Stream.fromIterable([request]),
-        options: options);
-  }
-
-  $grpc.ResponseFuture<$0.Empty> toggleUserApproval(
-    $2.ToggleUserApprovalRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$toggleUserApproval, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$0.Empty> deleteUser(
-    $2.DeleteUserRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$deleteUser, request, options: options);
-  }
-
-  // method descriptors
-
-  static final _$listUsers = $grpc.ClientMethod<$2.ListManagementUsersRequest,
-          $2.ListManagementUsersResponse>(
-      '/management_services.ManagementUserService/ListUsers',
-      ($2.ListManagementUsersRequest value) => value.writeToBuffer(),
-      $2.ListManagementUsersResponse.fromBuffer);
-  static final _$streamUsers = $grpc.ClientMethod<$0.Empty, $2.ManagementUser>(
-      '/management_services.ManagementUserService/StreamUsers',
-      ($0.Empty value) => value.writeToBuffer(),
-      $2.ManagementUser.fromBuffer);
-  static final _$toggleUserApproval =
-      $grpc.ClientMethod<$2.ToggleUserApprovalRequest, $0.Empty>(
-          '/management_services.ManagementUserService/ToggleUserApproval',
-          ($2.ToggleUserApprovalRequest value) => value.writeToBuffer(),
-          $0.Empty.fromBuffer);
-  static final _$deleteUser =
-      $grpc.ClientMethod<$2.DeleteUserRequest, $0.Empty>(
-          '/management_services.ManagementUserService/DeleteUser',
-          ($2.DeleteUserRequest value) => value.writeToBuffer(),
-          $0.Empty.fromBuffer);
-}
-
-@$pb.GrpcServiceName('management_services.ManagementUserService')
-abstract class ManagementUserServiceBase extends $grpc.Service {
-  $core.String get $name => 'management_services.ManagementUserService';
-
-  ManagementUserServiceBase() {
-    $addMethod($grpc.ServiceMethod<$2.ListManagementUsersRequest,
-            $2.ListManagementUsersResponse>(
-        'ListUsers',
-        listUsers_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) =>
-            $2.ListManagementUsersRequest.fromBuffer(value),
-        ($2.ListManagementUsersResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $2.ManagementUser>(
-        'StreamUsers',
-        streamUsers_Pre,
-        false,
-        true,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($2.ManagementUser value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.ToggleUserApprovalRequest, $0.Empty>(
-        'ToggleUserApproval',
-        toggleUserApproval_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) =>
-            $2.ToggleUserApprovalRequest.fromBuffer(value),
-        ($0.Empty value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.DeleteUserRequest, $0.Empty>(
-        'DeleteUser',
-        deleteUser_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $2.DeleteUserRequest.fromBuffer(value),
-        ($0.Empty value) => value.writeToBuffer()));
-  }
-
-  $async.Future<$2.ListManagementUsersResponse> listUsers_Pre(
-      $grpc.ServiceCall $call,
-      $async.Future<$2.ListManagementUsersRequest> $request) async {
-    return listUsers($call, await $request);
-  }
-
-  $async.Future<$2.ListManagementUsersResponse> listUsers(
-      $grpc.ServiceCall call, $2.ListManagementUsersRequest request);
-
-  $async.Stream<$2.ManagementUser> streamUsers_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async* {
-    yield* streamUsers($call, await $request);
-  }
-
-  $async.Stream<$2.ManagementUser> streamUsers(
-      $grpc.ServiceCall call, $0.Empty request);
-
-  $async.Future<$0.Empty> toggleUserApproval_Pre($grpc.ServiceCall $call,
-      $async.Future<$2.ToggleUserApprovalRequest> $request) async {
-    return toggleUserApproval($call, await $request);
-  }
-
-  $async.Future<$0.Empty> toggleUserApproval(
-      $grpc.ServiceCall call, $2.ToggleUserApprovalRequest request);
-
-  $async.Future<$0.Empty> deleteUser_Pre($grpc.ServiceCall $call,
-      $async.Future<$2.DeleteUserRequest> $request) async {
-    return deleteUser($call, await $request);
-  }
-
-  $async.Future<$0.Empty> deleteUser(
-      $grpc.ServiceCall call, $2.DeleteUserRequest request);
 }
 
 @$pb.GrpcServiceName('management_services.ApplicationService')

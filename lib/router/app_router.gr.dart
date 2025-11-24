@@ -10,7 +10,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i4;
-import 'package:flutter/material.dart' as _i5;
+import 'package:flutter/foundation.dart' as _i5;
+import 'package:flutter/material.dart' as _i6;
 import 'package:schemaless/pages/newserver/index.dart' as _i1;
 import 'package:schemaless/pages/server/server_screen.dart' as _i2;
 import 'package:schemaless/pages/servers/servers_screen.dart' as _i3;
@@ -47,13 +48,23 @@ class NewServerRouteArgs {
   String toString() {
     return 'NewServerRouteArgs{key: $key}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! NewServerRouteArgs) return false;
+    return key == other.key;
+  }
+
+  @override
+  int get hashCode => key.hashCode;
 }
 
 /// generated route for
 /// [_i2.ServerScreen]
 class ServerRoute extends _i4.PageRouteInfo<ServerRouteArgs> {
   ServerRoute({
-    _i5.Key? key,
+    _i6.Key? key,
     required String serverId,
     List<_i4.PageRouteInfo>? children,
   }) : super(
@@ -81,7 +92,7 @@ class ServerRoute extends _i4.PageRouteInfo<ServerRouteArgs> {
 class ServerRouteArgs {
   const ServerRouteArgs({this.key, required this.serverId});
 
-  final _i5.Key? key;
+  final _i6.Key? key;
 
   final String serverId;
 
@@ -89,6 +100,16 @@ class ServerRouteArgs {
   String toString() {
     return 'ServerRouteArgs{key: $key, serverId: $serverId}';
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ServerRouteArgs) return false;
+    return key == other.key && serverId == other.serverId;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ serverId.hashCode;
 }
 
 /// generated route for

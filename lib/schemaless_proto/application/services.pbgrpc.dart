@@ -17,10 +17,9 @@ import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../google/protobuf/empty.pb.dart' as $0;
-import '../types/entity.pb.dart' as $4;
+import '../types/entity.pb.dart' as $3;
 import '../types/health.pb.dart' as $1;
-import '../types/login.pb.dart' as $2;
-import 'services.pb.dart' as $3;
+import 'services.pb.dart' as $2;
 
 export 'services.pb.dart';
 
@@ -74,84 +73,6 @@ abstract class HealthServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.Empty request);
 }
 
-@$pb.GrpcServiceName('application_services.LoginService')
-class LoginServiceClient extends $grpc.Client {
-  /// The hostname for this service.
-  static const $core.String defaultHost = '';
-
-  /// OAuth scopes needed for the client.
-  static const $core.List<$core.String> oauthScopes = [
-    '',
-  ];
-
-  LoginServiceClient(super.channel, {super.options, super.interceptors});
-
-  $grpc.ResponseFuture<$2.LoginResponse> loginUser(
-    $2.LoginRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$loginUser, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$3.RegisterResponse> registerUser(
-    $2.LoginRequest request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$registerUser, request, options: options);
-  }
-
-  // method descriptors
-
-  static final _$loginUser =
-      $grpc.ClientMethod<$2.LoginRequest, $2.LoginResponse>(
-          '/application_services.LoginService/LoginUser',
-          ($2.LoginRequest value) => value.writeToBuffer(),
-          $2.LoginResponse.fromBuffer);
-  static final _$registerUser =
-      $grpc.ClientMethod<$2.LoginRequest, $3.RegisterResponse>(
-          '/application_services.LoginService/RegisterUser',
-          ($2.LoginRequest value) => value.writeToBuffer(),
-          $3.RegisterResponse.fromBuffer);
-}
-
-@$pb.GrpcServiceName('application_services.LoginService')
-abstract class LoginServiceBase extends $grpc.Service {
-  $core.String get $name => 'application_services.LoginService';
-
-  LoginServiceBase() {
-    $addMethod($grpc.ServiceMethod<$2.LoginRequest, $2.LoginResponse>(
-        'LoginUser',
-        loginUser_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $2.LoginRequest.fromBuffer(value),
-        ($2.LoginResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.LoginRequest, $3.RegisterResponse>(
-        'RegisterUser',
-        registerUser_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $2.LoginRequest.fromBuffer(value),
-        ($3.RegisterResponse value) => value.writeToBuffer()));
-  }
-
-  $async.Future<$2.LoginResponse> loginUser_Pre(
-      $grpc.ServiceCall $call, $async.Future<$2.LoginRequest> $request) async {
-    return loginUser($call, await $request);
-  }
-
-  $async.Future<$2.LoginResponse> loginUser(
-      $grpc.ServiceCall call, $2.LoginRequest request);
-
-  $async.Future<$3.RegisterResponse> registerUser_Pre(
-      $grpc.ServiceCall $call, $async.Future<$2.LoginRequest> $request) async {
-    return registerUser($call, await $request);
-  }
-
-  $async.Future<$3.RegisterResponse> registerUser(
-      $grpc.ServiceCall call, $2.LoginRequest request);
-}
-
 @$pb.GrpcServiceName('application_services.AuthService')
 class AuthServiceClient extends $grpc.Client {
   /// The hostname for this service.
@@ -164,43 +85,20 @@ class AuthServiceClient extends $grpc.Client {
 
   AuthServiceClient(super.channel, {super.options, super.interceptors});
 
-  $grpc.ResponseFuture<$3.VerifyUserResponse> verifyUser(
+  $grpc.ResponseFuture<$2.VerifyUserResponse> verifyUser(
     $0.Empty request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$verifyUser, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.GenerateKeyResponse> generateKey(
-    $0.Empty request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$generateKey, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$0.Empty> revokeKey(
-    $0.Empty request, {
-    $grpc.CallOptions? options,
-  }) {
-    return $createUnaryCall(_$revokeKey, request, options: options);
-  }
-
   // method descriptors
 
   static final _$verifyUser =
-      $grpc.ClientMethod<$0.Empty, $3.VerifyUserResponse>(
+      $grpc.ClientMethod<$0.Empty, $2.VerifyUserResponse>(
           '/application_services.AuthService/VerifyUser',
           ($0.Empty value) => value.writeToBuffer(),
-          $3.VerifyUserResponse.fromBuffer);
-  static final _$generateKey =
-      $grpc.ClientMethod<$0.Empty, $2.GenerateKeyResponse>(
-          '/application_services.AuthService/GenerateKey',
-          ($0.Empty value) => value.writeToBuffer(),
-          $2.GenerateKeyResponse.fromBuffer);
-  static final _$revokeKey = $grpc.ClientMethod<$0.Empty, $0.Empty>(
-      '/application_services.AuthService/RevokeKey',
-      ($0.Empty value) => value.writeToBuffer(),
-      $0.Empty.fromBuffer);
+          $2.VerifyUserResponse.fromBuffer);
 }
 
 @$pb.GrpcServiceName('application_services.AuthService')
@@ -208,51 +106,22 @@ abstract class AuthServiceBase extends $grpc.Service {
   $core.String get $name => 'application_services.AuthService';
 
   AuthServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.Empty, $3.VerifyUserResponse>(
+    $addMethod($grpc.ServiceMethod<$0.Empty, $2.VerifyUserResponse>(
         'VerifyUser',
         verifyUser_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($3.VerifyUserResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $2.GenerateKeyResponse>(
-        'GenerateKey',
-        generateKey_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($2.GenerateKeyResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $0.Empty>(
-        'RevokeKey',
-        revokeKey_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($0.Empty value) => value.writeToBuffer()));
+        ($2.VerifyUserResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$3.VerifyUserResponse> verifyUser_Pre(
+  $async.Future<$2.VerifyUserResponse> verifyUser_Pre(
       $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
     return verifyUser($call, await $request);
   }
 
-  $async.Future<$3.VerifyUserResponse> verifyUser(
+  $async.Future<$2.VerifyUserResponse> verifyUser(
       $grpc.ServiceCall call, $0.Empty request);
-
-  $async.Future<$2.GenerateKeyResponse> generateKey_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
-    return generateKey($call, await $request);
-  }
-
-  $async.Future<$2.GenerateKeyResponse> generateKey(
-      $grpc.ServiceCall call, $0.Empty request);
-
-  $async.Future<$0.Empty> revokeKey_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
-    return revokeKey($call, await $request);
-  }
-
-  $async.Future<$0.Empty> revokeKey($grpc.ServiceCall call, $0.Empty request);
 }
 
 @$pb.GrpcServiceName('application_services.EntityService')
@@ -267,15 +136,15 @@ class EntityServiceClient extends $grpc.Client {
 
   EntityServiceClient(super.channel, {super.options, super.interceptors});
 
-  $grpc.ResponseFuture<$4.ListEntityTypesResponse> listEntityTypes(
+  $grpc.ResponseFuture<$3.ListEntityTypesResponse> listEntityTypes(
     $0.Empty request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$listEntityTypes, request, options: options);
   }
 
-  $grpc.ResponseStream<$4.EntityHistory> streamEntityHistory(
-    $4.SearchEntityHistoryRequest request, {
+  $grpc.ResponseStream<$3.EntityHistory> streamEntityHistory(
+    $3.SearchEntityHistoryRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createStreamingCall(
@@ -283,8 +152,8 @@ class EntityServiceClient extends $grpc.Client {
         options: options);
   }
 
-  $grpc.ResponseStream<$4.EntityActionResponse> streamEntityAction(
-    $async.Stream<$4.EntityActionRequest> request, {
+  $grpc.ResponseStream<$3.EntityActionResponse> streamEntityAction(
+    $async.Stream<$3.EntityActionRequest> request, {
     $grpc.CallOptions? options,
   }) {
     return $createStreamingCall(_$streamEntityAction, request,
@@ -292,7 +161,7 @@ class EntityServiceClient extends $grpc.Client {
   }
 
   $grpc.ResponseFuture<$0.Empty> entityAction(
-    $4.EntityActionRequest request, {
+    $3.EntityActionRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$entityAction, request, options: options);
@@ -301,24 +170,24 @@ class EntityServiceClient extends $grpc.Client {
   // method descriptors
 
   static final _$listEntityTypes =
-      $grpc.ClientMethod<$0.Empty, $4.ListEntityTypesResponse>(
+      $grpc.ClientMethod<$0.Empty, $3.ListEntityTypesResponse>(
           '/application_services.EntityService/ListEntityTypes',
           ($0.Empty value) => value.writeToBuffer(),
-          $4.ListEntityTypesResponse.fromBuffer);
+          $3.ListEntityTypesResponse.fromBuffer);
   static final _$streamEntityHistory =
-      $grpc.ClientMethod<$4.SearchEntityHistoryRequest, $4.EntityHistory>(
+      $grpc.ClientMethod<$3.SearchEntityHistoryRequest, $3.EntityHistory>(
           '/application_services.EntityService/StreamEntityHistory',
-          ($4.SearchEntityHistoryRequest value) => value.writeToBuffer(),
-          $4.EntityHistory.fromBuffer);
+          ($3.SearchEntityHistoryRequest value) => value.writeToBuffer(),
+          $3.EntityHistory.fromBuffer);
   static final _$streamEntityAction =
-      $grpc.ClientMethod<$4.EntityActionRequest, $4.EntityActionResponse>(
+      $grpc.ClientMethod<$3.EntityActionRequest, $3.EntityActionResponse>(
           '/application_services.EntityService/StreamEntityAction',
-          ($4.EntityActionRequest value) => value.writeToBuffer(),
-          $4.EntityActionResponse.fromBuffer);
+          ($3.EntityActionRequest value) => value.writeToBuffer(),
+          $3.EntityActionResponse.fromBuffer);
   static final _$entityAction =
-      $grpc.ClientMethod<$4.EntityActionRequest, $0.Empty>(
+      $grpc.ClientMethod<$3.EntityActionRequest, $0.Empty>(
           '/application_services.EntityService/EntityAction',
-          ($4.EntityActionRequest value) => value.writeToBuffer(),
+          ($3.EntityActionRequest value) => value.writeToBuffer(),
           $0.Empty.fromBuffer);
 }
 
@@ -327,66 +196,66 @@ abstract class EntityServiceBase extends $grpc.Service {
   $core.String get $name => 'application_services.EntityService';
 
   EntityServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.Empty, $4.ListEntityTypesResponse>(
+    $addMethod($grpc.ServiceMethod<$0.Empty, $3.ListEntityTypesResponse>(
         'ListEntityTypes',
         listEntityTypes_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($4.ListEntityTypesResponse value) => value.writeToBuffer()));
+        ($3.ListEntityTypesResponse value) => value.writeToBuffer()));
     $addMethod(
-        $grpc.ServiceMethod<$4.SearchEntityHistoryRequest, $4.EntityHistory>(
+        $grpc.ServiceMethod<$3.SearchEntityHistoryRequest, $3.EntityHistory>(
             'StreamEntityHistory',
             streamEntityHistory_Pre,
             false,
             true,
             ($core.List<$core.int> value) =>
-                $4.SearchEntityHistoryRequest.fromBuffer(value),
-            ($4.EntityHistory value) => value.writeToBuffer()));
+                $3.SearchEntityHistoryRequest.fromBuffer(value),
+            ($3.EntityHistory value) => value.writeToBuffer()));
     $addMethod(
-        $grpc.ServiceMethod<$4.EntityActionRequest, $4.EntityActionResponse>(
+        $grpc.ServiceMethod<$3.EntityActionRequest, $3.EntityActionResponse>(
             'StreamEntityAction',
             streamEntityAction,
             true,
             true,
             ($core.List<$core.int> value) =>
-                $4.EntityActionRequest.fromBuffer(value),
-            ($4.EntityActionResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$4.EntityActionRequest, $0.Empty>(
+                $3.EntityActionRequest.fromBuffer(value),
+            ($3.EntityActionResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$3.EntityActionRequest, $0.Empty>(
         'EntityAction',
         entityAction_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
-            $4.EntityActionRequest.fromBuffer(value),
+            $3.EntityActionRequest.fromBuffer(value),
         ($0.Empty value) => value.writeToBuffer()));
   }
 
-  $async.Future<$4.ListEntityTypesResponse> listEntityTypes_Pre(
+  $async.Future<$3.ListEntityTypesResponse> listEntityTypes_Pre(
       $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
     return listEntityTypes($call, await $request);
   }
 
-  $async.Future<$4.ListEntityTypesResponse> listEntityTypes(
+  $async.Future<$3.ListEntityTypesResponse> listEntityTypes(
       $grpc.ServiceCall call, $0.Empty request);
 
-  $async.Stream<$4.EntityHistory> streamEntityHistory_Pre(
+  $async.Stream<$3.EntityHistory> streamEntityHistory_Pre(
       $grpc.ServiceCall $call,
-      $async.Future<$4.SearchEntityHistoryRequest> $request) async* {
+      $async.Future<$3.SearchEntityHistoryRequest> $request) async* {
     yield* streamEntityHistory($call, await $request);
   }
 
-  $async.Stream<$4.EntityHistory> streamEntityHistory(
-      $grpc.ServiceCall call, $4.SearchEntityHistoryRequest request);
+  $async.Stream<$3.EntityHistory> streamEntityHistory(
+      $grpc.ServiceCall call, $3.SearchEntityHistoryRequest request);
 
-  $async.Stream<$4.EntityActionResponse> streamEntityAction(
-      $grpc.ServiceCall call, $async.Stream<$4.EntityActionRequest> request);
+  $async.Stream<$3.EntityActionResponse> streamEntityAction(
+      $grpc.ServiceCall call, $async.Stream<$3.EntityActionRequest> request);
 
   $async.Future<$0.Empty> entityAction_Pre($grpc.ServiceCall $call,
-      $async.Future<$4.EntityActionRequest> $request) async {
+      $async.Future<$3.EntityActionRequest> $request) async {
     return entityAction($call, await $request);
   }
 
   $async.Future<$0.Empty> entityAction(
-      $grpc.ServiceCall call, $4.EntityActionRequest request);
+      $grpc.ServiceCall call, $3.EntityActionRequest request);
 }

@@ -4,14 +4,12 @@ import 'package:get_it/get_it.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
-import '../../helpers/parse_errors.dart';
 import '../../schemaless_proto/google/protobuf/empty.pb.dart';
 import '../../schemaless_proto/management/services.pb.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 import 'applications_list.dart';
 import 'health_info.dart';
-import 'users_list.dart';
 
 @RoutePage()
 class ServerScreen extends StatelessWidget {
@@ -73,7 +71,8 @@ class _ServerScreenScaffold extends StatefulWidget {
 
 class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   int currentPageIndex = 0;
-  ManagementApiFromServerInfo get api => ManagementApiFromServerInfo(widget.server);
+  ManagementApiFromServerInfo get api =>
+      ManagementApiFromServerInfo(widget.server);
 
   Future<void> _addApplication() async {
     final textController = TextEditingController();
@@ -104,31 +103,7 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("${widget.server.url} ${widget.server.email}"),
-        actions: [
-          PopupMenuButton(
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem<void>(
-                    child: Text("Revoke Keys"),
-                    onTap: () async {
-                      try {
-                        await api.authClient.revokeKey(Empty());
-                        // ignore: use_build_context_synchronously
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("All keys are revoked")),
-                        );
-                      } on Exception catch (e) {
-                        // ignore: use_build_context_synchronously
-                        await parseErrors(context, e);
-                      }
-                    },
-                  ),
-                ],
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text("${widget.server.url}")),
       floatingActionButton:
           currentPageIndex == 0
               ? FloatingActionButton(
@@ -140,7 +115,6 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
       body: [
         ApplicationsList(server: widget.server),
         HealthInfo(server: widget.server),
-        UsersList(server: widget.server),
       ].elementAt(currentPageIndex),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -155,8 +129,6 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
             label: "Projects",
           ),
           NavigationDestination(icon: Icon(Icons.info), label: "Health"),
-          if (widget.isAdmin)
-            NavigationDestination(icon: Icon(Icons.person), label: "Users"),
         ],
       ),
     );

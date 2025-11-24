@@ -32,7 +32,6 @@ class ServersScreen extends StatelessWidget {
               final info = list.elementAt(index);
               return ListTile(
                 title: Text(info.url),
-                subtitle: Text("Email: ${info.email}"),
                 trailing: PopupMenuButton(
                   itemBuilder:
                       (context) => [

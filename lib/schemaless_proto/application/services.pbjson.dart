@@ -14,18 +14,6 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use registerResponseDescriptor instead')
-const RegisterResponse$json = {
-  '1': 'RegisterResponse',
-  '2': [
-    {'1': 'ID', '3': 1, '4': 1, '5': 9, '10': 'ID'},
-  ],
-};
-
-/// Descriptor for `RegisterResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List registerResponseDescriptor =
-    $convert.base64Decode('ChBSZWdpc3RlclJlc3BvbnNlEg4KAklEGAEgASgJUgJJRA==');
-
 @$core.Deprecated('Use verifyUserResponseDescriptor instead')
 const VerifyUserResponse$json = {
   '1': 'VerifyUserResponse',

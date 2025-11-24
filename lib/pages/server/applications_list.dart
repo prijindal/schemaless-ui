@@ -153,17 +153,17 @@ class _ApplicationScreenState extends State<_ApplicationScreen> {
         ],
       ),
       body: [_buildDomainsList()].elementAt(currentPageIndex),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        selectedIndex: currentPageIndex,
-        destinations: [
-          NavigationDestination(icon: Icon(Icons.domain), label: "Domains"),
-        ],
-      ),
+      // bottomNavigationBar: NavigationBar(
+      //   onDestinationSelected: (int index) {
+      //     setState(() {
+      //       currentPageIndex = index;
+      //     });
+      //   },
+      //   selectedIndex: currentPageIndex,
+      //   destinations: [
+      //     NavigationDestination(icon: Icon(Icons.domain), label: "Domains"),
+      //   ],
+      // ),
     );
   }
 }

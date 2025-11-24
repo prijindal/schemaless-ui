@@ -28,24 +28,59 @@ class $ServerInfoTable extends ServerInfo
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  static const VerificationMeta _clientIdMeta = const VerificationMeta(
+    'clientId',
+  );
   @override
-  late final GeneratedColumn<String> email = GeneratedColumn<String>(
-    'email',
+  late final GeneratedColumn<String> clientId = GeneratedColumn<String>(
+    'client_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _jwtTokenMeta = const VerificationMeta(
-    'jwtToken',
+  static const VerificationMeta _tokenEndpointMeta = const VerificationMeta(
+    'tokenEndpoint',
   );
   @override
-  late final GeneratedColumn<String> jwtToken = GeneratedColumn<String>(
-    'jwt_token',
+  late final GeneratedColumn<String> tokenEndpoint = GeneratedColumn<String>(
+    'token_endpoint',
     aliasedName,
     false,
     type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accessTokenMeta = const VerificationMeta(
+    'accessToken',
+  );
+  @override
+  late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
+    'access_token',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _refreshTokenMeta = const VerificationMeta(
+    'refreshToken',
+  );
+  @override
+  late final GeneratedColumn<String> refreshToken = GeneratedColumn<String>(
+    'refresh_token',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _expiresAtMeta = const VerificationMeta(
+    'expiresAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> expiresAt = GeneratedColumn<DateTime>(
+    'expires_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _tlsMeta = const VerificationMeta('tls');
@@ -80,8 +115,11 @@ class $ServerInfoTable extends ServerInfo
   List<GeneratedColumn> get $columns => [
     id,
     url,
-    email,
-    jwtToken,
+    clientId,
+    tokenEndpoint,
+    accessToken,
+    refreshToken,
+    expiresAt,
     tls,
     allowInsecure,
   ];
@@ -108,21 +146,54 @@ class $ServerInfoTable extends ServerInfo
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
-    if (data.containsKey('email')) {
+    if (data.containsKey('client_id')) {
       context.handle(
-        _emailMeta,
-        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+        _clientIdMeta,
+        clientId.isAcceptableOrUnknown(data['client_id']!, _clientIdMeta),
       );
     } else if (isInserting) {
-      context.missing(_emailMeta);
+      context.missing(_clientIdMeta);
     }
-    if (data.containsKey('jwt_token')) {
+    if (data.containsKey('token_endpoint')) {
       context.handle(
-        _jwtTokenMeta,
-        jwtToken.isAcceptableOrUnknown(data['jwt_token']!, _jwtTokenMeta),
+        _tokenEndpointMeta,
+        tokenEndpoint.isAcceptableOrUnknown(
+          data['token_endpoint']!,
+          _tokenEndpointMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_jwtTokenMeta);
+      context.missing(_tokenEndpointMeta);
+    }
+    if (data.containsKey('access_token')) {
+      context.handle(
+        _accessTokenMeta,
+        accessToken.isAcceptableOrUnknown(
+          data['access_token']!,
+          _accessTokenMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_accessTokenMeta);
+    }
+    if (data.containsKey('refresh_token')) {
+      context.handle(
+        _refreshTokenMeta,
+        refreshToken.isAcceptableOrUnknown(
+          data['refresh_token']!,
+          _refreshTokenMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_refreshTokenMeta);
+    }
+    if (data.containsKey('expires_at')) {
+      context.handle(
+        _expiresAtMeta,
+        expiresAt.isAcceptableOrUnknown(data['expires_at']!, _expiresAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_expiresAtMeta);
     }
     if (data.containsKey('tls')) {
       context.handle(
@@ -158,15 +229,30 @@ class $ServerInfoTable extends ServerInfo
             DriftSqlType.string,
             data['${effectivePrefix}url'],
           )!,
-      email:
+      clientId:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}email'],
+            data['${effectivePrefix}client_id'],
           )!,
-      jwtToken:
+      tokenEndpoint:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}jwt_token'],
+            data['${effectivePrefix}token_endpoint'],
+          )!,
+      accessToken:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}access_token'],
+          )!,
+      refreshToken:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}refresh_token'],
+          )!,
+      expiresAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}expires_at'],
           )!,
       tls:
           attachedDatabase.typeMapping.read(
@@ -190,15 +276,21 @@ class $ServerInfoTable extends ServerInfo
 class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
   final String id;
   final String url;
-  final String email;
-  final String jwtToken;
+  final String clientId;
+  final String tokenEndpoint;
+  final String accessToken;
+  final String refreshToken;
+  final DateTime expiresAt;
   final bool tls;
   final bool allowInsecure;
   const ServerInfoData({
     required this.id,
     required this.url,
-    required this.email,
-    required this.jwtToken,
+    required this.clientId,
+    required this.tokenEndpoint,
+    required this.accessToken,
+    required this.refreshToken,
+    required this.expiresAt,
     required this.tls,
     required this.allowInsecure,
   });
@@ -207,8 +299,11 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['url'] = Variable<String>(url);
-    map['email'] = Variable<String>(email);
-    map['jwt_token'] = Variable<String>(jwtToken);
+    map['client_id'] = Variable<String>(clientId);
+    map['token_endpoint'] = Variable<String>(tokenEndpoint);
+    map['access_token'] = Variable<String>(accessToken);
+    map['refresh_token'] = Variable<String>(refreshToken);
+    map['expires_at'] = Variable<DateTime>(expiresAt);
     map['tls'] = Variable<bool>(tls);
     map['allow_insecure'] = Variable<bool>(allowInsecure);
     return map;
@@ -218,8 +313,11 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return ServerInfoCompanion(
       id: Value(id),
       url: Value(url),
-      email: Value(email),
-      jwtToken: Value(jwtToken),
+      clientId: Value(clientId),
+      tokenEndpoint: Value(tokenEndpoint),
+      accessToken: Value(accessToken),
+      refreshToken: Value(refreshToken),
+      expiresAt: Value(expiresAt),
       tls: Value(tls),
       allowInsecure: Value(allowInsecure),
     );
@@ -233,8 +331,11 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return ServerInfoData(
       id: serializer.fromJson<String>(json['id']),
       url: serializer.fromJson<String>(json['url']),
-      email: serializer.fromJson<String>(json['email']),
-      jwtToken: serializer.fromJson<String>(json['jwtToken']),
+      clientId: serializer.fromJson<String>(json['clientId']),
+      tokenEndpoint: serializer.fromJson<String>(json['tokenEndpoint']),
+      accessToken: serializer.fromJson<String>(json['accessToken']),
+      refreshToken: serializer.fromJson<String>(json['refreshToken']),
+      expiresAt: serializer.fromJson<DateTime>(json['expiresAt']),
       tls: serializer.fromJson<bool>(json['tls']),
       allowInsecure: serializer.fromJson<bool>(json['allowInsecure']),
     );
@@ -245,8 +346,11 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'url': serializer.toJson<String>(url),
-      'email': serializer.toJson<String>(email),
-      'jwtToken': serializer.toJson<String>(jwtToken),
+      'clientId': serializer.toJson<String>(clientId),
+      'tokenEndpoint': serializer.toJson<String>(tokenEndpoint),
+      'accessToken': serializer.toJson<String>(accessToken),
+      'refreshToken': serializer.toJson<String>(refreshToken),
+      'expiresAt': serializer.toJson<DateTime>(expiresAt),
       'tls': serializer.toJson<bool>(tls),
       'allowInsecure': serializer.toJson<bool>(allowInsecure),
     };
@@ -255,15 +359,21 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
   ServerInfoData copyWith({
     String? id,
     String? url,
-    String? email,
-    String? jwtToken,
+    String? clientId,
+    String? tokenEndpoint,
+    String? accessToken,
+    String? refreshToken,
+    DateTime? expiresAt,
     bool? tls,
     bool? allowInsecure,
   }) => ServerInfoData(
     id: id ?? this.id,
     url: url ?? this.url,
-    email: email ?? this.email,
-    jwtToken: jwtToken ?? this.jwtToken,
+    clientId: clientId ?? this.clientId,
+    tokenEndpoint: tokenEndpoint ?? this.tokenEndpoint,
+    accessToken: accessToken ?? this.accessToken,
+    refreshToken: refreshToken ?? this.refreshToken,
+    expiresAt: expiresAt ?? this.expiresAt,
     tls: tls ?? this.tls,
     allowInsecure: allowInsecure ?? this.allowInsecure,
   );
@@ -271,8 +381,18 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return ServerInfoData(
       id: data.id.present ? data.id.value : this.id,
       url: data.url.present ? data.url.value : this.url,
-      email: data.email.present ? data.email.value : this.email,
-      jwtToken: data.jwtToken.present ? data.jwtToken.value : this.jwtToken,
+      clientId: data.clientId.present ? data.clientId.value : this.clientId,
+      tokenEndpoint:
+          data.tokenEndpoint.present
+              ? data.tokenEndpoint.value
+              : this.tokenEndpoint,
+      accessToken:
+          data.accessToken.present ? data.accessToken.value : this.accessToken,
+      refreshToken:
+          data.refreshToken.present
+              ? data.refreshToken.value
+              : this.refreshToken,
+      expiresAt: data.expiresAt.present ? data.expiresAt.value : this.expiresAt,
       tls: data.tls.present ? data.tls.value : this.tls,
       allowInsecure:
           data.allowInsecure.present
@@ -286,8 +406,11 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
     return (StringBuffer('ServerInfoData(')
           ..write('id: $id, ')
           ..write('url: $url, ')
-          ..write('email: $email, ')
-          ..write('jwtToken: $jwtToken, ')
+          ..write('clientId: $clientId, ')
+          ..write('tokenEndpoint: $tokenEndpoint, ')
+          ..write('accessToken: $accessToken, ')
+          ..write('refreshToken: $refreshToken, ')
+          ..write('expiresAt: $expiresAt, ')
           ..write('tls: $tls, ')
           ..write('allowInsecure: $allowInsecure')
           ..write(')'))
@@ -295,15 +418,28 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, url, email, jwtToken, tls, allowInsecure);
+  int get hashCode => Object.hash(
+    id,
+    url,
+    clientId,
+    tokenEndpoint,
+    accessToken,
+    refreshToken,
+    expiresAt,
+    tls,
+    allowInsecure,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ServerInfoData &&
           other.id == this.id &&
           other.url == this.url &&
-          other.email == this.email &&
-          other.jwtToken == this.jwtToken &&
+          other.clientId == this.clientId &&
+          other.tokenEndpoint == this.tokenEndpoint &&
+          other.accessToken == this.accessToken &&
+          other.refreshToken == this.refreshToken &&
+          other.expiresAt == this.expiresAt &&
           other.tls == this.tls &&
           other.allowInsecure == this.allowInsecure);
 }
@@ -311,16 +447,22 @@ class ServerInfoData extends DataClass implements Insertable<ServerInfoData> {
 class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
   final Value<String> id;
   final Value<String> url;
-  final Value<String> email;
-  final Value<String> jwtToken;
+  final Value<String> clientId;
+  final Value<String> tokenEndpoint;
+  final Value<String> accessToken;
+  final Value<String> refreshToken;
+  final Value<DateTime> expiresAt;
   final Value<bool> tls;
   final Value<bool> allowInsecure;
   final Value<int> rowid;
   const ServerInfoCompanion({
     this.id = const Value.absent(),
     this.url = const Value.absent(),
-    this.email = const Value.absent(),
-    this.jwtToken = const Value.absent(),
+    this.clientId = const Value.absent(),
+    this.tokenEndpoint = const Value.absent(),
+    this.accessToken = const Value.absent(),
+    this.refreshToken = const Value.absent(),
+    this.expiresAt = const Value.absent(),
     this.tls = const Value.absent(),
     this.allowInsecure = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -328,19 +470,28 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
   ServerInfoCompanion.insert({
     this.id = const Value.absent(),
     required String url,
-    required String email,
-    required String jwtToken,
+    required String clientId,
+    required String tokenEndpoint,
+    required String accessToken,
+    required String refreshToken,
+    required DateTime expiresAt,
     this.tls = const Value.absent(),
     this.allowInsecure = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : url = Value(url),
-       email = Value(email),
-       jwtToken = Value(jwtToken);
+       clientId = Value(clientId),
+       tokenEndpoint = Value(tokenEndpoint),
+       accessToken = Value(accessToken),
+       refreshToken = Value(refreshToken),
+       expiresAt = Value(expiresAt);
   static Insertable<ServerInfoData> custom({
     Expression<String>? id,
     Expression<String>? url,
-    Expression<String>? email,
-    Expression<String>? jwtToken,
+    Expression<String>? clientId,
+    Expression<String>? tokenEndpoint,
+    Expression<String>? accessToken,
+    Expression<String>? refreshToken,
+    Expression<DateTime>? expiresAt,
     Expression<bool>? tls,
     Expression<bool>? allowInsecure,
     Expression<int>? rowid,
@@ -348,8 +499,11 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (url != null) 'url': url,
-      if (email != null) 'email': email,
-      if (jwtToken != null) 'jwt_token': jwtToken,
+      if (clientId != null) 'client_id': clientId,
+      if (tokenEndpoint != null) 'token_endpoint': tokenEndpoint,
+      if (accessToken != null) 'access_token': accessToken,
+      if (refreshToken != null) 'refresh_token': refreshToken,
+      if (expiresAt != null) 'expires_at': expiresAt,
       if (tls != null) 'tls': tls,
       if (allowInsecure != null) 'allow_insecure': allowInsecure,
       if (rowid != null) 'rowid': rowid,
@@ -359,8 +513,11 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
   ServerInfoCompanion copyWith({
     Value<String>? id,
     Value<String>? url,
-    Value<String>? email,
-    Value<String>? jwtToken,
+    Value<String>? clientId,
+    Value<String>? tokenEndpoint,
+    Value<String>? accessToken,
+    Value<String>? refreshToken,
+    Value<DateTime>? expiresAt,
     Value<bool>? tls,
     Value<bool>? allowInsecure,
     Value<int>? rowid,
@@ -368,8 +525,11 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     return ServerInfoCompanion(
       id: id ?? this.id,
       url: url ?? this.url,
-      email: email ?? this.email,
-      jwtToken: jwtToken ?? this.jwtToken,
+      clientId: clientId ?? this.clientId,
+      tokenEndpoint: tokenEndpoint ?? this.tokenEndpoint,
+      accessToken: accessToken ?? this.accessToken,
+      refreshToken: refreshToken ?? this.refreshToken,
+      expiresAt: expiresAt ?? this.expiresAt,
       tls: tls ?? this.tls,
       allowInsecure: allowInsecure ?? this.allowInsecure,
       rowid: rowid ?? this.rowid,
@@ -385,11 +545,20 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     if (url.present) {
       map['url'] = Variable<String>(url.value);
     }
-    if (email.present) {
-      map['email'] = Variable<String>(email.value);
+    if (clientId.present) {
+      map['client_id'] = Variable<String>(clientId.value);
     }
-    if (jwtToken.present) {
-      map['jwt_token'] = Variable<String>(jwtToken.value);
+    if (tokenEndpoint.present) {
+      map['token_endpoint'] = Variable<String>(tokenEndpoint.value);
+    }
+    if (accessToken.present) {
+      map['access_token'] = Variable<String>(accessToken.value);
+    }
+    if (refreshToken.present) {
+      map['refresh_token'] = Variable<String>(refreshToken.value);
+    }
+    if (expiresAt.present) {
+      map['expires_at'] = Variable<DateTime>(expiresAt.value);
     }
     if (tls.present) {
       map['tls'] = Variable<bool>(tls.value);
@@ -408,8 +577,11 @@ class ServerInfoCompanion extends UpdateCompanion<ServerInfoData> {
     return (StringBuffer('ServerInfoCompanion(')
           ..write('id: $id, ')
           ..write('url: $url, ')
-          ..write('email: $email, ')
-          ..write('jwtToken: $jwtToken, ')
+          ..write('clientId: $clientId, ')
+          ..write('tokenEndpoint: $tokenEndpoint, ')
+          ..write('accessToken: $accessToken, ')
+          ..write('refreshToken: $refreshToken, ')
+          ..write('expiresAt: $expiresAt, ')
           ..write('tls: $tls, ')
           ..write('allowInsecure: $allowInsecure, ')
           ..write('rowid: $rowid')
@@ -433,8 +605,11 @@ typedef $$ServerInfoTableCreateCompanionBuilder =
     ServerInfoCompanion Function({
       Value<String> id,
       required String url,
-      required String email,
-      required String jwtToken,
+      required String clientId,
+      required String tokenEndpoint,
+      required String accessToken,
+      required String refreshToken,
+      required DateTime expiresAt,
       Value<bool> tls,
       Value<bool> allowInsecure,
       Value<int> rowid,
@@ -443,8 +618,11 @@ typedef $$ServerInfoTableUpdateCompanionBuilder =
     ServerInfoCompanion Function({
       Value<String> id,
       Value<String> url,
-      Value<String> email,
-      Value<String> jwtToken,
+      Value<String> clientId,
+      Value<String> tokenEndpoint,
+      Value<String> accessToken,
+      Value<String> refreshToken,
+      Value<DateTime> expiresAt,
       Value<bool> tls,
       Value<bool> allowInsecure,
       Value<int> rowid,
@@ -469,13 +647,28 @@ class $$ServerInfoTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get email => $composableBuilder(
-    column: $table.email,
+  ColumnFilters<String> get clientId => $composableBuilder(
+    column: $table.clientId,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get jwtToken => $composableBuilder(
-    column: $table.jwtToken,
+  ColumnFilters<String> get tokenEndpoint => $composableBuilder(
+    column: $table.tokenEndpoint,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accessToken => $composableBuilder(
+    column: $table.accessToken,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get refreshToken => $composableBuilder(
+    column: $table.refreshToken,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -509,13 +702,28 @@ class $$ServerInfoTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get email => $composableBuilder(
-    column: $table.email,
+  ColumnOrderings<String> get clientId => $composableBuilder(
+    column: $table.clientId,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get jwtToken => $composableBuilder(
-    column: $table.jwtToken,
+  ColumnOrderings<String> get tokenEndpoint => $composableBuilder(
+    column: $table.tokenEndpoint,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get accessToken => $composableBuilder(
+    column: $table.accessToken,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get refreshToken => $composableBuilder(
+    column: $table.refreshToken,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -545,11 +753,26 @@ class $$ServerInfoTableAnnotationComposer
   GeneratedColumn<String> get url =>
       $composableBuilder(column: $table.url, builder: (column) => column);
 
-  GeneratedColumn<String> get email =>
-      $composableBuilder(column: $table.email, builder: (column) => column);
+  GeneratedColumn<String> get clientId =>
+      $composableBuilder(column: $table.clientId, builder: (column) => column);
 
-  GeneratedColumn<String> get jwtToken =>
-      $composableBuilder(column: $table.jwtToken, builder: (column) => column);
+  GeneratedColumn<String> get tokenEndpoint => $composableBuilder(
+    column: $table.tokenEndpoint,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get accessToken => $composableBuilder(
+    column: $table.accessToken,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get refreshToken => $composableBuilder(
+    column: $table.refreshToken,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get expiresAt =>
+      $composableBuilder(column: $table.expiresAt, builder: (column) => column);
 
   GeneratedColumn<bool> get tls =>
       $composableBuilder(column: $table.tls, builder: (column) => column);
@@ -593,16 +816,22 @@ class $$ServerInfoTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> url = const Value.absent(),
-                Value<String> email = const Value.absent(),
-                Value<String> jwtToken = const Value.absent(),
+                Value<String> clientId = const Value.absent(),
+                Value<String> tokenEndpoint = const Value.absent(),
+                Value<String> accessToken = const Value.absent(),
+                Value<String> refreshToken = const Value.absent(),
+                Value<DateTime> expiresAt = const Value.absent(),
                 Value<bool> tls = const Value.absent(),
                 Value<bool> allowInsecure = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ServerInfoCompanion(
                 id: id,
                 url: url,
-                email: email,
-                jwtToken: jwtToken,
+                clientId: clientId,
+                tokenEndpoint: tokenEndpoint,
+                accessToken: accessToken,
+                refreshToken: refreshToken,
+                expiresAt: expiresAt,
                 tls: tls,
                 allowInsecure: allowInsecure,
                 rowid: rowid,
@@ -611,16 +840,22 @@ class $$ServerInfoTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 required String url,
-                required String email,
-                required String jwtToken,
+                required String clientId,
+                required String tokenEndpoint,
+                required String accessToken,
+                required String refreshToken,
+                required DateTime expiresAt,
                 Value<bool> tls = const Value.absent(),
                 Value<bool> allowInsecure = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ServerInfoCompanion.insert(
                 id: id,
                 url: url,
-                email: email,
-                jwtToken: jwtToken,
+                clientId: clientId,
+                tokenEndpoint: tokenEndpoint,
+                accessToken: accessToken,
+                refreshToken: refreshToken,
+                expiresAt: expiresAt,
                 tls: tls,
                 allowInsecure: allowInsecure,
                 rowid: rowid,

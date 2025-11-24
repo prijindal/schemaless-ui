@@ -6,15 +6,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:watch_it/watch_it.dart';
+import 'package:get_it/get_it.dart';
+import 'package:openid_client/openid_client.dart' as openid;
+import 'package:openid_client/openid_client_io.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../db/api_from_server.dart';
 import '../../db/database.dart';
 import '../../helpers/parse_errors.dart';
 import '../../router/app_router.dart';
-import '../../schemaless_proto/types/login.pb.dart';
 
 const allowedProtocols = kIsWeb ? ["https", "http"] : ["grpc"];
+
+urlLauncher(String url) async {
+  final uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
 @RoutePage()
 class NewServerScreen extends StatelessWidget {
@@ -22,75 +32,45 @@ class NewServerScreen extends StatelessWidget {
 
   NewServerScreen({super.key});
 
-  Future<void> _initialize(BuildContext context) async {
-    if (_formKey.currentState?.saveAndValidate() == true) {
-      final project = _formKey.currentState!.value;
-      final url = project["url"] as String;
-      final email = project["email"] as String;
-      final password = project["password"] as String;
-      final tls = project["tls"] as bool;
-      final allowInsecure = project["allowInsecure"] as bool;
-      try {
-        await getLoginApiFromUrl(
-          url,
-          tls: tls,
-          allowInsecure: allowInsecure,
-        ).initialize(LoginRequest(email: email, password: password));
-        // ignore: use_build_context_synchronously
-        await _login(context);
-      } on Exception catch (e) {
-        // ignore: use_build_context_synchronously
-        await parseErrors(context, e);
-      }
-    }
-  }
-
-  Future<void> _register(BuildContext context) async {
-    if (_formKey.currentState?.saveAndValidate() == true) {
-      final project = _formKey.currentState!.value;
-      final url = project["url"] as String;
-      final email = project["email"] as String;
-      final password = project["password"] as String;
-      final tls = project["tls"] as bool;
-      final allowInsecure = project["allowInsecure"] as bool;
-      try {
-        await getLoginApiFromUrl(
-          url,
-          tls: tls,
-          allowInsecure: allowInsecure,
-        ).registerUser(LoginRequest(email: email, password: password));
-        // ignore: use_build_context_synchronously
-        await _login(context);
-      } on Exception catch (e) {
-        // ignore: use_build_context_synchronously
-        await parseErrors(context, e);
-      }
-    }
-  }
-
   Future<void> _login(BuildContext context) async {
     if (_formKey.currentState?.saveAndValidate() == true) {
       final project = _formKey.currentState!.value;
       final url = project["url"] as String;
-      final email = project["email"] as String;
-      final password = project["password"] as String;
+      final client_id = project["client_id"] as String;
+      final openid_configuration_url =
+          project["openid_configuration_url"] as String;
       final tls = project["tls"] as bool;
       final allowInsecure = project["allowInsecure"] as bool;
       try {
-        final loginResponse = await getLoginApiFromUrl(
-          url,
-          tls: tls,
-          allowInsecure: allowInsecure,
-        ).loginUser(LoginRequest(email: email, password: password));
-        final jwtToken = loginResponse.token;
-        // Login and get the jwt token
-        // Save the jwt token in the server_info box
+        var issuer = await openid.Issuer.discover(
+          Uri.parse((openid_configuration_url)),
+        );
+        final tokenEndpoint = issuer.metadata.tokenEndpoint;
+        var client = new openid.Client(issuer, client_id);
+
+        var authenticator = new Authenticator(
+          client,
+          port: 4000,
+          urlLancher: urlLauncher,
+        );
+
+        var c = await authenticator.authorize();
+
+        // close the webview when finished
+        // await closeInAppWebView();
+        final tokenResponse = await c.getTokenResponse();
+        final expiresAt = tokenResponse.expiresAt;
+        final accessToken = tokenResponse.accessToken;
+        final refreshToken = tokenResponse.refreshToken;
         final info = await GetIt.I<SharedDatabase>().managers.serverInfo
             .createReturning(
               (o) => o(
                 url: url,
-                email: email,
-                jwtToken: jwtToken,
+                clientId: client_id,
+                tokenEndpoint: tokenEndpoint.toString(),
+                accessToken: accessToken as String,
+                refreshToken: refreshToken as String,
+                expiresAt: expiresAt as DateTime,
                 tls: drift.Value(tls),
                 allowInsecure: drift.Value(allowInsecure),
               ),
@@ -132,22 +112,25 @@ class NewServerScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 FormBuilderTextField(
-                  name: "email",
-                  keyboardType: TextInputType.emailAddress,
-                  autofillHints: [AutofillHints.email],
-                  decoration: InputDecoration(labelText: 'Email'),
+                  name: "openid_configuration_url",
+                  autofocus: false,
+                  autofillHints: [AutofillHints.url],
+                  decoration: InputDecoration(
+                    labelText: 'Openid configuration url',
+                  ),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
-                    FormBuilderValidators.email(),
+                    FormBuilderValidators.url(),
                   ]),
                 ),
                 SizedBox(height: 10),
                 FormBuilderTextField(
-                  name: "password",
-                  obscureText: true,
-                  autofillHints: [AutofillHints.password],
-                  decoration: InputDecoration(labelText: 'Password'),
-                  validator: FormBuilderValidators.required(),
+                  name: "client_id",
+                  autofocus: false,
+                  decoration: InputDecoration(labelText: 'Client ID'),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
                 ),
                 SizedBox(height: 10),
                 FormBuilderCheckbox(
@@ -171,16 +154,6 @@ class NewServerScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () => _login(context),
                   child: Text("Login"),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () => _register(context),
-                  child: Text("Register"),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () => _initialize(context),
-                  child: Text("Initialize"),
                 ),
               ],
             ),

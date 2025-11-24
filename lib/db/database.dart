@@ -9,8 +9,11 @@ const _uuid = Uuid();
 class ServerInfo extends Table {
   late final id = text().clientDefault(() => _uuid.v4())();
   late final url = text()();
-  late final email = text()();
-  late final jwtToken = text()();
+  late final clientId = text()();
+  late final tokenEndpoint = text()();
+  late final accessToken = text()();
+  late final refreshToken = text()();
+  late final expiresAt = dateTime()();
   late final tls = boolean().clientDefault(() => false)();
   late final allowInsecure = boolean().clientDefault(() => false)();
 

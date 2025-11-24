@@ -35,10 +35,11 @@ const CumulativeHealthResponse$json = {
   '2': [
     {'1': 'DB', '3': 1, '4': 1, '5': 8, '10': 'DB'},
     {'1': 'PubSub', '3': 2, '4': 1, '5': 8, '10': 'PubSub'},
-    {'1': 'Cache', '3': 3, '4': 1, '5': 8, '10': 'Cache'},
+    {'1': 'Docker', '3': 3, '4': 1, '5': 8, '10': 'Docker'},
+    {'1': 'Cache', '3': 4, '4': 1, '5': 8, '10': 'Cache'},
     {
       '1': 'Uptime',
-      '3': 4,
+      '3': 5,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Duration',
@@ -46,50 +47,23 @@ const CumulativeHealthResponse$json = {
     },
     {
       '1': 'CurrentTime',
-      '3': 5,
+      '3': 6,
       '4': 1,
       '5': 11,
       '6': '.google.protobuf.Timestamp',
       '10': 'CurrentTime'
     },
-    {'1': 'Hostname', '3': 6, '4': 1, '5': 9, '10': 'Hostname'},
+    {'1': 'Hostname', '3': 7, '4': 1, '5': 9, '10': 'Hostname'},
   ],
 };
 
 /// Descriptor for `CumulativeHealthResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List cumulativeHealthResponseDescriptor = $convert.base64Decode(
     'ChhDdW11bGF0aXZlSGVhbHRoUmVzcG9uc2USDgoCREIYASABKAhSAkRCEhYKBlB1YlN1YhgCIA'
-    'EoCFIGUHViU3ViEhQKBUNhY2hlGAMgASgIUgVDYWNoZRIxCgZVcHRpbWUYBCABKAsyGS5nb29n'
-    'bGUucHJvdG9idWYuRHVyYXRpb25SBlVwdGltZRI8CgtDdXJyZW50VGltZRgFIAEoCzIaLmdvb2'
-    'dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSC0N1cnJlbnRUaW1lEhoKCEhvc3RuYW1lGAYgASgJUghI'
-    'b3N0bmFtZQ==');
-
-@$core.Deprecated('Use registerResponseDescriptor instead')
-const RegisterResponse$json = {
-  '1': 'RegisterResponse',
-  '2': [
-    {'1': 'ID', '3': 1, '4': 1, '5': 9, '10': 'ID'},
-    {'1': 'IsAdmin', '3': 2, '4': 1, '5': 8, '10': 'IsAdmin'},
-  ],
-};
-
-/// Descriptor for `RegisterResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List registerResponseDescriptor = $convert.base64Decode(
-    'ChBSZWdpc3RlclJlc3BvbnNlEg4KAklEGAEgASgJUgJJRBIYCgdJc0FkbWluGAIgASgIUgdJc0'
-    'FkbWlu');
-
-@$core.Deprecated('Use initializedResponseDescriptor instead')
-const InitializedResponse$json = {
-  '1': 'InitializedResponse',
-  '2': [
-    {'1': 'Initialized', '3': 1, '4': 1, '5': 8, '10': 'Initialized'},
-  ],
-};
-
-/// Descriptor for `InitializedResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List initializedResponseDescriptor = $convert.base64Decode(
-    'ChNJbml0aWFsaXplZFJlc3BvbnNlEiAKC0luaXRpYWxpemVkGAEgASgIUgtJbml0aWFsaXplZA'
-    '==');
+    'EoCFIGUHViU3ViEhYKBkRvY2tlchgDIAEoCFIGRG9ja2VyEhQKBUNhY2hlGAQgASgIUgVDYWNo'
+    'ZRIxCgZVcHRpbWUYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25SBlVwdGltZRI8Cg'
+    'tDdXJyZW50VGltZRgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSC0N1cnJlbnRU'
+    'aW1lEhoKCEhvc3RuYW1lGAcgASgJUghIb3N0bmFtZQ==');
 
 @$core.Deprecated('Use verifyUserResponseDescriptor instead')
 const VerifyUserResponse$json = {
@@ -104,112 +78,6 @@ const VerifyUserResponse$json = {
 final $typed_data.Uint8List verifyUserResponseDescriptor = $convert.base64Decode(
     'ChJWZXJpZnlVc2VyUmVzcG9uc2USDgoCSUQYASABKAlSAklEEhgKB0lzQWRtaW4YAiABKAhSB0'
     'lzQWRtaW4=');
-
-@$core.Deprecated('Use listManagementUsersRequestDescriptor instead')
-const ListManagementUsersRequest$json = {
-  '1': 'ListManagementUsersRequest',
-  '2': [
-    {'1': 'Limit', '3': 1, '4': 1, '5': 5, '10': 'Limit'},
-    {'1': 'Page', '3': 2, '4': 1, '5': 5, '10': 'Page'},
-  ],
-};
-
-/// Descriptor for `ListManagementUsersRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listManagementUsersRequestDescriptor =
-    $convert.base64Decode(
-        'ChpMaXN0TWFuYWdlbWVudFVzZXJzUmVxdWVzdBIUCgVMaW1pdBgBIAEoBVIFTGltaXQSEgoEUG'
-        'FnZRgCIAEoBVIEUGFnZQ==');
-
-@$core.Deprecated('Use listManagementUsersResponseDescriptor instead')
-const ListManagementUsersResponse$json = {
-  '1': 'ListManagementUsersResponse',
-  '2': [
-    {
-      '1': 'Users',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.management_services.ManagementUser',
-      '10': 'Users'
-    },
-    {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
-  ],
-};
-
-/// Descriptor for `ListManagementUsersResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List listManagementUsersResponseDescriptor =
-    $convert.base64Decode(
-        'ChtMaXN0TWFuYWdlbWVudFVzZXJzUmVzcG9uc2USOQoFVXNlcnMYASADKAsyIy5tYW5hZ2VtZW'
-        '50X3NlcnZpY2VzLk1hbmFnZW1lbnRVc2VyUgVVc2VycxIUCgVDb3VudBgCIAEoBVIFQ291bnQ=');
-
-@$core.Deprecated('Use managementUserDescriptor instead')
-const ManagementUser$json = {
-  '1': 'ManagementUser',
-  '2': [
-    {'1': 'ID', '3': 1, '4': 1, '5': 9, '10': 'ID'},
-    {
-      '1': 'CreatedAt',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'CreatedAt'
-    },
-    {
-      '1': 'UpdatedAt',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'UpdatedAt'
-    },
-    {'1': 'Email', '3': 4, '4': 1, '5': 9, '10': 'Email'},
-    {
-      '1': 'Status',
-      '3': 5,
-      '4': 1,
-      '5': 14,
-      '6': '.types.UserStatus',
-      '10': 'Status'
-    },
-    {'1': 'IsAdmin', '3': 6, '4': 1, '5': 8, '10': 'IsAdmin'},
-  ],
-};
-
-/// Descriptor for `ManagementUser`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List managementUserDescriptor = $convert.base64Decode(
-    'Cg5NYW5hZ2VtZW50VXNlchIOCgJJRBgBIAEoCVICSUQSOAoJQ3JlYXRlZEF0GAIgASgLMhouZ2'
-    '9vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJQ3JlYXRlZEF0EjgKCVVwZGF0ZWRBdBgDIAEoCzIa'
-    'Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCVVwZGF0ZWRBdBIUCgVFbWFpbBgEIAEoCVIFRW'
-    '1haWwSKQoGU3RhdHVzGAUgASgOMhEudHlwZXMuVXNlclN0YXR1c1IGU3RhdHVzEhgKB0lzQWRt'
-    'aW4YBiABKAhSB0lzQWRtaW4=');
-
-@$core.Deprecated('Use toggleUserApprovalRequestDescriptor instead')
-const ToggleUserApprovalRequest$json = {
-  '1': 'ToggleUserApprovalRequest',
-  '2': [
-    {'1': 'ID', '3': 1, '4': 1, '5': 9, '10': 'ID'},
-    {'1': 'Approve', '3': 2, '4': 1, '5': 8, '10': 'Approve'},
-  ],
-};
-
-/// Descriptor for `ToggleUserApprovalRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List toggleUserApprovalRequestDescriptor =
-    $convert.base64Decode(
-        'ChlUb2dnbGVVc2VyQXBwcm92YWxSZXF1ZXN0Eg4KAklEGAEgASgJUgJJRBIYCgdBcHByb3ZlGA'
-        'IgASgIUgdBcHByb3Zl');
-
-@$core.Deprecated('Use deleteUserRequestDescriptor instead')
-const DeleteUserRequest$json = {
-  '1': 'DeleteUserRequest',
-  '2': [
-    {'1': 'ID', '3': 1, '4': 1, '5': 9, '10': 'ID'},
-  ],
-};
-
-/// Descriptor for `DeleteUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List deleteUserRequestDescriptor =
-    $convert.base64Decode('ChFEZWxldGVVc2VyUmVxdWVzdBIOCgJJRBgBIAEoCVICSUQ=');
 
 @$core.Deprecated('Use listApplicationsRequestDescriptor instead')
 const ListApplicationsRequest$json = {
@@ -238,14 +106,14 @@ const ListApplicationsResponse$json = {
       '6': '.management_services.Application',
       '10': 'Applications'
     },
-    {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
+    {'1': 'Count', '3': 2, '4': 1, '5': 3, '10': 'Count'},
   ],
 };
 
 /// Descriptor for `ListApplicationsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listApplicationsResponseDescriptor = $convert.base64Decode(
     'ChhMaXN0QXBwbGljYXRpb25zUmVzcG9uc2USRAoMQXBwbGljYXRpb25zGAEgAygLMiAubWFuYW'
-    'dlbWVudF9zZXJ2aWNlcy5BcHBsaWNhdGlvblIMQXBwbGljYXRpb25zEhQKBUNvdW50GAIgASgF'
+    'dlbWVudF9zZXJ2aWNlcy5BcHBsaWNhdGlvblIMQXBwbGljYXRpb25zEhQKBUNvdW50GAIgASgD'
     'UgVDb3VudA==');
 
 @$core.Deprecated('Use applicationDescriptor instead')
@@ -358,7 +226,7 @@ const ListApplicationDomainResponse$json = {
       '6': '.management_services.Domain',
       '10': 'Domains'
     },
-    {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
+    {'1': 'Count', '3': 2, '4': 1, '5': 3, '10': 'Count'},
   ],
 };
 
@@ -366,7 +234,7 @@ const ListApplicationDomainResponse$json = {
 final $typed_data.Uint8List listApplicationDomainResponseDescriptor =
     $convert.base64Decode(
         'Ch1MaXN0QXBwbGljYXRpb25Eb21haW5SZXNwb25zZRI1CgdEb21haW5zGAEgAygLMhsubWFuYW'
-        'dlbWVudF9zZXJ2aWNlcy5Eb21haW5SB0RvbWFpbnMSFAoFQ291bnQYAiABKAVSBUNvdW50');
+        'dlbWVudF9zZXJ2aWNlcy5Eb21haW5SB0RvbWFpbnMSFAoFQ291bnQYAiABKANSBUNvdW50');
 
 @$core.Deprecated('Use streamApplicationDomainRequestDescriptor instead')
 const StreamApplicationDomainRequest$json = {
