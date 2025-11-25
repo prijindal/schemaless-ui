@@ -18,6 +18,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../google/protobuf/empty.pb.dart' as $0;
 import '../types/health.pb.dart' as $1;
+import '../types/openid.pb.dart' as $3;
 import 'services.pb.dart' as $2;
 
 export 'services.pb.dart';
@@ -185,11 +186,25 @@ class ApplicationServiceClient extends $grpc.Client {
     return $createUnaryCall(_$getApplication, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.CreateApplicationResponse> createApplication(
+  $grpc.ResponseFuture<$2.Application> createApplication(
     $2.CreateApplicationRequest request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$createApplication, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.Application> updateApplication(
+    $2.UpdateApplicationRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$updateApplication, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.DeployApplicationResponse> deployApplication(
+    $2.DeployApplicationRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$deployApplication, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.Empty> deleteApplication(
@@ -216,11 +231,21 @@ class ApplicationServiceClient extends $grpc.Client {
           '/management_services.ApplicationService/GetApplication',
           ($2.GetApplicationRequest value) => value.writeToBuffer(),
           $2.Application.fromBuffer);
-  static final _$createApplication = $grpc.ClientMethod<
-          $2.CreateApplicationRequest, $2.CreateApplicationResponse>(
-      '/management_services.ApplicationService/CreateApplication',
-      ($2.CreateApplicationRequest value) => value.writeToBuffer(),
-      $2.CreateApplicationResponse.fromBuffer);
+  static final _$createApplication =
+      $grpc.ClientMethod<$2.CreateApplicationRequest, $2.Application>(
+          '/management_services.ApplicationService/CreateApplication',
+          ($2.CreateApplicationRequest value) => value.writeToBuffer(),
+          $2.Application.fromBuffer);
+  static final _$updateApplication =
+      $grpc.ClientMethod<$2.UpdateApplicationRequest, $2.Application>(
+          '/management_services.ApplicationService/UpdateApplication',
+          ($2.UpdateApplicationRequest value) => value.writeToBuffer(),
+          $2.Application.fromBuffer);
+  static final _$deployApplication = $grpc.ClientMethod<
+          $2.DeployApplicationRequest, $2.DeployApplicationResponse>(
+      '/management_services.ApplicationService/DeployApplication',
+      ($2.DeployApplicationRequest value) => value.writeToBuffer(),
+      $2.DeployApplicationResponse.fromBuffer);
   static final _$deleteApplication =
       $grpc.ClientMethod<$2.DeleteApplicationRequest, $0.Empty>(
           '/management_services.ApplicationService/DeleteApplication',
@@ -257,15 +282,31 @@ abstract class ApplicationServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) =>
             $2.GetApplicationRequest.fromBuffer(value),
         ($2.Application value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.CreateApplicationRequest,
-            $2.CreateApplicationResponse>(
+    $addMethod($grpc.ServiceMethod<$2.CreateApplicationRequest, $2.Application>(
         'CreateApplication',
         createApplication_Pre,
         false,
         false,
         ($core.List<$core.int> value) =>
             $2.CreateApplicationRequest.fromBuffer(value),
-        ($2.CreateApplicationResponse value) => value.writeToBuffer()));
+        ($2.Application value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.UpdateApplicationRequest, $2.Application>(
+        'UpdateApplication',
+        updateApplication_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.UpdateApplicationRequest.fromBuffer(value),
+        ($2.Application value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.DeployApplicationRequest,
+            $2.DeployApplicationResponse>(
+        'DeployApplication',
+        deployApplication_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.DeployApplicationRequest.fromBuffer(value),
+        ($2.DeployApplicationResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.DeleteApplicationRequest, $0.Empty>(
         'DeleteApplication',
         deleteApplication_Pre,
@@ -301,14 +342,30 @@ abstract class ApplicationServiceBase extends $grpc.Service {
   $async.Future<$2.Application> getApplication(
       $grpc.ServiceCall call, $2.GetApplicationRequest request);
 
-  $async.Future<$2.CreateApplicationResponse> createApplication_Pre(
-      $grpc.ServiceCall $call,
+  $async.Future<$2.Application> createApplication_Pre($grpc.ServiceCall $call,
       $async.Future<$2.CreateApplicationRequest> $request) async {
     return createApplication($call, await $request);
   }
 
-  $async.Future<$2.CreateApplicationResponse> createApplication(
+  $async.Future<$2.Application> createApplication(
       $grpc.ServiceCall call, $2.CreateApplicationRequest request);
+
+  $async.Future<$2.Application> updateApplication_Pre($grpc.ServiceCall $call,
+      $async.Future<$2.UpdateApplicationRequest> $request) async {
+    return updateApplication($call, await $request);
+  }
+
+  $async.Future<$2.Application> updateApplication(
+      $grpc.ServiceCall call, $2.UpdateApplicationRequest request);
+
+  $async.Future<$2.DeployApplicationResponse> deployApplication_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$2.DeployApplicationRequest> $request) async {
+    return deployApplication($call, await $request);
+  }
+
+  $async.Future<$2.DeployApplicationResponse> deployApplication(
+      $grpc.ServiceCall call, $2.DeployApplicationRequest request);
 
   $async.Future<$0.Empty> deleteApplication_Pre($grpc.ServiceCall $call,
       $async.Future<$2.DeleteApplicationRequest> $request) async {
@@ -540,4 +597,56 @@ abstract class ApplicationDomainServiceBase extends $grpc.Service {
 
   $async.Future<$0.Empty> deleteDomain(
       $grpc.ServiceCall call, $2.GetDomainRequest request);
+}
+
+@$pb.GrpcServiceName('management_services.ConfigService')
+class ConfigServiceClient extends $grpc.Client {
+  /// The hostname for this service.
+  static const $core.String defaultHost = '';
+
+  /// OAuth scopes needed for the client.
+  static const $core.List<$core.String> oauthScopes = [
+    '',
+  ];
+
+  ConfigServiceClient(super.channel, {super.options, super.interceptors});
+
+  $grpc.ResponseFuture<$3.OpenIdConfiguration> getOpenIdConfiguration(
+    $0.Empty request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getOpenIdConfiguration, request,
+        options: options);
+  }
+
+  // method descriptors
+
+  static final _$getOpenIdConfiguration =
+      $grpc.ClientMethod<$0.Empty, $3.OpenIdConfiguration>(
+          '/management_services.ConfigService/GetOpenIdConfiguration',
+          ($0.Empty value) => value.writeToBuffer(),
+          $3.OpenIdConfiguration.fromBuffer);
+}
+
+@$pb.GrpcServiceName('management_services.ConfigService')
+abstract class ConfigServiceBase extends $grpc.Service {
+  $core.String get $name => 'management_services.ConfigService';
+
+  ConfigServiceBase() {
+    $addMethod($grpc.ServiceMethod<$0.Empty, $3.OpenIdConfiguration>(
+        'GetOpenIdConfiguration',
+        getOpenIdConfiguration_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($3.OpenIdConfiguration value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$3.OpenIdConfiguration> getOpenIdConfiguration_Pre(
+      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
+    return getOpenIdConfiguration($call, await $request);
+  }
+
+  $async.Future<$3.OpenIdConfiguration> getOpenIdConfiguration(
+      $grpc.ServiceCall call, $0.Empty request);
 }

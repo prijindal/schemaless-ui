@@ -103,7 +103,7 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("${widget.server.url}")),
+      appBar: AppBar(title: Text(widget.server.url)),
       floatingActionButton:
           currentPageIndex == 0
               ? FloatingActionButton(

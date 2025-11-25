@@ -11,13 +11,15 @@ import 'package:openid_client/openid_client.dart' as openid;
 import 'package:openid_client/openid_client_io.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../db/api_from_server.dart';
 import '../../db/database.dart';
 import '../../helpers/parse_errors.dart';
 import '../../router/app_router.dart';
+import '../../schemaless_proto/google/protobuf/empty.pb.dart';
 
 const allowedProtocols = kIsWeb ? ["https", "http"] : ["grpc"];
 
-urlLauncher(String url) async {
+Future<void> urlLauncher(String url) async {
   final uri = Uri.parse(url);
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
@@ -36,19 +38,22 @@ class NewServerScreen extends StatelessWidget {
     if (_formKey.currentState?.saveAndValidate() == true) {
       final project = _formKey.currentState!.value;
       final url = project["url"] as String;
-      final client_id = project["client_id"] as String;
-      final openid_configuration_url =
-          project["openid_configuration_url"] as String;
+      final clientId = project["client_id"] as String;
       final tls = project["tls"] as bool;
       final allowInsecure = project["allowInsecure"] as bool;
       try {
-        var issuer = await openid.Issuer.discover(
-          Uri.parse((openid_configuration_url)),
+        final configApi = getConfigApiFromUrl(url);
+        final openIdConfiguration = await configApi.getOpenIdConfiguration(
+          Empty(),
         );
-        final tokenEndpoint = issuer.metadata.tokenEndpoint;
-        var client = new openid.Client(issuer, client_id);
 
-        var authenticator = new Authenticator(
+        var issuer = await openid.Issuer.discover(
+          Uri.parse((openIdConfiguration.issuer)),
+        );
+        final tokenEndpoint = openIdConfiguration.tokenEndpoint;
+        var client = openid.Client(issuer, clientId);
+
+        var authenticator = Authenticator(
           client,
           port: 4000,
           urlLancher: urlLauncher,
@@ -66,7 +71,7 @@ class NewServerScreen extends StatelessWidget {
             .createReturning(
               (o) => o(
                 url: url,
-                clientId: client_id,
+                clientId: clientId,
                 tokenEndpoint: tokenEndpoint.toString(),
                 accessToken: accessToken as String,
                 refreshToken: refreshToken as String,
@@ -108,19 +113,6 @@ class NewServerScreen extends StatelessWidget {
                       protocols: allowedProtocols,
                       requireProtocol: true,
                     ),
-                  ]),
-                ),
-                SizedBox(height: 10),
-                FormBuilderTextField(
-                  name: "openid_configuration_url",
-                  autofocus: false,
-                  autofillHints: [AutofillHints.url],
-                  decoration: InputDecoration(
-                    labelText: 'Openid configuration url',
-                  ),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.url(),
                   ]),
                 ),
                 SizedBox(height: 10),

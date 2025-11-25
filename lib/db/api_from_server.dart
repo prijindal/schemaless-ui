@@ -24,7 +24,6 @@ class ManagementApiFromServerInfo {
       callOptions = CallOptions(
         providers: [
           (metadata, uri) async {
-            print(info.expiresAt);
             if (info.expiresAt.difference(DateTime.now()).inSeconds > 0) {
               metadata["authorization"] = "Bearer ${info.accessToken}";
             } else {
@@ -37,23 +36,22 @@ class ManagementApiFromServerInfo {
                 },
               );
               final body = jsonDecode(json.body);
-              print(body);
-              final expires_in = body["expires_in"] as int;
-              final expires_at = DateTime.now().add(
-                Duration(seconds: expires_in),
+              final expiresIn = body["expires_in"] as int;
+              final expiresAt = DateTime.now().add(
+                Duration(seconds: expiresIn),
               );
-              final access_token = body["access_token"] as String;
-              final refresh_token = body["refresh_token"] as String;
+              final accessToken = body["access_token"] as String;
+              final refreshToken = body["refresh_token"] as String;
               await GetIt.I<SharedDatabase>().managers.serverInfo
                   .filter((f) => f.id.equals(info.id))
                   .update(
                     (u) => u(
-                      accessToken: drift.Value(access_token),
-                      refreshToken: drift.Value(refresh_token),
-                      expiresAt: drift.Value((expires_at)),
+                      accessToken: drift.Value(accessToken),
+                      refreshToken: drift.Value(refreshToken),
+                      expiresAt: drift.Value((expiresAt)),
                     ),
                   );
-              metadata["authorization"] = "Bearer ${access_token}";
+              metadata["authorization"] = "Bearer $accessToken";
             }
           },
         ],
@@ -94,17 +92,42 @@ class ApplicationApiFromServerInfo {
                 },
               );
               final body = jsonDecode(json.body);
-              final expires_at = body["expires_at"] as DateTime;
-              final access_token = body["access_token"] as DateTime;
-              final refresh_token = body["refresh_token"] as DateTime;
-              metadata["authorization"] = "Bearer ${access_token}";
-              // Refresh token
+              final expiresIn = body["expires_in"] as int;
+              final expiresAt = DateTime.now().add(
+                Duration(seconds: expiresIn),
+              );
+              final accessToken = body["access_token"] as String;
+              final refreshToken = body["refresh_token"] as String;
+              await GetIt.I<SharedDatabase>().managers.serverInfo
+                  .filter((f) => f.id.equals(info.id))
+                  .update(
+                    (u) => u(
+                      accessToken: drift.Value(accessToken),
+                      refreshToken: drift.Value(refreshToken),
+                      expiresAt: drift.Value((expiresAt)),
+                    ),
+                  );
+              metadata["authorization"] = "Bearer $accessToken";
             }
-            return;
           },
         ],
       );
 
   application_service.EntityServiceClient get entityClient =>
       application_service.EntityServiceClient(channel, options: callOptions);
+}
+
+ConfigServiceClient getConfigApiFromUrl(
+  String url, {
+
+  bool tls = false,
+
+  bool allowInsecure = false,
+}) {
+  final channel = getChannelFromUrl(
+    url,
+    tls: tls,
+    allowInsecure: allowInsecure,
+  );
+  return ConfigServiceClient(channel);
 }

@@ -19,6 +19,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import '../google/protobuf/empty.pb.dart' as $0;
 import '../types/entity.pb.dart' as $3;
 import '../types/health.pb.dart' as $1;
+import '../types/openid.pb.dart' as $4;
 import 'services.pb.dart' as $2;
 
 export 'services.pb.dart';
@@ -258,4 +259,56 @@ abstract class EntityServiceBase extends $grpc.Service {
 
   $async.Future<$0.Empty> entityAction(
       $grpc.ServiceCall call, $3.EntityActionRequest request);
+}
+
+@$pb.GrpcServiceName('application_services.ConfigService')
+class ConfigServiceClient extends $grpc.Client {
+  /// The hostname for this service.
+  static const $core.String defaultHost = '';
+
+  /// OAuth scopes needed for the client.
+  static const $core.List<$core.String> oauthScopes = [
+    '',
+  ];
+
+  ConfigServiceClient(super.channel, {super.options, super.interceptors});
+
+  $grpc.ResponseFuture<$4.OpenIdConfiguration> getOpenIdConfiguration(
+    $0.Empty request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$getOpenIdConfiguration, request,
+        options: options);
+  }
+
+  // method descriptors
+
+  static final _$getOpenIdConfiguration =
+      $grpc.ClientMethod<$0.Empty, $4.OpenIdConfiguration>(
+          '/application_services.ConfigService/GetOpenIdConfiguration',
+          ($0.Empty value) => value.writeToBuffer(),
+          $4.OpenIdConfiguration.fromBuffer);
+}
+
+@$pb.GrpcServiceName('application_services.ConfigService')
+abstract class ConfigServiceBase extends $grpc.Service {
+  $core.String get $name => 'application_services.ConfigService';
+
+  ConfigServiceBase() {
+    $addMethod($grpc.ServiceMethod<$0.Empty, $4.OpenIdConfiguration>(
+        'GetOpenIdConfiguration',
+        getOpenIdConfiguration_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($4.OpenIdConfiguration value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$4.OpenIdConfiguration> getOpenIdConfiguration_Pre(
+      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async {
+    return getOpenIdConfiguration($call, await $request);
+  }
+
+  $async.Future<$4.OpenIdConfiguration> getOpenIdConfiguration(
+      $grpc.ServiceCall call, $0.Empty request);
 }

@@ -15,8 +15,8 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../google/protobuf/duration.pb.dart' as $3;
-import '../google/protobuf/timestamp.pb.dart' as $4;
+import '../google/protobuf/duration.pb.dart' as $4;
+import '../google/protobuf/timestamp.pb.dart' as $5;
 import 'services.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -29,8 +29,8 @@ class CumulativeHealthResponse extends $pb.GeneratedMessage {
     $core.bool? pubSub,
     $core.bool? docker,
     $core.bool? cache,
-    $3.Duration? uptime,
-    $4.Timestamp? currentTime,
+    $4.Duration? uptime,
+    $5.Timestamp? currentTime,
     $core.String? hostname,
   }) {
     final result = create();
@@ -62,10 +62,10 @@ class CumulativeHealthResponse extends $pb.GeneratedMessage {
     ..aOB(2, _omitFieldNames ? '' : 'PubSub', protoName: 'PubSub')
     ..aOB(3, _omitFieldNames ? '' : 'Docker', protoName: 'Docker')
     ..aOB(4, _omitFieldNames ? '' : 'Cache', protoName: 'Cache')
-    ..aOM<$3.Duration>(5, _omitFieldNames ? '' : 'Uptime',
-        protoName: 'Uptime', subBuilder: $3.Duration.create)
-    ..aOM<$4.Timestamp>(6, _omitFieldNames ? '' : 'CurrentTime',
-        protoName: 'CurrentTime', subBuilder: $4.Timestamp.create)
+    ..aOM<$4.Duration>(5, _omitFieldNames ? '' : 'Uptime',
+        protoName: 'Uptime', subBuilder: $4.Duration.create)
+    ..aOM<$5.Timestamp>(6, _omitFieldNames ? '' : 'CurrentTime',
+        protoName: 'CurrentTime', subBuilder: $5.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'Hostname', protoName: 'Hostname')
     ..hasRequiredFields = false;
 
@@ -126,26 +126,26 @@ class CumulativeHealthResponse extends $pb.GeneratedMessage {
   void clearCache() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $3.Duration get uptime => $_getN(4);
+  $4.Duration get uptime => $_getN(4);
   @$pb.TagNumber(5)
-  set uptime($3.Duration value) => $_setField(5, value);
+  set uptime($4.Duration value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasUptime() => $_has(4);
   @$pb.TagNumber(5)
   void clearUptime() => $_clearField(5);
   @$pb.TagNumber(5)
-  $3.Duration ensureUptime() => $_ensure(4);
+  $4.Duration ensureUptime() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $4.Timestamp get currentTime => $_getN(5);
+  $5.Timestamp get currentTime => $_getN(5);
   @$pb.TagNumber(6)
-  set currentTime($4.Timestamp value) => $_setField(6, value);
+  set currentTime($5.Timestamp value) => $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasCurrentTime() => $_has(5);
   @$pb.TagNumber(6)
   void clearCurrentTime() => $_clearField(6);
   @$pb.TagNumber(6)
-  $4.Timestamp ensureCurrentTime() => $_ensure(5);
+  $5.Timestamp ensureCurrentTime() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.String get hostname => $_getSZ(6);
@@ -358,15 +358,20 @@ class ListApplicationsResponse extends $pb.GeneratedMessage {
 class Application extends $pb.GeneratedMessage {
   factory Application({
     $core.String? iD,
-    $4.Timestamp? createdAt,
-    $4.Timestamp? updatedAt,
+    $5.Timestamp? createdAt,
+    $5.Timestamp? updatedAt,
     $core.String? name,
+    $core.String? openIdIssuerUrl,
+    $core.Iterable<$core.String>? policyFilesContent,
   }) {
     final result = create();
     if (iD != null) result.iD = iD;
     if (createdAt != null) result.createdAt = createdAt;
     if (updatedAt != null) result.updatedAt = updatedAt;
     if (name != null) result.name = name;
+    if (openIdIssuerUrl != null) result.openIdIssuerUrl = openIdIssuerUrl;
+    if (policyFilesContent != null)
+      result.policyFilesContent.addAll(policyFilesContent);
     return result;
   }
 
@@ -385,11 +390,15 @@ class Application extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'management_services'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'ID', protoName: 'ID')
-    ..aOM<$4.Timestamp>(2, _omitFieldNames ? '' : 'CreatedAt',
-        protoName: 'CreatedAt', subBuilder: $4.Timestamp.create)
-    ..aOM<$4.Timestamp>(3, _omitFieldNames ? '' : 'UpdatedAt',
-        protoName: 'UpdatedAt', subBuilder: $4.Timestamp.create)
+    ..aOM<$5.Timestamp>(2, _omitFieldNames ? '' : 'CreatedAt',
+        protoName: 'CreatedAt', subBuilder: $5.Timestamp.create)
+    ..aOM<$5.Timestamp>(3, _omitFieldNames ? '' : 'UpdatedAt',
+        protoName: 'UpdatedAt', subBuilder: $5.Timestamp.create)
     ..aOS(4, _omitFieldNames ? '' : 'Name', protoName: 'Name')
+    ..aOS(5, _omitFieldNames ? '' : 'OpenIdIssuerUrl',
+        protoName: 'OpenIdIssuerUrl')
+    ..pPS(6, _omitFieldNames ? '' : 'PolicyFilesContent',
+        protoName: 'PolicyFilesContent')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -421,26 +430,26 @@ class Application extends $pb.GeneratedMessage {
   void clearID() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $4.Timestamp get createdAt => $_getN(1);
+  $5.Timestamp get createdAt => $_getN(1);
   @$pb.TagNumber(2)
-  set createdAt($4.Timestamp value) => $_setField(2, value);
+  set createdAt($5.Timestamp value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasCreatedAt() => $_has(1);
   @$pb.TagNumber(2)
   void clearCreatedAt() => $_clearField(2);
   @$pb.TagNumber(2)
-  $4.Timestamp ensureCreatedAt() => $_ensure(1);
+  $5.Timestamp ensureCreatedAt() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $4.Timestamp get updatedAt => $_getN(2);
+  $5.Timestamp get updatedAt => $_getN(2);
   @$pb.TagNumber(3)
-  set updatedAt($4.Timestamp value) => $_setField(3, value);
+  set updatedAt($5.Timestamp value) => $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasUpdatedAt() => $_has(2);
   @$pb.TagNumber(3)
   void clearUpdatedAt() => $_clearField(3);
   @$pb.TagNumber(3)
-  $4.Timestamp ensureUpdatedAt() => $_ensure(2);
+  $5.Timestamp ensureUpdatedAt() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $core.String get name => $_getSZ(3);
@@ -450,14 +459,31 @@ class Application extends $pb.GeneratedMessage {
   $core.bool hasName() => $_has(3);
   @$pb.TagNumber(4)
   void clearName() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get openIdIssuerUrl => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set openIdIssuerUrl($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasOpenIdIssuerUrl() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearOpenIdIssuerUrl() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.String> get policyFilesContent => $_getList(5);
 }
 
 class CreateApplicationRequest extends $pb.GeneratedMessage {
   factory CreateApplicationRequest({
     $core.String? name,
+    $core.String? openIdIssuerUrl,
+    $core.Iterable<$core.String>? policyFilesContent,
   }) {
     final result = create();
     if (name != null) result.name = name;
+    if (openIdIssuerUrl != null) result.openIdIssuerUrl = openIdIssuerUrl;
+    if (policyFilesContent != null)
+      result.policyFilesContent.addAll(policyFilesContent);
     return result;
   }
 
@@ -476,6 +502,10 @@ class CreateApplicationRequest extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'management_services'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'Name', protoName: 'Name')
+    ..aOS(2, _omitFieldNames ? '' : 'OpenIdIssuerUrl',
+        protoName: 'OpenIdIssuerUrl')
+    ..pPS(3, _omitFieldNames ? '' : 'PolicyFilesContent',
+        protoName: 'PolicyFilesContent')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -506,10 +536,167 @@ class CreateApplicationRequest extends $pb.GeneratedMessage {
   $core.bool hasName() => $_has(0);
   @$pb.TagNumber(1)
   void clearName() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get openIdIssuerUrl => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set openIdIssuerUrl($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasOpenIdIssuerUrl() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOpenIdIssuerUrl() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.String> get policyFilesContent => $_getList(2);
 }
 
-class CreateApplicationResponse extends $pb.GeneratedMessage {
-  factory CreateApplicationResponse({
+class UpdateApplicationRequest extends $pb.GeneratedMessage {
+  factory UpdateApplicationRequest({
+    $core.String? applicationID,
+    $core.String? name,
+    $core.String? openIdIssuerUrl,
+    $core.Iterable<$core.String>? policyFilesContent,
+  }) {
+    final result = create();
+    if (applicationID != null) result.applicationID = applicationID;
+    if (name != null) result.name = name;
+    if (openIdIssuerUrl != null) result.openIdIssuerUrl = openIdIssuerUrl;
+    if (policyFilesContent != null)
+      result.policyFilesContent.addAll(policyFilesContent);
+    return result;
+  }
+
+  UpdateApplicationRequest._();
+
+  factory UpdateApplicationRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateApplicationRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateApplicationRequest',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'management_services'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
+    ..aOS(2, _omitFieldNames ? '' : 'Name', protoName: 'Name')
+    ..aOS(3, _omitFieldNames ? '' : 'OpenIdIssuerUrl',
+        protoName: 'OpenIdIssuerUrl')
+    ..pPS(4, _omitFieldNames ? '' : 'PolicyFilesContent',
+        protoName: 'PolicyFilesContent')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateApplicationRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateApplicationRequest copyWith(
+          void Function(UpdateApplicationRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateApplicationRequest))
+          as UpdateApplicationRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateApplicationRequest create() => UpdateApplicationRequest._();
+  @$core.override
+  UpdateApplicationRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static UpdateApplicationRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateApplicationRequest>(create);
+  static UpdateApplicationRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get applicationID => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set applicationID($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasApplicationID() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearApplicationID() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get openIdIssuerUrl => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set openIdIssuerUrl($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOpenIdIssuerUrl() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOpenIdIssuerUrl() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<$core.String> get policyFilesContent => $_getList(3);
+}
+
+class DeployApplicationRequest extends $pb.GeneratedMessage {
+  factory DeployApplicationRequest({
+    $core.String? applicationID,
+  }) {
+    final result = create();
+    if (applicationID != null) result.applicationID = applicationID;
+    return result;
+  }
+
+  DeployApplicationRequest._();
+
+  factory DeployApplicationRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeployApplicationRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeployApplicationRequest',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'management_services'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'ApplicationID', protoName: 'ApplicationID')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeployApplicationRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeployApplicationRequest copyWith(
+          void Function(DeployApplicationRequest) updates) =>
+      super.copyWith((message) => updates(message as DeployApplicationRequest))
+          as DeployApplicationRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeployApplicationRequest create() => DeployApplicationRequest._();
+  @$core.override
+  DeployApplicationRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static DeployApplicationRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeployApplicationRequest>(create);
+  static DeployApplicationRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get applicationID => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set applicationID($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasApplicationID() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearApplicationID() => $_clearField(1);
+}
+
+class DeployApplicationResponse extends $pb.GeneratedMessage {
+  factory DeployApplicationResponse({
     $core.String? iD,
   }) {
     final result = create();
@@ -517,17 +704,17 @@ class CreateApplicationResponse extends $pb.GeneratedMessage {
     return result;
   }
 
-  CreateApplicationResponse._();
+  DeployApplicationResponse._();
 
-  factory CreateApplicationResponse.fromBuffer($core.List<$core.int> data,
+  factory DeployApplicationResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory CreateApplicationResponse.fromJson($core.String json,
+  factory DeployApplicationResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'CreateApplicationResponse',
+      _omitMessageNames ? '' : 'DeployApplicationResponse',
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'management_services'),
       createEmptyInstance: create)
@@ -535,24 +722,24 @@ class CreateApplicationResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateApplicationResponse clone() => deepCopy();
+  DeployApplicationResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  CreateApplicationResponse copyWith(
-          void Function(CreateApplicationResponse) updates) =>
-      super.copyWith((message) => updates(message as CreateApplicationResponse))
-          as CreateApplicationResponse;
+  DeployApplicationResponse copyWith(
+          void Function(DeployApplicationResponse) updates) =>
+      super.copyWith((message) => updates(message as DeployApplicationResponse))
+          as DeployApplicationResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static CreateApplicationResponse create() => CreateApplicationResponse._();
+  static DeployApplicationResponse create() => DeployApplicationResponse._();
   @$core.override
-  CreateApplicationResponse createEmptyInstance() => create();
+  DeployApplicationResponse createEmptyInstance() => create();
   @$core.pragma('dart2js:noInline')
-  static CreateApplicationResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CreateApplicationResponse>(create);
-  static CreateApplicationResponse? _defaultInstance;
+  static DeployApplicationResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeployApplicationResponse>(create);
+  static DeployApplicationResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get iD => $_getSZ(0);
@@ -884,8 +1071,8 @@ class StreamApplicationDomainRequest extends $pb.GeneratedMessage {
 class Domain extends $pb.GeneratedMessage {
   factory Domain({
     $core.String? iD,
-    $4.Timestamp? createdAt,
-    $4.Timestamp? updatedAt,
+    $5.Timestamp? createdAt,
+    $5.Timestamp? updatedAt,
     $core.String? domainName,
     $core.String? soaEmail,
     $core.String? txtRecord,
@@ -917,10 +1104,10 @@ class Domain extends $pb.GeneratedMessage {
           const $pb.PackageName(_omitMessageNames ? '' : 'management_services'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'ID', protoName: 'ID')
-    ..aOM<$4.Timestamp>(2, _omitFieldNames ? '' : 'CreatedAt',
-        protoName: 'CreatedAt', subBuilder: $4.Timestamp.create)
-    ..aOM<$4.Timestamp>(3, _omitFieldNames ? '' : 'UpdatedAt',
-        protoName: 'UpdatedAt', subBuilder: $4.Timestamp.create)
+    ..aOM<$5.Timestamp>(2, _omitFieldNames ? '' : 'CreatedAt',
+        protoName: 'CreatedAt', subBuilder: $5.Timestamp.create)
+    ..aOM<$5.Timestamp>(3, _omitFieldNames ? '' : 'UpdatedAt',
+        protoName: 'UpdatedAt', subBuilder: $5.Timestamp.create)
     ..aOS(4, _omitFieldNames ? '' : 'DomainName', protoName: 'DomainName')
     ..aOS(5, _omitFieldNames ? '' : 'SoaEmail', protoName: 'SoaEmail')
     ..aOS(6, _omitFieldNames ? '' : 'TxtRecord', protoName: 'TxtRecord')
@@ -956,26 +1143,26 @@ class Domain extends $pb.GeneratedMessage {
   void clearID() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $4.Timestamp get createdAt => $_getN(1);
+  $5.Timestamp get createdAt => $_getN(1);
   @$pb.TagNumber(2)
-  set createdAt($4.Timestamp value) => $_setField(2, value);
+  set createdAt($5.Timestamp value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasCreatedAt() => $_has(1);
   @$pb.TagNumber(2)
   void clearCreatedAt() => $_clearField(2);
   @$pb.TagNumber(2)
-  $4.Timestamp ensureCreatedAt() => $_ensure(1);
+  $5.Timestamp ensureCreatedAt() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $4.Timestamp get updatedAt => $_getN(2);
+  $5.Timestamp get updatedAt => $_getN(2);
   @$pb.TagNumber(3)
-  set updatedAt($4.Timestamp value) => $_setField(3, value);
+  set updatedAt($5.Timestamp value) => $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasUpdatedAt() => $_has(2);
   @$pb.TagNumber(3)
   void clearUpdatedAt() => $_clearField(3);
   @$pb.TagNumber(3)
-  $4.Timestamp ensureUpdatedAt() => $_ensure(2);
+  $5.Timestamp ensureUpdatedAt() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $core.String get domainName => $_getSZ(3);

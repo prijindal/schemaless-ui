@@ -138,6 +138,14 @@ const Application$json = {
       '10': 'UpdatedAt'
     },
     {'1': 'Name', '3': 4, '4': 1, '5': 9, '10': 'Name'},
+    {'1': 'OpenIdIssuerUrl', '3': 5, '4': 1, '5': 9, '10': 'OpenIdIssuerUrl'},
+    {
+      '1': 'PolicyFilesContent',
+      '3': 6,
+      '4': 3,
+      '5': 9,
+      '10': 'PolicyFilesContent'
+    },
   ],
 };
 
@@ -145,33 +153,82 @@ const Application$json = {
 final $typed_data.Uint8List applicationDescriptor = $convert.base64Decode(
     'CgtBcHBsaWNhdGlvbhIOCgJJRBgBIAEoCVICSUQSOAoJQ3JlYXRlZEF0GAIgASgLMhouZ29vZ2'
     'xlLnByb3RvYnVmLlRpbWVzdGFtcFIJQ3JlYXRlZEF0EjgKCVVwZGF0ZWRBdBgDIAEoCzIaLmdv'
-    'b2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCVVwZGF0ZWRBdBISCgROYW1lGAQgASgJUgROYW1l');
+    'b2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCVVwZGF0ZWRBdBISCgROYW1lGAQgASgJUgROYW1lEi'
+    'gKD09wZW5JZElzc3VlclVybBgFIAEoCVIPT3BlbklkSXNzdWVyVXJsEi4KElBvbGljeUZpbGVz'
+    'Q29udGVudBgGIAMoCVISUG9saWN5RmlsZXNDb250ZW50');
 
 @$core.Deprecated('Use createApplicationRequestDescriptor instead')
 const CreateApplicationRequest$json = {
   '1': 'CreateApplicationRequest',
   '2': [
     {'1': 'Name', '3': 1, '4': 1, '5': 9, '10': 'Name'},
+    {'1': 'OpenIdIssuerUrl', '3': 2, '4': 1, '5': 9, '10': 'OpenIdIssuerUrl'},
+    {
+      '1': 'PolicyFilesContent',
+      '3': 3,
+      '4': 3,
+      '5': 9,
+      '10': 'PolicyFilesContent'
+    },
   ],
 };
 
 /// Descriptor for `CreateApplicationRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createApplicationRequestDescriptor =
-    $convert.base64Decode(
-        'ChhDcmVhdGVBcHBsaWNhdGlvblJlcXVlc3QSEgoETmFtZRgBIAEoCVIETmFtZQ==');
+final $typed_data.Uint8List createApplicationRequestDescriptor = $convert.base64Decode(
+    'ChhDcmVhdGVBcHBsaWNhdGlvblJlcXVlc3QSEgoETmFtZRgBIAEoCVIETmFtZRIoCg9PcGVuSW'
+    'RJc3N1ZXJVcmwYAiABKAlSD09wZW5JZElzc3VlclVybBIuChJQb2xpY3lGaWxlc0NvbnRlbnQY'
+    'AyADKAlSElBvbGljeUZpbGVzQ29udGVudA==');
 
-@$core.Deprecated('Use createApplicationResponseDescriptor instead')
-const CreateApplicationResponse$json = {
-  '1': 'CreateApplicationResponse',
+@$core.Deprecated('Use updateApplicationRequestDescriptor instead')
+const UpdateApplicationRequest$json = {
+  '1': 'UpdateApplicationRequest',
+  '2': [
+    {'1': 'ApplicationID', '3': 1, '4': 1, '5': 9, '10': 'ApplicationID'},
+    {'1': 'Name', '3': 2, '4': 1, '5': 9, '10': 'Name'},
+    {'1': 'OpenIdIssuerUrl', '3': 3, '4': 1, '5': 9, '10': 'OpenIdIssuerUrl'},
+    {
+      '1': 'PolicyFilesContent',
+      '3': 4,
+      '4': 3,
+      '5': 9,
+      '10': 'PolicyFilesContent'
+    },
+  ],
+};
+
+/// Descriptor for `UpdateApplicationRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateApplicationRequestDescriptor = $convert.base64Decode(
+    'ChhVcGRhdGVBcHBsaWNhdGlvblJlcXVlc3QSJAoNQXBwbGljYXRpb25JRBgBIAEoCVINQXBwbG'
+    'ljYXRpb25JRBISCgROYW1lGAIgASgJUgROYW1lEigKD09wZW5JZElzc3VlclVybBgDIAEoCVIP'
+    'T3BlbklkSXNzdWVyVXJsEi4KElBvbGljeUZpbGVzQ29udGVudBgEIAMoCVISUG9saWN5RmlsZX'
+    'NDb250ZW50');
+
+@$core.Deprecated('Use deployApplicationRequestDescriptor instead')
+const DeployApplicationRequest$json = {
+  '1': 'DeployApplicationRequest',
+  '2': [
+    {'1': 'ApplicationID', '3': 1, '4': 1, '5': 9, '10': 'ApplicationID'},
+  ],
+};
+
+/// Descriptor for `DeployApplicationRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deployApplicationRequestDescriptor =
+    $convert.base64Decode(
+        'ChhEZXBsb3lBcHBsaWNhdGlvblJlcXVlc3QSJAoNQXBwbGljYXRpb25JRBgBIAEoCVINQXBwbG'
+        'ljYXRpb25JRA==');
+
+@$core.Deprecated('Use deployApplicationResponseDescriptor instead')
+const DeployApplicationResponse$json = {
+  '1': 'DeployApplicationResponse',
   '2': [
     {'1': 'ID', '3': 1, '4': 1, '5': 9, '10': 'ID'},
   ],
 };
 
-/// Descriptor for `CreateApplicationResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createApplicationResponseDescriptor =
+/// Descriptor for `DeployApplicationResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deployApplicationResponseDescriptor =
     $convert.base64Decode(
-        'ChlDcmVhdGVBcHBsaWNhdGlvblJlc3BvbnNlEg4KAklEGAEgASgJUgJJRA==');
+        'ChlEZXBsb3lBcHBsaWNhdGlvblJlc3BvbnNlEg4KAklEGAEgASgJUgJJRA==');
 
 @$core.Deprecated('Use deleteApplicationRequestDescriptor instead')
 const DeleteApplicationRequest$json = {
