@@ -83,6 +83,10 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
           (context) => Dialog(
             child: FormBuilder(
               key: formKey,
+              initialValue: {
+                "policy":
+                    "package com.application.todoapp\n\nallow := true\n\nfilter := {\"app_user_id\": input.user.sub}",
+              },
               child: AutofillGroup(
                 child: Container(
                   padding: EdgeInsets.all(12.0),
