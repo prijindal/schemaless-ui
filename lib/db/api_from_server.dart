@@ -5,9 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:http/http.dart' as http;
 
-import '../schemaless_proto/application/services.pbgrpc.dart'
+import '../schemaless_proto/application_services/v1/services.pbgrpc.dart'
     as application_service;
-import '../schemaless_proto/management/services.pbgrpc.dart';
+import '../schemaless_proto/management_services/v1/services.pbgrpc.dart';
 import 'database.dart';
 import 'get_channel/main.dart';
 

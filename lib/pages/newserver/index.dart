@@ -15,7 +15,7 @@ import '../../db/api_from_server.dart';
 import '../../db/database.dart';
 import '../../helpers/parse_errors.dart';
 import '../../router/app_router.dart';
-import '../../schemaless_proto/google/protobuf/empty.pb.dart';
+import '../../schemaless_proto/types/v1/openid.pb.dart';
 
 const allowedProtocols = kIsWeb ? ["https", "http"] : ["grpc"];
 
@@ -44,7 +44,7 @@ class NewServerScreen extends StatelessWidget {
       try {
         final configApi = getConfigApiFromUrl(url);
         final openIdConfiguration = await configApi.getOpenIdConfiguration(
-          Empty(),
+          GetOpenIdConfigurationRequest(),
         );
 
         var issuer = await openid.Issuer.discover(

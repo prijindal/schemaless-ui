@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from types/openid.proto.
+// Generated from types/v1/openid.proto.
 
 // @dart = 3.3
 
@@ -16,8 +16,8 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
-class OpenIdConfiguration extends $pb.GeneratedMessage {
-  factory OpenIdConfiguration({
+class GetOpenIdConfigurationResponse extends $pb.GeneratedMessage {
+  factory GetOpenIdConfigurationResponse({
     $core.String? issuer,
     $core.String? authorizationEndpoint,
     $core.String? tokenEndpoint,
@@ -40,50 +40,49 @@ class OpenIdConfiguration extends $pb.GeneratedMessage {
     return result;
   }
 
-  OpenIdConfiguration._();
+  GetOpenIdConfigurationResponse._();
 
-  factory OpenIdConfiguration.fromBuffer($core.List<$core.int> data,
+  factory GetOpenIdConfigurationResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory OpenIdConfiguration.fromJson($core.String json,
+  factory GetOpenIdConfigurationResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'OpenIdConfiguration',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'types'),
+      _omitMessageNames ? '' : 'GetOpenIdConfigurationResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'types.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'Issuer', protoName: 'Issuer')
-    ..aOS(2, _omitFieldNames ? '' : 'AuthorizationEndpoint',
-        protoName: 'AuthorizationEndpoint')
-    ..aOS(3, _omitFieldNames ? '' : 'TokenEndpoint', protoName: 'TokenEndpoint')
-    ..aOS(4, _omitFieldNames ? '' : 'IntrospectionEndpoint',
-        protoName: 'IntrospectionEndpoint')
-    ..aOS(5, _omitFieldNames ? '' : 'UserinfoEndpoint',
-        protoName: 'UserinfoEndpoint')
-    ..aOS(6, _omitFieldNames ? '' : 'EndSessionEndpoint',
-        protoName: 'EndSessionEndpoint')
-    ..aOS(7, _omitFieldNames ? '' : 'JwksUri', protoName: 'JwksUri')
+    ..aOS(1, _omitFieldNames ? '' : 'issuer')
+    ..aOS(2, _omitFieldNames ? '' : 'authorizationEndpoint')
+    ..aOS(3, _omitFieldNames ? '' : 'tokenEndpoint')
+    ..aOS(4, _omitFieldNames ? '' : 'introspectionEndpoint')
+    ..aOS(5, _omitFieldNames ? '' : 'userinfoEndpoint')
+    ..aOS(6, _omitFieldNames ? '' : 'endSessionEndpoint')
+    ..aOS(7, _omitFieldNames ? '' : 'jwksUri')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OpenIdConfiguration clone() => deepCopy();
+  GetOpenIdConfigurationResponse clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OpenIdConfiguration copyWith(void Function(OpenIdConfiguration) updates) =>
-      super.copyWith((message) => updates(message as OpenIdConfiguration))
-          as OpenIdConfiguration;
+  GetOpenIdConfigurationResponse copyWith(
+          void Function(GetOpenIdConfigurationResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as GetOpenIdConfigurationResponse))
+          as GetOpenIdConfigurationResponse;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static OpenIdConfiguration create() => OpenIdConfiguration._();
+  static GetOpenIdConfigurationResponse create() =>
+      GetOpenIdConfigurationResponse._();
   @$core.override
-  OpenIdConfiguration createEmptyInstance() => create();
+  GetOpenIdConfigurationResponse createEmptyInstance() => create();
   @$core.pragma('dart2js:noInline')
-  static OpenIdConfiguration getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<OpenIdConfiguration>(create);
-  static OpenIdConfiguration? _defaultInstance;
+  static GetOpenIdConfigurationResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetOpenIdConfigurationResponse>(create);
+  static GetOpenIdConfigurationResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get issuer => $_getSZ(0);
@@ -147,6 +146,47 @@ class OpenIdConfiguration extends $pb.GeneratedMessage {
   $core.bool hasJwksUri() => $_has(6);
   @$pb.TagNumber(7)
   void clearJwksUri() => $_clearField(7);
+}
+
+class GetOpenIdConfigurationRequest extends $pb.GeneratedMessage {
+  factory GetOpenIdConfigurationRequest() => create();
+
+  GetOpenIdConfigurationRequest._();
+
+  factory GetOpenIdConfigurationRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory GetOpenIdConfigurationRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetOpenIdConfigurationRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'types.v1'),
+      createEmptyInstance: create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetOpenIdConfigurationRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetOpenIdConfigurationRequest copyWith(
+          void Function(GetOpenIdConfigurationRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as GetOpenIdConfigurationRequest))
+          as GetOpenIdConfigurationRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetOpenIdConfigurationRequest create() =>
+      GetOpenIdConfigurationRequest._();
+  @$core.override
+  GetOpenIdConfigurationRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static GetOpenIdConfigurationRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetOpenIdConfigurationRequest>(create);
+  static GetOpenIdConfigurationRequest? _defaultInstance;
 }
 
 const $core.bool _omitFieldNames =

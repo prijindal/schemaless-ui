@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from types/health.proto.
+// Generated from types/v1/health.proto.
 
 // @dart = 3.3
 
@@ -18,10 +18,19 @@ import 'dart:typed_data' as $typed_data;
 const HealthResponse$json = {
   '1': 'HealthResponse',
   '2': [
-    {'1': 'Healthy', '3': 1, '4': 1, '5': 8, '10': 'Healthy'},
+    {'1': 'healthy', '3': 1, '4': 1, '5': 8, '10': 'healthy'},
   ],
 };
 
 /// Descriptor for `HealthResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List healthResponseDescriptor = $convert
-    .base64Decode('Cg5IZWFsdGhSZXNwb25zZRIYCgdIZWFsdGh5GAEgASgIUgdIZWFsdGh5');
+    .base64Decode('Cg5IZWFsdGhSZXNwb25zZRIYCgdoZWFsdGh5GAEgASgIUgdoZWFsdGh5');
+
+@$core.Deprecated('Use healthRequestDescriptor instead')
+const HealthRequest$json = {
+  '1': 'HealthRequest',
+};
+
+/// Descriptor for `HealthRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List healthRequestDescriptor =
+    $convert.base64Decode('Cg1IZWFsdGhSZXF1ZXN0');

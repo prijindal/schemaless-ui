@@ -1,11 +1,12 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
-import '../../schemaless_proto/google/protobuf/empty.pb.dart';
-import '../../schemaless_proto/management/services.pb.dart';
+import '../../schemaless_proto/management_services/v1/services.pb.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 import 'applications_list.dart';
@@ -42,7 +43,7 @@ class _ServerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.authClient.verifyUser(Empty()),
+      future: api.authClient.verifyUser(VerifyUserRequest()),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: true);
@@ -74,28 +75,80 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
   ManagementApiFromServerInfo get api =>
       ManagementApiFromServerInfo(widget.server);
 
-  Future<void> _addApplication() async {
-    final textController = TextEditingController();
-    final name = await showDialog<String?>(
+  Future<void> _addApplicationDialog() async {
+    final formKey = GlobalKey<FormBuilderState>();
+    final created = await showDialog<bool?>(
       context: context,
       builder:
-          (context) => SimpleDialog(
-            title: Text("Enter project name"),
-            children: [
-              TextField(
-                controller: textController,
-                decoration: InputDecoration(label: Text("Project name")),
+          (context) => Dialog(
+            child: FormBuilder(
+              key: formKey,
+              child: AutofillGroup(
+                child: Container(
+                  padding: EdgeInsets.all(12.0),
+                  width: 300,
+                  height: 400,
+                  child: Center(
+                    child: ListView(
+                      children: [
+                        FormBuilderTextField(
+                          name: "name",
+                          autofocus: true,
+                          autofillHints: [AutofillHints.url],
+                          decoration: InputDecoration(labelText: 'Name'),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: "openid_issuer",
+                          autofocus: false,
+                          decoration: InputDecoration(
+                            labelText: 'OpenID Issuer',
+                          ),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                        ),
+                        SizedBox(height: 10),
+                        FormBuilderTextField(
+                          name: "policy",
+                          autofocus: false,
+                          maxLines: 10,
+                          minLines: 5,
+                          decoration: InputDecoration(labelText: 'Policy'),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                        ),
+                        SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed:
+                              () => {Navigator.of(context).pop<bool>(true)},
+                          child: Text("Add"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              ElevatedButton(
-                child: Text("Add"),
-                onPressed: () => Navigator.of(context).pop(textController.text),
-              ),
-            ],
+            ),
           ),
     );
-    if (name != null) {
+    if (created != null &&
+        created &&
+        formKey.currentState?.saveAndValidate() == true) {
+      final application = formKey.currentState!.value;
+      final name = application["name"] as String;
+      final openIdIssuerUrl = application["openid_issuer"] as String;
+      final policy = application["policy"] as String;
       await api.applicationClient.createApplication(
-        CreateApplicationRequest(name: name),
+        CreateApplicationRequest(
+          name: name,
+          policyFileContent: policy,
+          openidIssuerUrl: openIdIssuerUrl,
+        ),
       );
     }
   }
@@ -107,7 +160,7 @@ class _ServerScreenScaffoldState extends State<_ServerScreenScaffold> {
       floatingActionButton:
           currentPageIndex == 0
               ? FloatingActionButton(
-                onPressed: _addApplication,
+                onPressed: _addApplicationDialog,
                 tooltip: "Add Application",
                 child: Icon(Icons.add),
               )

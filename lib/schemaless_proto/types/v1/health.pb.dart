@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from types/health.proto.
+// Generated from types/v1/health.proto.
 
 // @dart = 3.3
 
@@ -36,9 +36,9 @@ class HealthResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'HealthResponse',
-      package: const $pb.PackageName(_omitMessageNames ? '' : 'types'),
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'types.v1'),
       createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'Healthy', protoName: 'Healthy')
+    ..aOB(1, _omitFieldNames ? '' : 'healthy')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -68,6 +68,44 @@ class HealthResponse extends $pb.GeneratedMessage {
   $core.bool hasHealthy() => $_has(0);
   @$pb.TagNumber(1)
   void clearHealthy() => $_clearField(1);
+}
+
+class HealthRequest extends $pb.GeneratedMessage {
+  factory HealthRequest() => create();
+
+  HealthRequest._();
+
+  factory HealthRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory HealthRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'HealthRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'types.v1'),
+      createEmptyInstance: create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HealthRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HealthRequest copyWith(void Function(HealthRequest) updates) =>
+      super.copyWith((message) => updates(message as HealthRequest))
+          as HealthRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static HealthRequest create() => HealthRequest._();
+  @$core.override
+  HealthRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static HealthRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<HealthRequest>(create);
+  static HealthRequest? _defaultInstance;
 }
 
 const $core.bool _omitFieldNames =

@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from application/services.proto.
+// Generated from application_services/v1/services.proto.
 
 // @dart = 3.3
 
@@ -16,12 +16,51 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
+class VerifyUserRequest extends $pb.GeneratedMessage {
+  factory VerifyUserRequest() => create();
+
+  VerifyUserRequest._();
+
+  factory VerifyUserRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory VerifyUserRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'VerifyUserRequest',
+      package: const $pb.PackageName(
+          _omitMessageNames ? '' : 'application_services.v1'),
+      createEmptyInstance: create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  VerifyUserRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  VerifyUserRequest copyWith(void Function(VerifyUserRequest) updates) =>
+      super.copyWith((message) => updates(message as VerifyUserRequest))
+          as VerifyUserRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static VerifyUserRequest create() => VerifyUserRequest._();
+  @$core.override
+  VerifyUserRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static VerifyUserRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<VerifyUserRequest>(create);
+  static VerifyUserRequest? _defaultInstance;
+}
+
 class VerifyUserResponse extends $pb.GeneratedMessage {
   factory VerifyUserResponse({
-    $core.String? iD,
+    $core.String? id,
   }) {
     final result = create();
-    if (iD != null) result.iD = iD;
+    if (id != null) result.id = id;
     return result;
   }
 
@@ -37,9 +76,9 @@ class VerifyUserResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'VerifyUserResponse',
       package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'application_services'),
+          _omitMessageNames ? '' : 'application_services.v1'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'ID', protoName: 'ID')
+    ..aOS(1, _omitFieldNames ? '' : 'id')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -62,13 +101,13 @@ class VerifyUserResponse extends $pb.GeneratedMessage {
   static VerifyUserResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get iD => $_getSZ(0);
+  $core.String get id => $_getSZ(0);
   @$pb.TagNumber(1)
-  set iD($core.String value) => $_setString(0, value);
+  set id($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasID() => $_has(0);
+  $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearID() => $_clearField(1);
+  void clearId() => $_clearField(1);
 }
 
 const $core.bool _omitFieldNames =

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
 import '../../helpers/listify_stream.dart';
-import '../../schemaless_proto/types/entity.pb.dart';
+import '../../schemaless_proto/application_services/v1/entity.pb.dart';
 import '../errors/error_screen.dart';
 
 class EntityHistoryScreen extends StatelessWidget {
@@ -21,14 +21,16 @@ class EntityHistoryScreen extends StatelessWidget {
     return StreamBuilder(
       stream: listifyStream(
         api.entityClient.streamEntityHistory(
-          SearchEntityHistoryRequest(
+          StreamEntityHistoryRequest(
             params: EntityHistoryRequestParams(
               entityName: EntityHistoryRequestEntityNameParam(in_1: [entity]),
             ),
             order: [
               EntityHistoryRequestOrder(
-                field_1: EntityHistoryOrderField.CreatedAt,
-                value: EntityHistoryOrderValue.DESC,
+                field_1:
+                    EntityHistoryOrderField
+                        .ENTITY_HISTORY_ORDER_FIELD_CREATED_AT,
+                value: EntityHistoryOrderValue.ENTITY_HISTORY_ORDER_VALUE_DESC,
               ),
             ],
           ),
@@ -48,17 +50,19 @@ class EntityHistoryScreen extends StatelessWidget {
                     children:
                         entityData
                             .map(
-                              (data) => ListTile(
+                              (res) => ListTile(
                                 isThreeLine: true,
-                                title: Text(data.action.toString()),
+                                title: Text(res.history.action.toString()),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Timestamp: ${data.createdAt.toString()}",
+                                      "Timestamp: ${res.history.createdAt.toString()}",
                                     ),
-                                    Text("Entity ID: ${data.entityID}"),
-                                    Text(String.fromCharCodes(data.payload)),
+                                    Text("Entity ID: ${res.history.entityId}"),
+                                    Text(
+                                      String.fromCharCodes(res.history.payload),
+                                    ),
                                   ],
                                 ),
                                 onTap: () {
@@ -68,7 +72,8 @@ class EntityHistoryScreen extends StatelessWidget {
                                           (context) => Scaffold(
                                             appBar: AppBar(
                                               title: Text(
-                                                data.createdAt.toString(),
+                                                res.history.createdAt
+                                                    .toString(),
                                               ),
                                             ),
                                             body: Center(
@@ -79,19 +84,19 @@ class EntityHistoryScreen extends StatelessWidget {
                                                 child: ListView(
                                                   children: [
                                                     Text(
-                                                      "Entity ID: ${data.entityID}",
+                                                      "Entity ID: ${res.history.entityId}",
                                                     ),
                                                     Text(
-                                                      "Action: ${data.action}",
+                                                      "Action: ${res.history.action}",
                                                     ),
                                                     Text(
-                                                      "Timestamp: ${data.createdAt.toString()}",
+                                                      "Timestamp: ${res.history.createdAt.toString()}",
                                                     ),
                                                     Text(
-                                                      "Created At: ${data.createdAt}",
+                                                      "Created At: ${res.history.createdAt}",
                                                     ),
                                                     Text(
-                                                      "Payload: ${String.fromCharCodes(data.payload)}",
+                                                      "Payload: ${String.fromCharCodes(res.history.payload)}",
                                                     ),
                                                   ],
                                                 ),

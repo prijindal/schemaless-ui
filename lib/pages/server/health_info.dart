@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../db/api_from_server.dart';
 import '../../db/database.dart';
-import '../../schemaless_proto/google/protobuf/empty.pb.dart';
+import '../../schemaless_proto/management_services/v1/services.pb.dart';
 import '../errors/error_screen.dart';
 import '../loading.dart';
 
@@ -15,7 +15,7 @@ class HealthInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: api.healthClient.cumulativeHealth(Empty()),
+      future: api.healthClient.cumulativeHealth(CumulativeHealthRequest()),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return ErrorScreen(error: snapshot.error!, scaffold: false);
@@ -26,7 +26,7 @@ class HealthInfo extends StatelessWidget {
         final data = snapshot.requireData;
         return ListView(
           children: [
-            ListTile(title: Text("DB"), subtitle: Text(data.dB.toString())),
+            ListTile(title: Text("DB"), subtitle: Text(data.db.toString())),
             ListTile(
               title: Text("PubSub"),
               subtitle: Text(data.pubSub.toString()),
