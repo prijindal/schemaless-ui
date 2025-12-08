@@ -2,7 +2,7 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
-  "dart.flutterSdkPath": ".fvm/versions/3.38.2",
+  "dart.flutterSdkPath": ".fvm/versions/stable",
   "debug.internalConsoleOptions": "openOnSessionStart",
   "[dart]": {
     "editor.formatOnSave": true,
